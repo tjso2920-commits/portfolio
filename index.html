@@ -150,6 +150,27 @@ tr:last-child td{border-bottom:none}
 td:first-child{font-weight:700; color:var(--ink); white-space:nowrap}
 td .tag{display:inline-block; margin-top:5px}
 
+/* 폰에서는 표를 가로로 밀어 읽게 하지 않고 카드로 쌓는다 */
+@media (max-width:640px){
+  .table-wrap{border:none; background:transparent; overflow:visible}
+  table{min-width:0; display:block}
+  thead{display:none}
+  tbody{display:block}
+  tbody tr{
+    display:block; background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:17px 19px; margin:0 0 12px;
+  }
+  tbody td{display:block; border:none; padding:0; font-size:14.5px}
+  tbody td:first-child{font-size:17px; font-weight:800; white-space:normal}
+  tbody td:not(:first-child){margin-top:13px; color:var(--ink-2)}
+  tbody td:not(:first-child)::before{
+    content:attr(data-label); display:block;
+    font-size:11px; font-weight:800; letter-spacing:.07em;
+    color:var(--ink-3); margin-bottom:3px;
+  }
+}
+
 /* ── 토글 ── */
 details{
   background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
@@ -268,7 +289,7 @@ footer p{margin:0 0 6px}
 <!-- ══════════ 1. 앱 작업물 ══════════ -->
 <section id="apps">
   <h2>01 — Works</h2>
-  <p class="sect-lede">현장 문제에서 출발한 앱 5개</p>
+  <p class="sect-lede">현장 문제에서 출발한 앱 4개</p>
   <p class="sect-note">
     전부 단일 HTML + 브라우저 저장소 기반이라 서버 없이 도입할 수 있습니다.
     데모는 거래처명·단가·직원 이름 등 실제 데이터를 모두 가상값으로 바꾼 버전입니다.
@@ -378,29 +399,6 @@ footer p{margin:0 0 6px}
     </p>
   </article>
 
-  <!-- 후쿠오카 -->
-  <article class="card">
-    <div class="card-top">
-      <h3>후쿠오카 여행 통합앱</h3>
-      <span class="tag wip">제작 중</span>
-    </div>
-    <p class="sub">스팟 137건 · 좌표 일괄 보강 · 판매용 일반화 설계</p>
-    <dl>
-      <dt>문제</dt>
-      <dd>여행 계획은 구글맵 저장목록에 쌓이지만, 저장목록은 <b>동선을 만들어주지 않습니다</b>. 어디를 어떤 순서로 갈지는 매번 손으로 다시 짜야 했습니다.</dd>
-      <dt>해결</dt>
-      <dd>구글맵 저장목록 CSV를 파싱해 후쿠오카권 스팟 137건을 추리고, <b>Maps Platform API로 좌표를 일괄 보강</b>했습니다(137건 전량 성공, 실패 0). 그 위에 스팟 기반 동선 생성과 <b>목적별 추천(식사·쇼핑·술·관광)</b>, 구글맵 딥링크 경로 연동을 얹었습니다. 언어 학습·통번역 탭과 운동 탭은 선택 모듈로 분리했습니다.</dd>
-      <dt>결과</dt>
-      <dd class="result">개인용 완성 단계. <b>국가·언어만 바꿔 재사용</b>할 수 있도록 데이터와 화면을 분리해 설계했고, 이 구조로 판매용 버전을 준비 중입니다.</dd>
-    </dl>
-    <div class="stack">
-      <span>CSV 파싱</span><span>Google Maps Platform API</span>
-      <span>동선 생성</span><span>딥링크 연동</span>
-    </div>
-    <div class="actions">
-      <span class="btn" aria-disabled="true">데모 준비 중</span>
-    </div>
-  </article>
 </section>
 
 <!-- ══════════ 2. 그 외 제작 ══════════ -->
@@ -414,45 +412,51 @@ footer p{margin:0 0 6px}
       </thead>
       <tbody>
         <tr>
+          <td>후쿠오카 여행 통합앱<br><span class="tag wip">제작 중</span></td>
+          <td data-label="무슨 문제를 풀었나">구글맵 저장목록은 장소만 쌓일 뿐 동선을 만들어주지 않아, 순서는 매번 손으로 짜야 했습니다.</td>
+          <td data-label="핵심 기능">저장목록 CSV 파싱 → 스팟 137건 좌표를 Maps Platform API로 일괄 보강(전량 성공) → 동선 생성 · 목적별 추천 · 구글맵 딥링크 연동. 국가·언어만 바꿔 재사용하도록 데이터와 화면을 분리</td>
+          <td data-label="데모">준비 중</td>
+        </tr>
+        <tr>
           <td>통합 허브<br><span class="tag live">운영 중</span></td>
-          <td>앱이 늘어나면서 직원들이 주소를 일일이 기억해야 했습니다.</td>
-          <td>업무앱 타일 모음, 사람마다 쓰는 앱만 골라 배치, 홈화면 설치(PWA), 앱 목록 중앙 관리</td>
-          <td><a href="demo/hub/">열기 →</a></td>
+          <td data-label="무슨 문제를 풀었나">앱이 늘어나면서 직원들이 주소를 일일이 기억해야 했습니다.</td>
+          <td data-label="핵심 기능">업무앱 타일 모음, 사람마다 쓰는 앱만 골라 배치, 홈화면 설치(PWA), 앱 목록 중앙 관리</td>
+          <td data-label="데모"><a href="demo/hub/">열기 →</a></td>
         </tr>
         <tr>
           <td>음료 교육<br><span class="tag live">운영 중</span></td>
-          <td>신입이 들어올 때마다 하이볼 만드는 법과 술 설명을 구두로 반복해야 했습니다.</td>
-          <td>하이볼 16종 레시피(주류→얼음→토닉→스터 순서), 보틀 35종, 손님 설명용/전문가용 토글, 카테고리 필터</td>
-          <td><a href="demo/bar/">열기 →</a></td>
+          <td data-label="무슨 문제를 풀었나">신입이 들어올 때마다 하이볼 만드는 법과 술 설명을 구두로 반복해야 했습니다.</td>
+          <td data-label="핵심 기능">하이볼 16종 레시피(주류→얼음→토닉→스터 순서), 보틀 35종, 손님 설명용/전문가용 토글, 카테고리 필터</td>
+          <td data-label="데모"><a href="demo/bar/">열기 →</a></td>
         </tr>
         <tr>
           <td>보건증 만료 추적<br><span class="tag built">구축 완료</span></td>
-          <td>직원 보건증 만료일을 놓치면 과태료 대상이 됩니다.</td>
-          <td>취득일 입력 시 만료일 자동 계산, D-day 4단계 표시, 캘린더(.ics) 알림 내보내기, CSV 백업</td>
-          <td><a href="demo/health/">열기 →</a></td>
+          <td data-label="무슨 문제를 풀었나">직원 보건증 만료일을 놓치면 과태료 대상이 됩니다.</td>
+          <td data-label="핵심 기능">취득일 입력 시 만료일 자동 계산, D-day 4단계 표시, 캘린더(.ics) 알림 내보내기, CSV 백업</td>
+          <td data-label="데모"><a href="demo/health/">열기 →</a></td>
         </tr>
         <tr>
           <td>매장 체크리스트<br><span class="tag built">구축 완료</span></td>
-          <td>오픈·마감 점검 항목이 사람마다 달라 빠지는 항목이 생겼습니다.</td>
-          <td>오픈/마감/주간/월간 템플릿, 항목 드래그 정렬, 담당자·진행률 기록</td>
-          <td><a href="demo/checklist/">열기 →</a></td>
+          <td data-label="무슨 문제를 풀었나">오픈·마감 점검 항목이 사람마다 달라 빠지는 항목이 생겼습니다.</td>
+          <td data-label="핵심 기능">오픈/마감/주간/월간 템플릿, 항목 드래그 정렬, 담당자·진행률 기록</td>
+          <td data-label="데모"><a href="demo/checklist/">열기 →</a></td>
         </tr>
         <tr>
           <td>연차 관리<br><span class="tag built">구축 완료</span></td>
-          <td>근로기준법 기준 연차 발생일을 매장별로 따로 계산하고 있었습니다.</td>
-          <td>법정 발생 로직, 매장별 탭, 계정별 접근 제한, 알바 시급·통상임금 기준 계산</td>
-          <td>—</td>
+          <td data-label="무슨 문제를 풀었나">근로기준법 기준 연차 발생일을 매장별로 따로 계산하고 있었습니다.</td>
+          <td data-label="핵심 기능">법정 발생 로직, 매장별 탭, 계정별 접근 제한, 알바 시급·통상임금 기준 계산</td>
+          <td data-label="데모">—</td>
         </tr>
         <tr>
           <td>영어 학습 게임<br><span class="tag wip">제작 중</span></td>
-          <td>아동이 알파벳 필순과 발음을 스스로 익힐 방법이 필요했습니다.</td>
-          <td>캔버스 타일맵(22×22) 이동형 게임, 카메라 스크롤·충돌 처리, 몹 접근 시 원어민 TTS 자동 재생, A~Z 필순 트레이싱 판정</td>
-          <td>—</td>
+          <td data-label="무슨 문제를 풀었나">아동이 알파벳 필순과 발음을 스스로 익힐 방법이 필요했습니다.</td>
+          <td data-label="핵심 기능">캔버스 타일맵(22×22) 이동형 게임, 카메라 스크롤·충돌 처리, 몹 접근 시 원어민 TTS 자동 재생, A~Z 필순 트레이싱 판정</td>
+          <td data-label="데모">—</td>
         </tr>
         <tr>
           <td>퇴사정산 계산기 · 업무 자동화 스크립트</td>
-          <td colspan="2">정산 항목 계산, 반복 업무 스크립트화</td>
-          <td>—</td>
+          <td data-label="핵심 기능" colspan="2">정산 항목 계산, 반복 업무 스크립트화</td>
+          <td data-label="데모">—</td>
         </tr>
       </tbody>
     </table>
