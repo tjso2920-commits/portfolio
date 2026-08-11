@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>정윤식 — 현장 업무를 웹앱으로 자동화합니다</title>
-<meta name="description" content="F&B 현장 10년. 발주·예약·단가·레시피를 직접 만든 웹앱으로 자동화했습니다. 8개 앱 라이브 데모.">
+<meta name="description" content="정윤식 이력서 · 포트폴리오 — F&B 현장 10년(사시미 셰프·헤드 바텐더). 발주·예약·단가·레시피를 직접 만든 웹앱으로 자동화. 앱 8종 라이브 데모.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:title" content="정윤식 — 현장 업무를 웹앱으로 자동화합니다">
 <meta property="og:description" content="F&B 현장 10년. 발주·예약·단가·레시피를 직접 만든 웹앱으로 자동화했습니다.">
@@ -246,6 +246,37 @@ summary:hover{background:var(--surface-2)}
   /* .shot img 의 3:4 crop 을 무효화 — 인증패는 잘리면 글자가 날아간다 */
   aspect-ratio:auto; object-fit:contain}
 .media-grid p{margin:8px 0 0; font-size:13px; color:var(--ink-3); font-weight:600}
+/* ── 경력 타임라인 ── */
+.job{
+  padding:20px 0; border-bottom:1px solid var(--line);
+}
+.job:last-of-type{border-bottom:none}
+.job-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px}
+.job-head h3{margin:0; font-size:17.5px; font-weight:800; letter-spacing:-.015em}
+.job-head .role{font-size:14.5px; font-weight:700; color:var(--accent-ink)}
+.job-head .term{
+  margin-left:auto; font-family:var(--mono); font-size:12.5px;
+  color:var(--ink-3); font-weight:600; white-space:nowrap;
+}
+.job ul{margin:10px 0 0; padding-left:17px}
+.job li{font-size:14.5px; color:var(--ink-2); margin-bottom:3px}
+@media (max-width:520px){
+  .job-head .term{margin-left:0; width:100%; order:3}
+}
+.chips{display:flex; flex-wrap:wrap; gap:7px; margin:0; padding:0; list-style:none}
+.chips li{
+  font-size:13px; font-weight:600; color:var(--ink-2); background:var(--surface-2);
+  border:1px solid var(--line); border-radius:8px; padding:6px 12px;
+}
+.contact{
+  display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 0; padding:0; list-style:none;
+}
+.contact a{
+  display:inline-flex; align-items:center; min-height:44px; padding:9px 16px;
+  border:1px solid var(--line); border-radius:10px; background:var(--surface-2);
+  font-size:14.5px; font-weight:700; color:var(--ink);
+}
+.contact a:hover{text-decoration:none; border-color:var(--ink-3)}
 footer{
   margin-top:56px; padding:28px 0 60px; border-top:1px solid var(--line);
   font-size:13.5px; color:var(--ink-3);
@@ -257,18 +288,22 @@ footer p{margin:0 0 6px}
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">정윤식 · Jeong Yunsik</p>
+    <p class="eyebrow">정윤식 · Jeong Yoon-sik</p>
     <h1>현장에서 쓰는 업무를<br><em>직접 만든 웹앱으로 자동화</em>합니다</h1>
     <p class="lede">
-      F&amp;B 현장 10년. 발주·예약·단가·레시피처럼 매일 반복되던 수기 업무를
-      웹앱으로 옮겨 6개 매장에서 운영 중입니다. 아래 앱은 전부 제가 기획·설계·구현했고,
-      링크를 누르면 지금 바로 동작하는 데모가 열립니다.
+      F&amp;B 현장 10년 — 사시미 헤드 셰프이자 헤드 바텐더로 주방과 바를 겸직해 왔습니다.
+      매일 반복되던 발주·예약·단가·레시피 업무를 웹앱으로 옮겨 매장 6곳에서 운영 중이고,
+      아래 앱은 전부 제가 기획·설계·구현했습니다. 링크를 누르면 지금 바로 동작하는 데모가 열립니다.
     </p>
     <ul class="facts">
+      <li>F&amp;B 실무 10년</li>
       <li>운영 중인 앱 6개</li>
-      <li>매장 6곳</li>
       <li>고려사이버대 AI·데이터과학부 재학</li>
       <li>2026.11 입사 가능</li>
+      <li>서울</li>
+    </ul>
+    <ul class="contact">
+      <li><a href="mailto:ysjeongfnbdata@gmail.com">ysjeongfnbdata@gmail.com</a></li>
     </ul>
   </div>
 </header>
@@ -277,9 +312,9 @@ footer p{margin:0 0 6px}
   <ol>
     <li><a href="#apps">앱 작업물</a></li>
     <li><a href="#others">그 외 제작</a></li>
-    <li><a href="#field">현장 경력</a></li>
+    <li><a href="#field">경력</a></li>
     <li><a href="#edu">학력</a></li>
-    <li><a href="#awards">수상 · 미디어</a></li>
+    <li><a href="#awards">자격 · 수상</a></li>
     <li><a href="#resume">이력서</a></li>
   </ol>
 </nav>
@@ -463,14 +498,105 @@ footer p{margin:0 0 6px}
   </div>
 </section>
 
-<!-- ══════════ 3. 현장 경력 ══════════ -->
+<!-- ══════════ 3. 경력 ══════════ -->
 <section id="field">
-  <h2>03 — Field</h2>
-  <p class="sect-lede">현장 경력</p>
+  <h2>03 — Experience</h2>
+  <p class="sect-lede">경력</p>
   <p class="sect-note">
-    위 앱들이 풀고 있는 문제를 아는 이유입니다. 요리·사시미·바 실무 10년이
-    문제 정의와 데이터 설계의 근거가 됐습니다.
+    주방과 바를 함께 맡아온 10년입니다. 위 앱들이 어떤 문제를 푸는지 아는 이유이기도 합니다.
   </p>
+    <article class="job">
+      <div class="job-head">
+        <h3>이자카야 시오리</h3>
+        <span class="role">사시미 헤드 셰프</span>
+        <span class="term">2025.09 – 현재</span>
+      </div>
+      <ul>
+        <li>사시미 파트 총괄 — 생선 오로시 정밀도와 플레이팅 일관성 관리</li>
+        <li>서비스 압박 조건에서 다양한 어종을 다루며 품질 유지</li>
+        <li>수산물 품질 · 준비 흐름 · 프라이빗 다이닝 중심 서비스 워크플로우 관리</li>
+        <li>재직 중 발주 · 예약 · 단가 · 레시피 업무를 웹앱으로 옮겨 매장 6곳에 배포</li>
+      </ul>
+    </article>
+    <article class="job">
+      <div class="job-head">
+        <h3>포이자카야</h3>
+        <span class="role">총괄 매니저 / 헤드 셰프 / 바텐더</span>
+        <span class="term">2023.06 – 2025.03</span>
+      </div>
+      <ul>
+        <li>주방과 바를 아우르는 겸직 환경에서 매장 전체 운영 총괄</li>
+        <li>짚불 훈연 참치 등 시그니처 메뉴 개발</li>
+        <li>시즌별 하이볼 메뉴 개발 및 음료 방향성 관리</li>
+        <li>주방·바 간 워크플로우 최적화로 서비스 속도와 협업 개선</li>
+        <li>대한민국 하이볼 명가 100 선정 (2024–2025)</li>
+      </ul>
+    </article>
+    <article class="job">
+      <div class="job-head">
+        <h3>바 베스퍼</h3>
+        <span class="role">헤드 바텐더 / 매니저</span>
+        <span class="term">2020.07 – 2023.04</span>
+      </div>
+      <ul>
+        <li>바 운영 관리 및 주방 워크플로우 참여</li>
+        <li>클래식 · 시그니처 칵테일 개발</li>
+        <li>이탈리안-재패니즈 퓨전 환경에서 음식 준비 병행</li>
+        <li>라이프스타일 매거진 Heypop 소개 (2022)</li>
+      </ul>
+    </article>
+    <article class="job">
+      <div class="job-head">
+        <h3>바 EHN 더 버뮤다</h3>
+        <span class="role">바텐더 / 주방 스태프 (겸직)</span>
+        <span class="term">2015.12 – 2020.02</span>
+      </div>
+      <ul>
+        <li>대용량 환경에서 바·주방 업무를 동시 수행</li>
+        <li>일관성과 속도를 유지하며 <b>일 200잔 이상</b> 제조</li>
+        <li>국내 최고 매출 모히토 바 중 한 곳에서 근무</li>
+        <li>교대 기반 주방·바 로테이션 운영</li>
+      </ul>
+    </article>
+    <article class="job">
+      <div class="job-head">
+        <h3>바 EHN 올드나이브스</h3>
+        <span class="role">분점 매니저 / 주방 &amp; 바 (겸임)</span>
+        <span class="term">2018.02 – 2019.02</span>
+      </div>
+      <ul>
+        <li>Bar EHN 그룹 3호점 — 버뮤다 본점 재직 중 분점 매니저 겸임</li>
+        <li>주방과 바가 통합된 프리미엄 소규모 다이닝 바 운영 관리</li>
+        <li>개인 맞춤형 '노메뉴' 추천 기반 다이닝 경험 제공</li>
+        <li>케이블TV 방송 촬영 (2018)</li>
+      </ul>
+    </article>
+    <article class="job">
+      <div class="job-head">
+        <h3>바 로킷</h3>
+        <span class="role">단기 대리운영 매니저</span>
+        <span class="term">2020.03 – 2020.06</span>
+      </div>
+      <ul>
+        <li>계약 기간 동안 바 서비스와 주방 운영을 아우르는 매장 대리운영</li>
+      </ul>
+    </article>
+
+  <h4 class="gal-h">그 외</h4>
+  <ul class="chips">
+    <li>마라하오 서초 · 주방</li>
+    <li>클래치 앤 바르도 · 바리스타</li>
+    <li>소셜코드 · 바텐더</li>
+  </ul>
+
+  <h4 class="gal-h">언어</h4>
+  <ul class="chips">
+    <li>한국어 · 모국어</li>
+    <li>영어 · 업무 수행 가능</li>
+    <li>일본어 · 기초</li>
+  </ul>
+
+  <h4 class="gal-h">현장 작업물</h4>
   <details>
     <summary>현장 작업물 사진 27장 보기</summary>
     <div class="details-body">
@@ -516,7 +642,7 @@ footer p{margin:0 0 6px}
         </div>
     </div>
   </details>
-  <p class="sect-note" style="margin:18px 0 0">
+  <p class="sect-note" style="margin:14px 0 0">
     영상: <a href="https://youtu.be/94xfIvc3_tI" target="_blank" rel="noopener">클래식 김렛 제조 — 바텐딩 실무 샘플</a>.
     생선 오로시 · 사시미 준비 전 과정 영상은 촬영해 두었고 요청 시 제공합니다.
   </p>
@@ -534,7 +660,7 @@ footer p{margin:0 0 6px}
 <!-- ══════════ 5. 수상 · 미디어 ══════════ -->
 <section id="awards">
   <h2>05 — Awards &amp; Media</h2>
-  <p class="sect-lede">수상 · 미디어</p>
+  <p class="sect-lede">자격 · 수상 · 미디어</p>
   <details>
     <summary>수상 · 미디어 내역 보기</summary>
     <div class="details-body">
@@ -543,6 +669,13 @@ footer p{margin:0 0 6px}
         <li><span class="yr">2022</span><b>Heypop</b> 매거진 소개 · <a href="https://heypop.kr/n/42277/" target="_blank" rel="noopener">기사 보기</a></li>
         <li><span class="yr">2018</span><b>케이블TV</b> 방송 출연 (매장 촬영)</li>
         <li><span class="yr">2016</span><b>하바나 마스터 클래스 코리아</b> 우승</li>
+      </ul>
+      <h4 class="gal-h">수료 과정</h4>
+      <ul class="chips">
+        <li>믹솔로지스트 마스터 코스 수료</li>
+        <li>조니워커 스피릿 코스 수료</li>
+        <li>올메카 데킬라 증류소 투어 (멕시코)</li>
+        <li>하바나 클럽 럼 증류소 투어 (쿠바)</li>
       </ul>
       <h4 class="gal-h">대한민국 하이볼 명가 100 인증 · 2024</h4>
       <div class="media-grid">
@@ -577,7 +710,8 @@ footer p{margin:0 0 6px}
 <!-- ══════════ 6. 이력서 ══════════ -->
 <section id="resume">
   <h2>06 — Resume</h2>
-  <p class="sect-lede">이력서</p>
+  <p class="sect-lede">이력서 원본</p>
+  <p class="sect-note">위 내용을 문서 형태로도 준비해 두었습니다.</p>
   <div class="actions">
     <a class="btn primary" href="https://docs.google.com/document/d/1u5maKSXT4M5Jqao8exUd8eJcpblmZeq8mfNbfz5-fzw/edit?usp=drive_link" target="_blank" rel="noopener">국문 이력서 →</a>
     <a class="btn" href="https://docs.google.com/document/d/1rnF7EzaPepCkKgAlHEQw1HRSBSPRwVhEiTsc24IHTno/edit?usp=drive_link" target="_blank" rel="noopener">English Resume →</a>
@@ -587,6 +721,7 @@ footer p{margin:0 0 6px}
 <footer class="wrap">
   <p>앱은 모두 정식 개발 교육 없이 AI를 활용해 직접 제작했습니다.</p>
   <p>단일 HTML · 브라우저 저장소 기반 · GitHub Pages 배포.</p>
+  <p style="margin-top:12px">정윤식 · 서울 · <a href="mailto:ysjeongfnbdata@gmail.com">ysjeongfnbdata@gmail.com</a></p>
 </footer>
 
 </main>
