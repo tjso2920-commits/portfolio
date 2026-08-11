@@ -246,6 +246,28 @@ summary:hover{background:var(--surface-2)}
   /* .shot img 의 3:4 crop 을 무효화 — 인증패는 잘리면 글자가 날아간다 */
   aspect-ratio:auto; object-fit:contain}
 .media-grid p{margin:8px 0 0; font-size:13px; color:var(--ink-3); font-weight:600}
+/* ── 요약 · 핵심 역량 ── */
+.summary{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:22px; margin:0 0 16px;
+}
+.summary ul{margin:0; padding-left:18px}
+.summary li{font-size:15px; color:var(--ink-2); margin-bottom:7px}
+.summary li:last-child{margin-bottom:0}
+.summary li b{color:var(--ink); font-weight:700}
+.skills{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px}
+.skill{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:18px 20px;
+}
+.skill h4{
+  margin:0 0 10px; font-size:12px; font-weight:800; letter-spacing:.07em;
+  color:var(--accent); text-transform:uppercase;
+}
+.skill ul{margin:0; padding-left:16px}
+.skill li{font-size:14px; color:var(--ink-2); margin-bottom:5px}
+.skill li:last-child{margin-bottom:0}
+
 /* ── 경력 타임라인 ── */
 .job{
   padding:20px 0; border-bottom:1px solid var(--line);
@@ -289,11 +311,11 @@ footer p{margin:0 0 6px}
 <header class="hero">
   <div class="wrap">
     <p class="eyebrow">정윤식 · Jeong Yoon-sik</p>
-    <h1>현장에서 쓰는 업무를<br><em>직접 만든 웹앱으로 자동화</em>합니다</h1>
+    <h1>주방과 바에서 10년,<br>그 현장을 <em>웹앱으로 자동화</em>합니다</h1>
     <p class="lede">
-      F&amp;B 현장 10년 — 사시미 헤드 셰프이자 헤드 바텐더로 주방과 바를 겸직해 왔습니다.
-      매일 반복되던 발주·예약·단가·레시피 업무를 웹앱으로 옮겨 매장 6곳에서 운영 중이고,
-      아래 앱은 전부 제가 기획·설계·구현했습니다. 링크를 누르면 지금 바로 동작하는 데모가 열립니다.
+      사시미 헤드 셰프이자 헤드 바텐더로 주방과 바를 겸직해 왔습니다.
+      매일 반복되던 발주·예약·단가·레시피 업무는 직접 웹앱으로 만들어 매장 6곳에서 쓰고 있습니다.
+      아래 앱은 전부 제가 기획·설계·구현했고, 링크를 누르면 지금 바로 동작하는 데모가 열립니다.
     </p>
     <ul class="facts">
       <li>F&amp;B 실무 10년</li>
@@ -310,6 +332,7 @@ footer p{margin:0 0 6px}
 
 <nav class="toc" aria-label="목차">
   <ol>
+    <li><a href="#summary">요약</a></li>
     <li><a href="#apps">앱 작업물</a></li>
     <li><a href="#others">그 외 제작</a></li>
     <li><a href="#field">경력</a></li>
@@ -320,6 +343,62 @@ footer p{margin:0 0 6px}
 </nav>
 
 <main class="wrap">
+
+<!-- ══════════ 00. 요약 ══════════ -->
+<section id="summary" style="padding-top:38px">
+  <h2>00 — Summary</h2>
+  <p class="sect-lede">요약</p>
+  <div class="summary">
+    <ul>
+      <li><b>F&amp;B 실무 10년.</b> 사시미 헤드 셰프와 헤드 바텐더를 겸직하며 주방과 바를 함께 맡아 왔고, 매장 전체 운영을 총괄한 경험이 있습니다.</li>
+      <li><b>현장의 반복 업무를 직접 웹앱으로 만들어 씁니다.</b> 발주·예약·단가·레시피·체크리스트 등 8종을 기획부터 구현까지 혼자 진행해 매장 6곳에 배포했습니다.</li>
+      <li><b>원가를 숫자로 봅니다.</b> 거래처 8개월치 발주 데이터를 품목 163종으로 구조화하고, 어종별 수율을 반영한 실원가까지 계산해 현장에서 쓰고 있습니다.</li>
+      <li><b>외국인 직원과 일해 왔습니다.</b> 조리 기준을 한국어·포르투갈어·베트남어로 병기하고 주방 용어 44개에 뜻풀이를 붙여 언어 장벽을 줄였습니다.</li>
+      <li>고려사이버대학교 AI·데이터과학부 재학 중 · 2026년 11월 입사 가능 · 서울</li>
+    </ul>
+  </div>
+  <div class="skills">
+    <div class="skill">
+      <h4>F&amp;B 도메인</h4>
+      <ul>
+        <li>생선 오로시 — 광어 · 연어 · 참돔 · 삼치 · 방어</li>
+        <li>사시미 준비 및 플레이팅 일관성 관리</li>
+        <li>일식 이자카야 조리 · 사시미 중심 코스</li>
+        <li>이탈리안 기반 주방 조리 — 스테이크 · 파스타</li>
+        <li>식재료 구조 분석 및 수율 판단</li>
+      </ul>
+    </div>
+    <div class="skill">
+      <h4>바 · 음료</h4>
+      <ul>
+        <li>클래식 · 시그니처 칵테일, 대용량 서비스</li>
+        <li>시즌 하이볼 메뉴 개발</li>
+        <li>풍미 구조화 및 밸런스 설계</li>
+        <li>바 워크플로우 및 서비스 실행</li>
+      </ul>
+    </div>
+    <div class="skill">
+      <h4>매장 운영</h4>
+      <ul>
+        <li>주방·바 겸직 운영, 매장 전체 관리</li>
+        <li>대용량 서비스 실행 — 일 200잔 이상</li>
+        <li>워크플로우 최적화 · 서비스 속도 개선</li>
+        <li>위생 및 품질 관리, 소규모 팀 관리</li>
+        <li>발주 · 원가 · 예약 등 백오피스 운영</li>
+      </ul>
+    </div>
+    <div class="skill">
+      <h4>제작 · 데이터</h4>
+      <ul>
+        <li>단일 HTML 웹앱 8종 기획·설계·구현</li>
+        <li>음성인식 및 한국어 수량 파서 설계</li>
+        <li>Google Apps Script 기반 메일→시트 파이프라인</li>
+        <li>수율 반영 원가 계산 · 단가 추이 분석</li>
+        <li>한국어 AI 응답 및 F&amp;B 콘텐츠 평가</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
 <!-- ══════════ 1. 앱 작업물 ══════════ -->
 <section id="apps">
