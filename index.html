@@ -179,6 +179,47 @@ summary:hover{background:var(--surface-2)}
   border:1px dashed var(--line); border-radius:10px; padding:16px;
   font-size:14px; color:var(--ink-3); background:var(--surface-2);
 }
+/* ── 현장 사진 갤러리 ── */
+.gal-h{
+  margin:26px 0 10px; font-size:13px; font-weight:800; letter-spacing:.06em;
+  color:var(--ink-3); padding-bottom:7px; border-bottom:1px solid var(--line);
+}
+.details-body > .gal-h:first-of-type{margin-top:18px}
+.gal{display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:10px}
+.shot{margin:0; cursor:zoom-in}
+.shot img{
+  width:100%; aspect-ratio:3/4; object-fit:cover; display:block;
+  border-radius:10px; background:var(--surface-2); border:1px solid var(--line);
+}
+.shot figcaption{
+  margin-top:6px; font-size:12px; line-height:1.45; color:var(--ink-3); font-weight:600;
+}
+/* ── 라이트박스 ── */
+#lb{
+  position:fixed; inset:0; z-index:100; display:none; place-items:center;
+  background:rgba(12,11,9,.94); padding:20px; overscroll-behavior:contain;
+}
+#lb.on{display:grid}
+#lb img{max-width:100%; max-height:78vh; border-radius:10px; object-fit:contain}
+#lb .cap{
+  margin-top:14px; max-width:56ch; text-align:center; color:#e8e4da;
+  font-size:14px; line-height:1.65;
+}
+#lb .x{
+  position:absolute; top:10px; right:10px; width:48px; height:48px;
+  border:none; border-radius:12px; background:rgba(255,255,255,.12); color:#fff;
+  font-size:22px; cursor:pointer; line-height:48px;
+}
+#lb .nav{
+  position:absolute; top:50%; transform:translateY(-50%); width:48px; height:64px;
+  border:none; border-radius:12px; background:rgba(255,255,255,.1); color:#fff;
+  font-size:24px; cursor:pointer;
+}
+#lb .prev{left:8px} #lb .next{right:8px}
+/* ── 미디어 카드 ── */
+.media-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin:16px 0 4px}
+.media-grid img{width:100%; border-radius:10px; border:1px solid var(--line); display:block}
+.media-grid p{margin:8px 0 0; font-size:13px; color:var(--ink-3); font-weight:600}
 footer{
   margin-top:56px; padding:28px 0 60px; border-top:1px solid var(--line);
   font-size:13.5px; color:var(--ink-3);
@@ -420,14 +461,54 @@ footer p{margin:0 0 6px}
     문제 정의와 데이터 설계의 근거가 됐습니다.
   </p>
   <details>
-    <summary>현장 작업물 사진 보기</summary>
+    <summary>현장 작업물 사진 27장 보기</summary>
     <div class="details-body">
-      <p class="placeholder">
-        ※ 사시미 · 요리 · 칵테일 · 하이볼 사진이 들어갈 자리입니다.
-        이미지 파일을 전달받는 대로 채웁니다.
-      </p>
+        <h4 class="gal-h">사시미 · 해산물</h4>
+        <div class="gal">
+          <figure class="shot" data-cap="생선 오로시 과정 — 칼 컨트롤, 뼈 라인 파악, 깔끔한 필렛 분리, 살 손상 관리"><img src="img/00.jpg" alt="생선 오로시 과정" loading="lazy" decoding="async"><figcaption>생선 오로시 과정</figcaption></figure>
+          <figure class="shot" data-cap="사시미 서비스 플래터 — 어종 구성, 포션 밸런스, 가니쉬 배치, 실제 영업용 플레이팅"><img src="img/01.jpg" alt="사시미 서비스 플래터" loading="lazy" decoding="async"><figcaption>사시미 서비스 플래터</figcaption></figure>
+        </div>
+        <h4 class="gal-h">주방 · 이자카야 요리</h4>
+        <div class="gal">
+          <figure class="shot" data-cap="해산물 모리아와세 — 우니, 안키모 소스와 연근칩, 짚불 훈연 삼치·메지마구로, 다시마 숙성 연어, 시메 고등어"><img src="img/02.jpg" alt="해산물 모리아와세" loading="lazy" decoding="async"><figcaption>해산물 모리아와세</figcaption></figure>
+          <figure class="shot" data-cap="고등어 봉초밥 — 시메 고등어 준비, 밥 성형, 깔끔한 컷팅, 포션 일관성"><img src="img/08.jpg" alt="고등어 봉초밥" loading="lazy" decoding="async"><figcaption>고등어 봉초밥</figcaption></figure>
+          <figure class="shot" data-cap="통영굴 빵코아게 — 제철 통영굴에 빵가루를 입혀 튀기고 홈메이드 딜마요를 곁들임"><img src="img/03.jpg" alt="통영굴 빵코아게" loading="lazy" decoding="async"><figcaption>통영굴 빵코아게</figcaption></figure>
+          <figure class="shot" data-cap="가라아게 — 홈메이드 적생강 소스로 산미와 향을 더해 느끼함을 줄임"><img src="img/04.jpg" alt="가라아게" loading="lazy" decoding="async"><figcaption>가라아게</figcaption></figure>
+          <figure class="shot" data-cap="까망베르 치즈 덴뿌라 — 겉은 바삭, 속 치즈는 적당히 녹도록. 블루베리 콤포트로 단맛·산미 보강"><img src="img/05.jpg" alt="까망베르 치즈 덴뿌라" loading="lazy" decoding="async"><figcaption>까망베르 치즈 덴뿌라</figcaption></figure>
+          <figure class="shot" data-cap="감자사라다 — 아지타마고를 으깨 곁들이고 연근칩으로 바삭한 식감을 더함"><img src="img/06.jpg" alt="감자사라다" loading="lazy" decoding="async"><figcaption>감자사라다</figcaption></figure>
+          <figure class="shot" data-cap="고구마 아이스크림 — 구운 고구마 베이스 · 튀긴 고구마칩 가니쉬 · 삶은 고구마 곁들임"><img src="img/07.jpg" alt="고구마 아이스크림" loading="lazy" decoding="async"><figcaption>고구마 아이스크림</figcaption></figure>
+          <figure class="shot" data-cap="스테이크 — 굽기 조절, 시어링, 소스 밸런스, 플레이팅 구성"><img src="img/09.jpg" alt="스테이크" loading="lazy" decoding="async"><figcaption>스테이크</figcaption></figure>
+        </div>
+        <h4 class="gal-h">클래식 칵테일</h4>
+        <div class="gal">
+          <figure class="shot" data-cap="진 베이스 클래식 사워 — 시트러스 밸런스, 희석 조절, 차갑게 유지된 글라스, 깔끔한 가니쉬"><img src="img/10.jpg" alt="진 베이스 클래식 사워" loading="lazy" decoding="async"><figcaption>진 베이스 클래식 사워</figcaption></figure>
+          <figure class="shot" data-cap="화이트 레이디 — 쉐이킹 질감, 저온 유지, 정교한 레몬 가니쉬"><img src="img/11.jpg" alt="화이트 레이디" loading="lazy" decoding="async"><figcaption>화이트 레이디</figcaption></figure>
+          <figure class="shot" data-cap="다이키리 — 럼 베이스 · 시트러스 밸런스 · 희석 조절 · 라임 가니쉬"><img src="img/12.jpg" alt="다이키리" loading="lazy" decoding="async"><figcaption>다이키리</figcaption></figure>
+          <figure class="shot" data-cap="잭 로즈 — 컬러 컨트롤, 표면 질감, 가니쉬 밸런스"><img src="img/13.jpg" alt="잭 로즈" loading="lazy" decoding="async"><figcaption>잭 로즈</figcaption></figure>
+          <figure class="shot" data-cap="가리발디 — 캄파리의 쌉싸름함과 신선한 오렌지 · 가벼운 질감 · 탄산 밸런스"><img src="img/14.jpg" alt="가리발디" loading="lazy" decoding="async"><figcaption>가리발디</figcaption></figure>
+        </div>
+        <h4 class="gal-h">시즌 과일 하이볼 — 시그니처 개발</h4>
+        <div class="gal">
+          <figure class="shot" data-cap="딸기 하이볼 — 시즌 과일 하이볼 시스템의 대표 예시"><img src="img/15.jpg" alt="딸기 하이볼" loading="lazy" decoding="async"><figcaption>딸기 하이볼</figcaption></figure>
+          <figure class="shot" data-cap="자몽 하이볼 — 깔끔한 시트러스 쌉싸름함, 산뜻한 산미, 밝은 청량감"><img src="img/16.jpg" alt="자몽 하이볼" loading="lazy" decoding="async"><figcaption>자몽 하이볼</figcaption></figure>
+          <figure class="shot" data-cap="배 하이볼 — 한국배와 서양배 리큐르 조합 · 복합적인 과일 향과 부드러운 단맛"><img src="img/17.jpg" alt="배 하이볼" loading="lazy" decoding="async"><figcaption>배 하이볼</figcaption></figure>
+          <figure class="shot" data-cap="모과 하이볼 — 모과향 진과 홈메이드 모과 슈럽 · 뚜렷한 시즌감"><img src="img/18.jpg" alt="모과 하이볼" loading="lazy" decoding="async"><figcaption>모과 하이볼</figcaption></figure>
+          <figure class="shot" data-cap="복숭아 하이볼 — 천도·백도·황도 블렌딩 베이스에 홈메이드 복숭아 샤베트 가니쉬"><img src="img/19.jpg" alt="복숭아 하이볼" loading="lazy" decoding="async"><figcaption>복숭아 하이볼</figcaption></figure>
+          <figure class="shot" data-cap="오렌지 하이볼 — 오렌지 과육과 패션후르츠로 향·산미·과즙감을 극대화"><img src="img/20.jpg" alt="오렌지 하이볼" loading="lazy" decoding="async"><figcaption>오렌지 하이볼</figcaption></figure>
+        </div>
+        <h4 class="gal-h">바 워크플로우</h4>
+        <div class="gal">
+          <figure class="shot" data-cap="바 스테이션 운영 — 지거 컨트롤, 글라스 핸들링, 일관된 음료 실행력"><img src="img/21.jpg" alt="바 스테이션 운영" loading="lazy" decoding="async"><figcaption>바 스테이션 운영</figcaption></figure>
+          <figure class="shot" data-cap="사이드카 푸어링 — 쉐이커 컨트롤, 안정적인 푸어링, 서비스 리듬"><img src="img/22.jpg" alt="사이드카 푸어링" loading="lazy" decoding="async"><figcaption>사이드카 푸어링</figcaption></figure>
+          <figure class="shot" data-cap="김렛 푸어링 — 쉐이커에서 칠링된 글라스로. 안정적인 스트레이닝과 마무리"><img src="img/23.jpg" alt="김렛 푸어링" loading="lazy" decoding="async"><figcaption>김렛 푸어링</figcaption></figure>
+          <figure class="shot" data-cap="가리발디 빌드 — 바스푼 컨트롤 · 영업 중에도 일정하게 만드는 과정"><img src="img/24.jpg" alt="가리발디 빌드" loading="lazy" decoding="async"><figcaption>가리발디 빌드</figcaption></figure>
+        </div>
     </div>
   </details>
+  <p class="sect-note" style="margin:18px 0 0">
+    영상: <a href="https://youtu.be/94xfIvc3_tI" target="_blank" rel="noopener">클래식 김렛 제조 — 바텐딩 실무 샘플</a>.
+    생선 오로시 · 사시미 준비 전 과정 영상은 촬영해 두었고 요청 시 제공합니다.
+  </p>
 </section>
 
 <!-- ══════════ 4. 학력 ══════════ -->
@@ -447,11 +528,21 @@ footer p{margin:0 0 6px}
     <summary>수상 · 미디어 내역 보기</summary>
     <div class="details-body">
       <ul class="milestones">
-        <li><span class="yr">2024–2025</span>하이볼명가 100 선정</li>
-        <li><span class="yr">2022</span>Heypop 매체 소개</li>
-        <li><span class="yr">2018</span>케이블TV 출연</li>
-        <li><span class="yr">2016</span>하바나 클럽 마스터클래스</li>
+        <li><span class="yr">2024–2025</span><b>대한민국 하이볼 명가 100</b> 선정</li>
+        <li><span class="yr">2022</span><b>Heypop</b> 매거진 소개 · <a href="https://heypop.kr/n/42277/" target="_blank" rel="noopener">기사 보기</a></li>
+        <li><span class="yr">2018</span><b>케이블TV</b> 방송 출연 (매장 촬영)</li>
+        <li><span class="yr">2016</span><b>하바나 마스터 클래스 코리아</b> 우승</li>
       </ul>
+      <div class="media-grid">
+        <figure class="shot" data-cap="하바나 마스터 클래스 코리아 우승 — 2016">
+          <img src="img/25.jpg" alt="하바나 마스터 클래스 코리아 우승" loading="lazy" decoding="async">
+          <p>하바나 마스터 클래스 코리아 우승 · 2016</p>
+        </figure>
+        <figure class="shot" data-cap="케이블TV 방송 출연 — 2018년 매장 촬영">
+          <img src="img/26.jpg" alt="케이블TV 방송 출연" loading="lazy" decoding="async">
+          <p>케이블TV 방송 출연 · 2018</p>
+        </figure>
+      </div>
     </div>
   </details>
 </section>
@@ -460,9 +551,10 @@ footer p{margin:0 0 6px}
 <section id="resume">
   <h2>06 — Resume</h2>
   <p class="sect-lede">이력서</p>
-  <p class="placeholder">
-    ※ 국문 · 영문 이력서(구글 문서) 링크가 들어갈 자리입니다. 주소를 전달받는 대로 연결합니다.
-  </p>
+  <div class="actions">
+    <a class="btn primary" href="https://docs.google.com/document/d/1u5maKSXT4M5Jqao8exUd8eJcpblmZeq8mfNbfz5-fzw/edit?usp=drive_link" target="_blank" rel="noopener">국문 이력서 →</a>
+    <a class="btn" href="https://docs.google.com/document/d/1rnF7EzaPepCkKgAlHEQw1HRSBSPRwVhEiTsc24IHTno/edit?usp=drive_link" target="_blank" rel="noopener">English Resume →</a>
+  </div>
 </section>
 
 <footer class="wrap">
@@ -471,5 +563,46 @@ footer p{margin:0 0 6px}
 </footer>
 
 </main>
+
+<div id="lb" role="dialog" aria-modal="true" aria-label="사진 크게 보기">
+  <button class="x" type="button" aria-label="닫기">✕</button>
+  <button class="nav prev" type="button" aria-label="이전 사진">‹</button>
+  <button class="nav next" type="button" aria-label="다음 사진">›</button>
+  <img src="" alt="">
+  <p class="cap"></p>
+</div>
+
+<script>
+/* 갤러리 라이트박스 — 사진 확대·좌우 이동 */
+(function(){
+  const shots = [...document.querySelectorAll('.shot')];
+  if(!shots.length) return;
+  const lb = document.getElementById('lb');
+  const img = lb.querySelector('img');
+  const cap = lb.querySelector('.cap');
+  let i = 0;
+  function show(n){
+    i = (n + shots.length) % shots.length;
+    const f = shots[i];
+    img.src = f.querySelector('img').src;
+    img.alt = f.querySelector('img').alt;
+    cap.textContent = f.dataset.cap || '';
+    lb.classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){ lb.classList.remove('on'); document.body.style.overflow = ''; }
+  shots.forEach((f, n) => f.addEventListener('click', () => show(n)));
+  lb.querySelector('.x').addEventListener('click', close);
+  lb.querySelector('.prev').addEventListener('click', e => { e.stopPropagation(); show(i-1); });
+  lb.querySelector('.next').addEventListener('click', e => { e.stopPropagation(); show(i+1); });
+  lb.addEventListener('click', e => { if(e.target === lb || e.target === img) close(); });
+  document.addEventListener('keydown', e => {
+    if(!lb.classList.contains('on')) return;
+    if(e.key === 'Escape') close();
+    if(e.key === 'ArrowLeft') show(i-1);
+    if(e.key === 'ArrowRight') show(i+1);
+  });
+})();
+</script>
 </body>
 </html>
