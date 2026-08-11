@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>STORE WORKS</title>
+  <meta name="theme-color" content="#0f1115" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="STORE WORKS" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel2: #202632;
+      --text: #f7f3ed;
+      --muted: #aeb4bf;
+      --line: rgba(255,255,255,0.09);
+      --accent: #f0b45b;
+      --accent-soft: rgba(240,180,91,0.12);
+      --danger: #ff8b8b;
+      --ok: #8bd3ff;
+      --radius: 22px;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 13% 0%, rgba(240,180,91,0.17), transparent 34%),
+        radial-gradient(circle at 96% 10%, rgba(139,211,255,0.10), transparent 28%),
+        linear-gradient(180deg, #11141b 0%, #0f1115 100%);
+      color: var(--text);
+    }
+
+    button, input, textarea { font: inherit; }
+
+    .wrap {
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      padding: max(22px, env(safe-area-inset-top)) 16px max(48px, env(safe-area-inset-bottom));
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 16px 0 20px;
+    }
+
+    .head-main { max-width: 720px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 12px;
+      border: 1px solid rgba(240,180,91,0.25);
+      border-radius: 999px;
+      background: rgba(240,180,91,0.08);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.13em;
+      margin-bottom: 13px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 7vw, 60px);
+      line-height: 1.02;
+      letter-spacing: -0.075em;
+      font-weight: 950;
+    }
+
+    .subline {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 13px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      border-radius: 999px;
+      padding: 8px 11px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--danger);
+      flex: 0 0 auto;
+    }
+
+    .dot.ok { background: var(--ok); }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .top-btn {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.045);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 13px;
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .top-btn:hover {
+      border-color: rgba(240,180,91,0.5);
+      background: var(--accent-soft);
+    }
+
+    .top-btn.primary {
+      border-color: rgba(240,180,91,0.36);
+      background: rgba(240,180,91,0.12);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .card {
+      min-height: 174px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018)),
+        var(--panel);
+      color: inherit;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: auto -30px -42px auto;
+      width: 96px;
+      height: 96px;
+      border-radius: 999px;
+      background: rgba(240,180,91,0.055);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(240,180,91,0.52);
+      background:
+        linear-gradient(180deg, rgba(240,180,91,0.10), rgba(255,255,255,0.02)),
+        var(--panel2);
+    }
+
+    .card-main { position: relative; z-index: 1; }
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: rgba(240,180,91,0.12);
+      border: 1px solid rgba(240,180,91,0.22);
+      font-size: 23px;
+      margin-bottom: 15px;
+      flex-shrink: 0;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 950;
+      letter-spacing: -0.045em;
+      margin-bottom: 7px;
+    }
+
+    .desc {
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.46;
+      word-break: keep-all;
+    }
+
+    .go {
+      position: relative;
+      z-index: 1;
+      margin-top: 16px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .empty {
+      display: none;
+      margin-top: 12px;
+      border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 24px 16px;
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255,255,255,0.03);
+      word-break: keep-all;
+    }
+
+    .empty strong { color: var(--text); }
+
+    .rights {
+      margin-top: 54px;
+      padding: 13px 14px;
+      border: 1px solid rgba(255,255,255,0.055);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.018);
+      color: rgba(174,180,191,0.76);
+      font-size: 11px;
+      line-height: 1.65;
+      text-align: center;
+      word-break: keep-all;
+    }
+
+    .rights strong {
+      display: block;
+      color: rgba(247,243,237,0.84);
+      font-size: 11.5px;
+      margin-bottom: 4px;
+    }
+
+    .modal-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(0,0,0,0.66);
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .modal {
+      width: min(920px, 100%);
+      margin: 24px auto;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02)),
+        #151922;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.04em;
+    }
+
+    .x {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .modal-body { padding: 18px; }
+
+    .help {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      margin-bottom: 14px;
+      word-break: keep-all;
+    }
+
+    .help strong { color: var(--text); }
+
+    .admin-grid, .personal-grid { display: grid; gap: 10px; }
+
+    .row, .admin-card, .personal-row {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.035);
+    }
+
+    .admin-card { padding: 12px; }
+
+    .admin-card-head, .personal-row-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .admin-card-title, .personal-title {
+      font-size: 14px;
+      font-weight: 950;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .admin-fields {
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .admin-fields label {
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(247,243,237,0.85);
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.24);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 64px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    input:focus, textarea:focus { border-color: rgba(240,180,91,0.58); }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      min-height: 40px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border-radius: 13px;
+      padding: 10px 13px;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      border-color: rgba(240,180,91,0.4);
+      background: rgba(240,180,91,0.14);
+    }
+
+    .btn.danger {
+      border-color: rgba(255,139,139,0.32);
+      background: rgba(255,139,139,0.10);
+    }
+
+    .btn.ghost { opacity: 0.86; }
+
+    .mini-btn {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.055);
+      color: var(--text);
+      border-radius: 11px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .mini-btn.danger {
+      color: #ffd5d5;
+      border-color: rgba(255,139,139,0.28);
+      background: rgba(255,139,139,0.08);
+    }
+
+    .mini-btn:disabled { opacity: .38; cursor: not-allowed; }
+
+    .tiny {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 10px;
+      word-break: keep-all;
+    }
+
+    .add-box {
+      margin-top: 14px;
+      padding: 13px;
+      border-radius: 17px;
+      border: 1px dashed rgba(240,180,91,0.32);
+      background: rgba(240,180,91,0.055);
+    }
+
+    .add-box-title {
+      font-size: 14px;
+      font-weight: 950;
+      margin-bottom: 10px;
+    }
+
+    .personal-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 11px;
+    }
+
+    .personal-info {
+      min-width: 0;
+    }
+
+    .personal-meta {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .personal-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: nowrap;
+    }
+
+    .hidden-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 5px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(255,139,139,0.10);
+      color: #ffc3c3;
+      border: 1px solid rgba(255,139,139,0.22);
+      font-size: 11px;
+      font-weight: 900;
+      vertical-align: middle;
+    }
+
+
+
+    .edit-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: -4px 0 12px;
+      padding: 11px 12px;
+      border: 1px solid rgba(240,180,91,0.22);
+      border-radius: 17px;
+      background: rgba(240,180,91,0.075);
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.45;
+      word-break: keep-all;
+    }
+
+    .edit-bar strong { color: var(--text); }
+
+    .edit-bar-actions {
+      display: flex;
+      gap: 7px;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    body.layout-editing .edit-bar { display: flex; }
+
+    .card-tools {
+      display: none;
+      position: relative;
+      z-index: 2;
+      align-items: center;
+      gap: 7px;
+      justify-content: flex-end;
+    }
+
+    .card-tool {
+      min-height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 9px;
+      background: rgba(255,255,255,0.065);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .card-tool.hide-card {
+      color: #ffd5d5;
+      border-color: rgba(255,139,139,0.25);
+      background: rgba(255,139,139,0.08);
+    }
+
+    body.layout-editing .card {
+      cursor: grab;
+      border-color: rgba(240,180,91,0.34);
+      background:
+        linear-gradient(180deg, rgba(240,180,91,0.09), rgba(255,255,255,0.02)),
+        var(--panel2);
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body.layout-editing .card:active { cursor: grabbing; }
+    body.layout-editing .card .go { display: none; }
+    body.layout-editing .card-tools { display: flex; }
+
+    .card.dragging {
+      opacity: .62;
+      transform: scale(.985);
+      border-color: rgba(240,180,91,0.72) !important;
+      box-shadow: 0 16px 38px rgba(0,0,0,0.34);
+    }
+
+    .card.just-moved {
+      animation: movedPulse .34s ease;
+    }
+
+    @keyframes movedPulse {
+      0% { border-color: rgba(240,180,91,0.80); }
+      100% { border-color: rgba(240,180,91,0.34); }
+    }
+
+
+    .install-guide-card {
+      border: 1px solid rgba(240,180,91,0.22);
+      border-radius: 18px;
+      background: rgba(240,180,91,0.055);
+      padding: 14px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .install-guide-card strong { color: var(--text); }
+
+    .install-steps {
+      display: grid;
+      gap: 9px;
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .install-steps li {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 9px;
+      align-items: start;
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .step-num {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: rgba(240,180,91,0.12);
+      color: var(--accent);
+      font-weight: 950;
+      font-size: 12px;
+    }
+
+    .install-note {
+      color: rgba(174,180,191,0.82);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 10px;
+      word-break: keep-all;
+    }
+
+    @media (max-width: 960px) {
+      .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 13px;
+      }
+
+      .top-actions {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .top-btn {
+        width: 100%;
+        padding: 10px 6px;
+        font-size: 12px;
+      }
+
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+      .card {
+        min-height: 150px;
+        padding: 15px;
+      }
+
+      .title { font-size: 18px; }
+
+      .admin-fields {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .wrap { padding-left: 13px; padding-right: 13px; }
+
+      h1 { font-size: 34px; }
+
+      .top-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+      .subline { font-size: 12.5px; }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .card {
+        min-height: unset;
+        border-radius: 18px;
+        padding: 13px 13px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .card:hover { transform: none; }
+
+      .card::after {
+        width: 72px;
+        height: 72px;
+        inset: auto -28px -36px auto;
+      }
+
+      .card-main {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        align-items: center;
+        gap: 12px;
+      }
+
+      .icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        font-size: 20px;
+        margin-bottom: 0;
+      }
+
+      .title {
+        font-size: 17px;
+        margin-bottom: 4px;
+      }
+
+      .desc {
+        font-size: 12.5px;
+        line-height: 1.34;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .go {
+        margin-top: 0;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(240,180,91,0.11);
+        border: 1px solid rgba(240,180,91,0.18);
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .rights {
+        margin-top: 64px;
+        padding: 12px 10px;
+        font-size: 10.5px;
+        line-height: 1.58;
+      }
+
+      .rights strong { font-size: 11px; }
+
+      .modal-bg { padding: 10px; }
+      .modal { margin: 10px auto; border-radius: 20px; }
+      .modal-head, .modal-body { padding: 14px; }
+
+      .personal-row {
+        grid-template-columns: 1fr;
+        gap: 9px;
+      }
+
+      .personal-actions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .mini-btn { width: 100%; }
+
+      .actions .btn { flex: 1 1 auto; }
+
+      .edit-bar {
+        align-items: stretch;
+        flex-direction: column;
+        margin-top: -2px;
+      }
+
+      .edit-bar-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-content: stretch;
+      }
+
+      .edit-bar-actions .mini-btn { width: 100%; }
+
+      body.layout-editing .card {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+
+      .card-tools {
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      body.layout-editing .card-tools { display: flex; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="head-main">
+        <div class="eyebrow">STORE SYSTEM</div>
+        <h1>STORE WORKS</h1>
+        <div class="subline">필요한 업무앱만 모바일에서 빠르게 열기</div>
+        <div class="status" id="syncStatus">
+          <span class="dot" id="syncDot"></span>
+          <span id="syncText">중앙 링크 저장소 미연결</span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="top-btn primary" id="refreshLinks">최신화</button>
+        <button class="top-btn" id="installApp">홈추가</button>
+        <button class="top-btn" id="openPersonal">화면 편집</button>
+        <button class="top-btn" id="openAdmin">관리자</button>
+      </div>
+    </header>
+
+    <div class="edit-bar" id="editBar">
+      <div><strong>편집 모드</strong> · 카드를 손으로 잡고 위아래로 끌면 순서가 바뀝니다. 안 보는 앱은 숨길 수 있습니다.</div>
+      <div class="edit-bar-actions">
+        <button class="mini-btn" id="showAllInline">숨긴 앱 보이기</button>
+        <button class="mini-btn" id="openPersonalModal">상세 설정</button>
+      </div>
+    </div>
+
+    <section class="grid" id="appGrid"></section>
+
+    <div class="empty" id="emptyState">
+      <strong>보이는 앱이 없습니다.</strong><br />
+      화면 편집에서 숨긴 앱을 다시 보이게 할 수 있습니다.
+    </div>
+
+    <div class="rights">
+      <strong>© 2026 정윤식. All rights reserved.</strong>
+      본 웹앱의 화면 구성, 운영 데이터, 업무용 콘텐츠, 소스코드 및 관련 산출물은 권리자의 허가 없이
+      무단 복제·배포·전송·공유·수정·2차 제작·상업적 이용을 금지합니다.
+      위반 시 관련 법령에 따른 민·형사상 책임이 발생할 수 있습니다.
+    </div>
+  </main>
+
+
+  <div class="modal-bg" id="installModalBg">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>홈화면에 추가</h2>
+        <button class="x" id="closeInstall" aria-label="닫기">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="install-guide-card" id="installGuideText">
+          <strong>버튼 한 번 자동 추가는 일부 브라우저에서만 가능합니다.</strong><br />
+          안드로이드는 설치 팝업이 뜨면 바로 추가할 수 있고, 아이폰은 보안 정책상 사용자가 Safari 공유 버튼에서 직접 추가해야 합니다.
+        </div>
+
+        <ol class="install-steps" id="installSteps"></ol>
+
+        <div class="actions">
+          <button class="btn primary" id="copyCurrentUrl">주소 복사</button>
+          <button class="btn" id="closeInstall2">닫기</button>
+        </div>
+
+        <div class="install-note">
+          설치 후에는 홈화면 아이콘을 눌러 일반 앱처럼 바로 열 수 있습니다. 최신 링크와 개인별 순서/숨김 설정은 그대로 유지됩니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="personalModalBg">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>화면 편집</h2>
+        <button class="x" id="closePersonal" aria-label="닫기">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="help">
+          이 설정은 <strong>각 직원 휴대폰에만 저장</strong>됩니다. 보통은 바깥 화면에서 카드를 손으로 드래그하면 되고, 여기서는 버튼으로도 순서와 숨김을 조정할 수 있습니다.
+        </div>
+
+        <div class="personal-grid" id="personalRows"></div>
+
+        <div class="actions">
+          <button class="btn primary" id="savePersonal">내 화면 저장</button>
+          <button class="btn" id="showAllApps">숨긴 앱 모두 보이기</button>
+          <button class="btn danger" id="resetPersonal">내 화면 초기화</button>
+        </div>
+
+        <div class="tiny">
+          관리자가 새 앱을 추가하면, 직원들은 앱을 새로 열거나 최신화를 누른 뒤 화면 편집에서 위치를 조정할 수 있습니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="adminModalBg">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>관리자 설정</h2>
+        <button class="x" id="closeAdmin" aria-label="닫기">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="help">
+          데모 관리자 비밀번호는 <strong>0000</strong>입니다.
+          여기서 앱 이름, 설명, 아이콘, URL을 저장하면 중앙 저장소에 반영됩니다.
+          직원들은 앱을 열거나 <strong>최신화</strong>를 누르면 바뀐 주소로 들어갑니다.
+        </div>
+
+        <div class="admin-grid" id="adminRows"></div>
+
+        <div class="add-box">
+          <div class="add-box-title">새 웹앱 추가</div>
+          <div class="admin-fields">
+            <label for="newIcon">아이콘</label>
+            <input id="newIcon" placeholder="예: 📦" maxlength="4" />
+
+            <label for="newTitle">앱 이름</label>
+            <input id="newTitle" placeholder="예: 재고관리" />
+
+            <label for="newDesc">설명</label>
+            <textarea id="newDesc" placeholder="예: 재고 입출고와 부족 품목 확인"></textarea>
+
+            <label for="newUrl">URL</label>
+            <input id="newUrl" placeholder="https://example.com/" />
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="addApp">목록에 추가</button>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="saveLinks">전체 직원용 저장</button>
+          <button class="btn" id="reloadLinks">최신 링크 불러오기</button>
+          <button class="btn danger" id="resetLinks">기본값으로 되돌리기</button>
+        </div>
+
+        <div class="tiny">
+          새 웹앱을 만들었을 때는 여기에 앱을 추가하고 저장하면 됩니다.
+          Google Sheet 또는 Apps Script에서 직접 추가해도 되고, 이 관리자 설정에서 추가해도 됩니다.
+          단, Apps Script가 기존처럼 <strong>apps 배열 전체를 저장/불러오기</strong> 하는 구조여야 새 앱까지 그대로 반영됩니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*
+      최초 1회 세팅:
+      Google Apps Script 웹앱 URL을 아래 API_URL에 넣은 뒤 Netlify에 올리세요.
+      그 이후부터는 Netlify를 건드리지 않고 Google Sheet 또는 관리자 설정에서 링크와 앱 목록만 바꾸면 됩니다.
+    */
+    const API_URL = ""; // 데모: 중앙 저장소 대신 로컬 폴백만 사용
+    const ADMIN_PASSWORD = "0000"; // 데모 공개 비번
+    const CENTRAL_FALLBACK_KEY = "demo_works_apps_fallback_v2";
+    const USER_PREF_KEY = "demo_works_user_pref_v1";
+    const REMOVED_IDS = ["annual"]; // 허브에서 영구 제외하는 앱 id. 중앙 저장소에 남아 있어도 화면에서 자동으로 가려짐
+
+    const DEFAULT_APPS = [
+      { id: "balju", title: "발주패스터", desc: "음성으로 발주서 작성", icon: "🎙️", url: "../balju/" },
+      { id: "price", title: "단가서치", desc: "식자재·주류·공산품 단가 검색", icon: "🔎", url: "../price/" },
+      { id: "drink", title: "음료교육", desc: "와인·위스키·사케·스파클링 교육", icon: "🍷", url: "../bar/" },
+      { id: "reservation", title: "예약현황", desc: "매장별 예약과 첫 예약 시간 확인", icon: "📅", url: "../reserve/" },
+      { id: "checklist", title: "체크리스트", desc: "오픈·마감·청소·점검 관리", icon: "✅", url: "../checklist/" },
+      { id: "health", title: "보건증 관리", desc: "직원 보건증 만료일 확인", icon: "🪪", url: "../health/" },
+      { id: "recipe", title: "주방레시피", desc: "조리 기준 다국어 확인", icon: "🍳", url: "../recipe/" }
+    ];
+
+    let centralApps = [...DEFAULT_APPS];
+    let workingAdminApps = [...DEFAULT_APPS];
+    let userPrefs = loadUserPrefs();
+    let adminUnlocked = false;
+    let layoutEditing = false;
+    let draggingCard = null;
+    let dragPointerId = null;
+    let suppressNextOpen = false;
+    let deferredInstallPrompt = null;
+
+    const $ = (id) => document.getElementById(id);
+
+    function normalizeUrl(value) {
+      const v = String(value || "").trim();
+      if (!v) return "#";
+      if (v.startsWith("http://") || v.startsWith("https://") || v.startsWith("#")) return v;
+      return "https://" + v;
+    }
+
+    function normalizeApp(app, index) {
+      const fallbackId = "app_" + Date.now() + "_" + index;
+      return {
+        id: String(app.id || fallbackId).trim() || fallbackId,
+        title: String(app.title || "새 업무앱").trim(),
+        desc: String(app.desc || "").trim(),
+        icon: String(app.icon || "🔗").trim() || "🔗",
+        url: normalizeUrl(app.url)
+      };
+    }
+
+    function dedupeApps(apps) {
+      const used = new Set();
+      return (apps || []).map((app, index) => {
+        const normalized = normalizeApp(app, index);
+        let id = normalized.id;
+        if (used.has(id)) id = id + "_" + Date.now() + "_" + index;
+        used.add(id);
+        return { ...normalized, id };
+      });
+    }
+
+    function mergeApps(base, overrides) {
+      const map = new Map(base.map(app => [app.id, {...app}]));
+      (overrides || []).forEach((item, index) => {
+        if (!item) return;
+        const normalized = normalizeApp(item, index);
+        const prev = map.get(normalized.id) || {};
+        map.set(normalized.id, { ...prev, ...normalized });
+      });
+      return dedupeApps(Array.from(map.values()));
+    }
+
+    function applyUserPrefs(apps) {
+      const source = dedupeApps(apps);
+      const map = new Map(source.map(app => [app.id, app]));
+      const ordered = [];
+
+      (userPrefs.order || []).forEach(id => {
+        if (map.has(id)) {
+          ordered.push(map.get(id));
+          map.delete(id);
+        }
+      });
+
+      ordered.push(...map.values());
+      const hidden = new Set(userPrefs.hidden || []);
+      return ordered.filter(app => !hidden.has(app.id));
+    }
+
+    function getPersonalOrderApps() {
+      const map = new Map(centralApps.map(app => [app.id, app]));
+      const ordered = [];
+
+      (userPrefs.order || []).forEach(id => {
+        if (map.has(id)) {
+          ordered.push(map.get(id));
+          map.delete(id);
+        }
+      });
+
+      ordered.push(...map.values());
+      return ordered;
+    }
+
+    function renderApps() {
+      const apps = applyUserPrefs(centralApps);
+      const grid = $("appGrid");
+      grid.innerHTML = "";
+
+      apps.forEach(app => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.dataset.appId = app.id;
+        card.dataset.url = normalizeUrl(app.url);
+        card.setAttribute("role", "link");
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("aria-label", `${app.title} 열기`);
+        card.innerHTML = `
+          <div class="card-main">
+            <div class="icon">${escapeHtml(app.icon || "🔗")}</div>
+            <div>
+              <div class="title">${escapeHtml(app.title || "")}</div>
+              <div class="desc">${escapeHtml(app.desc || "")}</div>
+            </div>
+          </div>
+          <div class="go">열기 →</div>
+          <div class="card-tools" aria-hidden="${layoutEditing ? "false" : "true"}">
+            <button type="button" class="card-tool drag-handle" title="드래그">↕</button>
+            <button type="button" class="card-tool hide-card" data-hide-id="${escapeAttr(app.id)}">숨김</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      $("emptyState").style.display = apps.length ? "none" : "block";
+    }
+
+    function renderPersonalRows() {
+      const rows = $("personalRows");
+      rows.innerHTML = "";
+      const ordered = getPersonalOrderApps();
+      const hidden = new Set(userPrefs.hidden || []);
+
+      ordered.forEach((app, index) => {
+        const row = document.createElement("div");
+        row.className = "personal-row";
+        row.innerHTML = `
+          <div class="personal-info">
+            <div class="personal-title">
+              ${escapeHtml(app.icon || "🔗")} ${escapeHtml(app.title)}
+              ${hidden.has(app.id) ? '<span class="hidden-badge">숨김</span>' : ''}
+            </div>
+            <div class="personal-meta">${escapeHtml(app.desc || app.url || "")}</div>
+          </div>
+          <div class="personal-actions">
+            <button class="mini-btn" data-personal="up" data-id="${escapeAttr(app.id)}" ${index === 0 ? "disabled" : ""}>위</button>
+            <button class="mini-btn" data-personal="down" data-id="${escapeAttr(app.id)}" ${index === ordered.length - 1 ? "disabled" : ""}>아래</button>
+            <button class="mini-btn ${hidden.has(app.id) ? "" : "danger"}" data-personal="toggle" data-id="${escapeAttr(app.id)}">
+              ${hidden.has(app.id) ? "보이기" : "숨기기"}
+            </button>
+          </div>
+        `;
+        rows.appendChild(row);
+      });
+    }
+
+    function renderAdminRows() {
+      const rows = $("adminRows");
+      rows.innerHTML = "";
+      workingAdminApps = dedupeApps(workingAdminApps);
+
+      workingAdminApps.forEach((app, index) => {
+        const card = document.createElement("div");
+        card.className = "admin-card";
+        card.dataset.index = String(index);
+        card.innerHTML = `
+          <div class="admin-card-head">
+            <div class="admin-card-title">${escapeHtml(app.icon || "🔗")} ${escapeHtml(app.title || "업무앱")}</div>
+            <button class="mini-btn danger" data-admin-remove="${index}">삭제</button>
+          </div>
+          <div class="admin-fields">
+            <label>아이콘</label>
+            <input data-admin-field="icon" data-index="${index}" value="${escapeAttr(app.icon)}" maxlength="4" />
+
+            <label>앱 이름</label>
+            <input data-admin-field="title" data-index="${index}" value="${escapeAttr(app.title)}" />
+
+            <label>설명</label>
+            <textarea data-admin-field="desc" data-index="${index}">${escapeHtml(app.desc)}</textarea>
+
+            <label>URL</label>
+            <input data-admin-field="url" data-index="${index}" value="${escapeAttr(app.url)}" />
+          </div>
+        `;
+        rows.appendChild(card);
+      });
+    }
+
+    function syncWorkingAdminAppsFromInputs() {
+      const next = workingAdminApps.map((app, index) => {
+        const item = { ...app };
+        document.querySelectorAll(`[data-admin-field][data-index="${index}"]`).forEach(input => {
+          item[input.dataset.adminField] = input.value;
+        });
+        return normalizeApp(item, index);
+      });
+      workingAdminApps = dedupeApps(next);
+    }
+
+    function addNewApp() {
+      syncWorkingAdminAppsFromInputs();
+      const title = $("newTitle").value.trim();
+      const url = $("newUrl").value.trim();
+
+      if (!title || !url) {
+        alert("앱 이름과 URL은 꼭 입력해야 합니다.");
+        return;
+      }
+
+      const id = makeId(title);
+      workingAdminApps.push(normalizeApp({
+        id,
+        icon: $("newIcon").value.trim() || "🔗",
+        title,
+        desc: $("newDesc").value.trim(),
+        url
+      }, workingAdminApps.length));
+
+      $("newIcon").value = "";
+      $("newTitle").value = "";
+      $("newDesc").value = "";
+      $("newUrl").value = "";
+      renderAdminRows();
+    }
+
+    function makeId(title) {
+      const clean = String(title || "app")
+        .toLowerCase()
+        .replace(/[^a-z0-9가-힣]+/g, "_")
+        .replace(/^_+|_+$/g, "")
+        .slice(0, 24);
+      return (clean || "app") + "_" + Date.now().toString(36);
+    }
+
+    function removeAdminApp(index) {
+      syncWorkingAdminAppsFromInputs();
+      const app = workingAdminApps[index];
+      if (!app) return;
+      if (!confirm(`${app.title} 앱을 전체 목록에서 삭제할까요?`)) return;
+      workingAdminApps.splice(index, 1);
+      renderAdminRows();
+    }
+
+    function getEditedAdminApps() {
+      syncWorkingAdminAppsFromInputs();
+      return dedupeApps(workingAdminApps).filter(app => app.title && app.url);
+    }
+
+    function loadUserPrefs() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(USER_PREF_KEY) || "null");
+        return {
+          order: Array.isArray(saved?.order) ? saved.order : [],
+          hidden: Array.isArray(saved?.hidden) ? saved.hidden : []
+        };
+      } catch {
+        return { order: [], hidden: [] };
+      }
+    }
+
+    function saveUserPrefs() {
+      localStorage.setItem(USER_PREF_KEY, JSON.stringify(userPrefs));
+    }
+
+    function setCentralApps(apps) {
+      const base = (apps && apps.length) ? apps : DEFAULT_APPS;
+      centralApps = dedupeApps(base).filter(app => !REMOVED_IDS.includes(app.id));
+      try { localStorage.setItem(CENTRAL_FALLBACK_KEY, JSON.stringify(centralApps)); } catch {}
+      renderApps();
+    }
+
+    async function init() {
+      setCentralApps(DEFAULT_APPS);
+      await loadLatestLinks(false);
+      if (API_URL) setInterval(() => loadLatestLinks(false), 60000);
+    }
+
+    async function loadLatestLinks(showAlert = true) {
+      if (!API_URL) {
+        loadLocalFallback();
+        setStatus(false, "중앙 저장소 미연결");
+        return;
+      }
+
+      try {
+        const result = await apiCall("list", {});
+        if (result.ok && Array.isArray(result.apps)) {
+          setCentralApps(result.apps.length ? result.apps : DEFAULT_APPS);
+          setStatus(true, "최신 링크 적용됨");
+        } else {
+          throw new Error("링크 목록 형식 오류");
+        }
+      } catch (e) {
+        console.warn(e);
+        loadLocalFallback();
+        setStatus(false, "최신화 실패 · 저장된 링크 표시");
+        if (showAlert) alert("최신화에 실패했습니다. Apps Script 연결 상태를 확인하세요.");
+      }
+    }
+
+    function loadLocalFallback() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(CENTRAL_FALLBACK_KEY) || "null");
+        if (Array.isArray(saved) && saved.length) {
+          setCentralApps(saved);
+          return;
+        }
+      } catch {}
+      setCentralApps(DEFAULT_APPS);
+    }
+
+    function setStatus(ok, text) {
+      $("syncDot").className = ok ? "dot ok" : "dot";
+      $("syncText").textContent = text;
+    }
+
+    async function saveLinks() {
+      const updated = getEditedAdminApps();
+
+      if (!updated.length) {
+        alert("저장할 앱이 없습니다.");
+        return;
+      }
+
+      if (!API_URL) {
+        setCentralApps(updated);
+        closeAdmin();
+        alert("중앙 저장소가 아직 연결되지 않아 이 기기에만 저장했습니다. 전체 직원 반영은 Apps Script 연결 후 가능합니다.");
+        return;
+      }
+
+      try {
+        const payload = JSON.stringify(updated);
+        const result = await apiCall("save", { key: ADMIN_PASSWORD, payload });
+
+        if (!result.ok) throw new Error(result.error || "저장 실패");
+
+        const merged = (result.apps && result.apps.length) ? result.apps : updated;
+        setCentralApps(merged);
+        closeAdmin();
+        setStatus(true, "최신 링크 적용됨");
+        alert("저장했습니다. 직원들은 앱을 열거나 최신화를 누르면 바뀐 목록과 주소가 적용됩니다.");
+      } catch (e) {
+        console.warn(e);
+        alert("중앙 저장소 저장에 실패했습니다. Apps Script URL, 배포 권한, 저장 용량을 확인하세요.");
+      }
+    }
+
+    async function resetLinks() {
+      if (!confirm("전체 직원용 앱 목록을 기본값으로 되돌릴까요?")) return;
+
+      if (API_URL) {
+        try {
+          const result = await apiCall("save", { key: ADMIN_PASSWORD, payload: JSON.stringify(DEFAULT_APPS) });
+          if (!result.ok) throw new Error(result.error || "초기화 실패");
+        } catch (e) {
+          alert("중앙 저장소 초기화에 실패했습니다.");
+          return;
+        }
+      } else {
+        localStorage.removeItem(CENTRAL_FALLBACK_KEY);
+      }
+
+      setCentralApps([...DEFAULT_APPS]);
+      closeAdmin();
+    }
+
+    function apiCall(action, params) {
+      return new Promise((resolve, reject) => {
+        if (!API_URL) {
+          reject(new Error("API_URL이 비어 있습니다."));
+          return;
+        }
+
+        const cb = "roomcook_works_cb_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+        const url = new URL(API_URL);
+        url.searchParams.set("action", action);
+        url.searchParams.set("callback", cb);
+
+        Object.entries(params || {}).forEach(([k, v]) => {
+          url.searchParams.set(k, v);
+        });
+
+        const script = document.createElement("script");
+        const timer = setTimeout(() => {
+          cleanup();
+          reject(new Error("요청 시간 초과"));
+        }, 15000);
+
+        window[cb] = (data) => {
+          cleanup();
+          resolve(data);
+        };
+
+        script.onerror = () => {
+          cleanup();
+          reject(new Error("스크립트 로드 실패"));
+        };
+
+        function cleanup() {
+          clearTimeout(timer);
+          delete window[cb];
+          script.remove();
+        }
+
+        script.src = url.toString();
+        document.body.appendChild(script);
+      });
+    }
+
+    function openAdmin() {
+      if (!adminUnlocked) {
+        const pass = prompt("관리자 비밀번호");
+        if (pass !== ADMIN_PASSWORD) {
+          alert("비밀번호가 다릅니다.");
+          return;
+        }
+        adminUnlocked = true;
+      }
+
+      workingAdminApps = dedupeApps(centralApps);
+      renderAdminRows();
+      $("adminModalBg").style.display = "block";
+    }
+
+    function closeAdmin() {
+      $("adminModalBg").style.display = "none";
+    }
+
+    function toggleLayoutEditing() {
+      layoutEditing = !layoutEditing;
+      document.body.classList.toggle("layout-editing", layoutEditing);
+      $("openPersonal").textContent = layoutEditing ? "편집 종료" : "화면 편집";
+      renderApps();
+    }
+
+    function openPersonal() {
+      renderPersonalRows();
+      $("personalModalBg").style.display = "block";
+    }
+
+    function openVisibleApp(card) {
+      if (!card || layoutEditing || suppressNextOpen) return;
+      const url = normalizeUrl(card.dataset.url);
+      if (!url || url === "#") return;
+      window.location.href = url;
+    }
+
+    function persistVisibleOrderFromGrid() {
+      const visibleOrder = Array.from($("appGrid").querySelectorAll(".card"))
+        .map(card => card.dataset.appId)
+        .filter(Boolean);
+      const hidden = new Set(userPrefs.hidden || []);
+      const fullOrder = [...visibleOrder];
+      getPersonalOrderApps().forEach(app => {
+        if (hidden.has(app.id) && !fullOrder.includes(app.id)) fullOrder.push(app.id);
+      });
+      userPrefs.order = fullOrder;
+      saveUserPrefs();
+    }
+
+    function hideAppFromCard(id) {
+      const hidden = new Set(userPrefs.hidden || []);
+      hidden.add(id);
+      userPrefs.hidden = Array.from(hidden);
+      persistVisibleOrderFromGrid();
+      renderApps();
+    }
+
+    function beginCardDrag(e) {
+      if (!layoutEditing) return;
+      if (e.target.closest("button")) return;
+      const card = e.target.closest(".card");
+      if (!card) return;
+
+      draggingCard = card;
+      dragPointerId = e.pointerId;
+      suppressNextOpen = true;
+      card.classList.add("dragging");
+      card.setPointerCapture?.(e.pointerId);
+      e.preventDefault();
+    }
+
+    function moveCardDrag(e) {
+      if (!draggingCard || e.pointerId !== dragPointerId) return;
+      e.preventDefault();
+
+      draggingCard.style.pointerEvents = "none";
+      const target = document.elementFromPoint(e.clientX, e.clientY)?.closest(".card");
+      draggingCard.style.pointerEvents = "";
+
+      if (!target || target === draggingCard || target.parentElement !== $("appGrid")) return;
+
+      const rect = target.getBoundingClientRect();
+      const after = e.clientY > rect.top + rect.height / 2;
+      if (after) target.after(draggingCard);
+      else target.before(draggingCard);
+    }
+
+    function endCardDrag(e) {
+      if (!draggingCard || e.pointerId !== dragPointerId) return;
+      const movedCard = draggingCard;
+      movedCard.releasePointerCapture?.(e.pointerId);
+      movedCard.classList.remove("dragging");
+      movedCard.classList.add("just-moved");
+      setTimeout(() => movedCard.classList.remove("just-moved"), 360);
+      persistVisibleOrderFromGrid();
+      draggingCard = null;
+      dragPointerId = null;
+      setTimeout(() => { suppressNextOpen = false; }, 180);
+    }
+
+
+    function isStandaloneMode() {
+      return window.matchMedia?.("(display-mode: standalone)")?.matches || window.navigator.standalone === true;
+    }
+
+    async function handleInstallClick() {
+      if (isStandaloneMode()) {
+        alert("이미 홈화면 앱처럼 실행 중입니다.");
+        return;
+      }
+
+      if (deferredInstallPrompt) {
+        try {
+          deferredInstallPrompt.prompt();
+          const choice = await deferredInstallPrompt.userChoice;
+          deferredInstallPrompt = null;
+          if (choice && choice.outcome === "accepted") {
+            alert("홈화면 추가를 진행했습니다.");
+          } else {
+            showInstallGuide();
+          }
+          return;
+        } catch (e) {
+          console.warn(e);
+          deferredInstallPrompt = null;
+        }
+      }
+
+      showInstallGuide();
+    }
+
+    function showInstallGuide() {
+      const steps = getInstallSteps();
+      const list = $("installSteps");
+      list.innerHTML = steps.map((step, idx) => `
+        <li>
+          <span class="step-num">${idx + 1}</span>
+          <span>${escapeHtml(step)}</span>
+        </li>
+      `).join("");
+      $("installModalBg").style.display = "block";
+    }
+
+    function getInstallSteps() {
+      const ua = navigator.userAgent || "";
+      const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      const isAndroid = /Android/i.test(ua);
+
+      if (isIOS) {
+        return [
+          "Safari로 이 페이지를 엽니다. 카카오톡/인스타/네이버앱 안에서는 홈화면 추가가 안 보일 수 있습니다.",
+          "아래 공유 버튼(□ 위쪽 화살표)을 누릅니다.",
+          "목록에서 ‘홈 화면에 추가’를 누릅니다.",
+          "이름이 STORE WORKS인지 확인하고 ‘추가’를 누릅니다."
+        ];
+      }
+
+      if (isAndroid) {
+        return [
+          "Chrome으로 이 페이지를 엽니다.",
+          "주소창 오른쪽 점 3개 메뉴를 누릅니다.",
+          "‘앱 설치’ 또는 ‘홈 화면에 추가’를 누릅니다.",
+          "확인을 누르면 홈화면에 STORE WORKS 아이콘이 생깁니다."
+        ];
+      }
+
+      return [
+        "Chrome 또는 Edge에서 이 페이지를 엽니다.",
+        "주소창 오른쪽의 설치 아이콘이 보이면 누릅니다.",
+        "설치 아이콘이 없으면 브라우저 메뉴에서 ‘앱 설치’ 또는 ‘홈 화면에 추가’를 찾습니다.",
+        "설치가 안 보이면 주소 복사 후 휴대폰 Chrome/Safari에서 다시 열어주세요."
+      ];
+    }
+
+    async function copyCurrentUrl() {
+      try {
+        await navigator.clipboard.writeText(location.href);
+        alert("현재 주소를 복사했습니다.");
+      } catch (e) {
+        prompt("주소를 길게 눌러 복사하세요.", location.href);
+      }
+    }
+
+    function closeInstallGuide() {
+      $("installModalBg").style.display = "none";
+    }
+
+    function registerPwaServiceWorker() {
+      return; // 데모: 서비스워커 비활성
+      if (!location.protocol.startsWith("http")) return;
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js").catch((e) => console.warn("Service worker registration failed", e));
+      });
+    }
+
+
+    function closePersonal() {
+      $("personalModalBg").style.display = "none";
+    }
+
+    function handlePersonalAction(action, id) {
+      const ordered = getPersonalOrderApps().map(app => app.id);
+      const index = ordered.indexOf(id);
+      if (index === -1) return;
+
+      if (action === "up" && index > 0) {
+        [ordered[index - 1], ordered[index]] = [ordered[index], ordered[index - 1]];
+      }
+
+      if (action === "down" && index < ordered.length - 1) {
+        [ordered[index + 1], ordered[index]] = [ordered[index], ordered[index + 1]];
+      }
+
+      if (action === "toggle") {
+        const hidden = new Set(userPrefs.hidden || []);
+        if (hidden.has(id)) hidden.delete(id);
+        else hidden.add(id);
+        userPrefs.hidden = Array.from(hidden);
+      }
+
+      userPrefs.order = ordered;
+      saveUserPrefs();
+      renderPersonalRows();
+      renderApps();
+    }
+
+    function showAllApps() {
+      userPrefs.hidden = [];
+      saveUserPrefs();
+      renderPersonalRows();
+      renderApps();
+    }
+
+    function resetPersonal() {
+      if (!confirm("내 휴대폰의 앱 순서와 숨김 설정을 초기화할까요?")) return;
+      userPrefs = { order: [], hidden: [] };
+      saveUserPrefs();
+      renderPersonalRows();
+      renderApps();
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value);
+    }
+
+    $("refreshLinks").addEventListener("click", () => loadLatestLinks(true));
+    $("installApp").addEventListener("click", handleInstallClick);
+    $("closeInstall").addEventListener("click", closeInstallGuide);
+    $("closeInstall2").addEventListener("click", closeInstallGuide);
+    $("copyCurrentUrl").addEventListener("click", copyCurrentUrl);
+    $("installModalBg").addEventListener("click", (e) => {
+      if (e.target === $("installModalBg")) closeInstallGuide();
+    });
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+    });
+    window.addEventListener("appinstalled", () => {
+      deferredInstallPrompt = null;
+      alert("홈화면에 추가되었습니다.");
+    });
+    registerPwaServiceWorker();
+    $("openAdmin").addEventListener("click", openAdmin);
+    $("closeAdmin").addEventListener("click", closeAdmin);
+    $("adminModalBg").addEventListener("click", (e) => {
+      if (e.target === $("adminModalBg")) closeAdmin();
+    });
+    $("saveLinks").addEventListener("click", saveLinks);
+    $("reloadLinks").addEventListener("click", () => loadLatestLinks(true));
+    $("resetLinks").addEventListener("click", resetLinks);
+    $("addApp").addEventListener("click", addNewApp);
+    $("adminRows").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-admin-remove]");
+      if (!btn) return;
+      removeAdminApp(Number(btn.dataset.adminRemove));
+    });
+
+    $("appGrid").addEventListener("click", (e) => {
+      const hideBtn = e.target.closest("[data-hide-id]");
+      if (hideBtn && layoutEditing) {
+        hideAppFromCard(hideBtn.dataset.hideId);
+        return;
+      }
+      const card = e.target.closest(".card");
+      if (card) openVisibleApp(card);
+    });
+    $("appGrid").addEventListener("keydown", (e) => {
+      const card = e.target.closest(".card");
+      if (!card) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openVisibleApp(card);
+      }
+    });
+    $("appGrid").addEventListener("pointerdown", beginCardDrag);
+    window.addEventListener("pointermove", moveCardDrag, { passive: false });
+    window.addEventListener("pointerup", endCardDrag);
+    window.addEventListener("pointercancel", endCardDrag);
+
+    $("openPersonal").addEventListener("click", toggleLayoutEditing);
+    $("openPersonalModal").addEventListener("click", openPersonal);
+    $("showAllInline").addEventListener("click", showAllApps);
+    $("closePersonal").addEventListener("click", closePersonal);
+    $("personalModalBg").addEventListener("click", (e) => {
+      if (e.target === $("personalModalBg")) closePersonal();
+    });
+    $("personalRows").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-personal]");
+      if (!btn) return;
+      handlePersonalAction(btn.dataset.personal, btn.dataset.id);
+    });
+    $("savePersonal").addEventListener("click", () => {
+      saveUserPrefs();
+      closePersonal();
+      alert("내 화면 설정을 저장했습니다.");
+    });
+    $("showAllApps").addEventListener("click", showAllApps);
+    $("resetPersonal").addEventListener("click", resetPersonal);
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>매장 체크리스트 — 포트폴리오 데모</title>
+<style>
+  :root{
+    --bg:#0d1117; --surface:#151b24; --surface2:#1a212c;
+    --border:#242c38; --border-lite:#2f3a48;
+    --text:#e8edf4; --dim:#8a94a6; --faint:#5b6576;
+    --accent:#2dd4bf; --accent-soft:rgba(45,212,191,.13);
+    --danger:#f87171; --radius:15px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{background:var(--bg);}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",system-ui,Roboto,"Noto Sans KR",sans-serif;
+    color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;padding:14px 14px 48px;
+  }
+  .wrap{max-width:540px;margin:0 auto;}
+
+  .head{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
+  .store-row{display:flex;align-items:center;gap:8px;}
+  #storeInput{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--text);font-size:23px;font-weight:800;letter-spacing:-.02em;padding:2px 0;}
+  #storeInput::placeholder{color:var(--faint);font-weight:700;}
+  .pencil{color:var(--faint);font-size:15px;flex:0 0 auto;}
+  .head-sub{font-size:12.5px;color:var(--dim);font-weight:600;margin-top:1px;}
+  .notice{display:flex;align-items:center;gap:8px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.28);border-radius:11px;padding:10px 12px;margin-top:13px;}
+  .notice .micon{font-size:15px;flex:0 0 auto;}
+  .notice input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:#fbbf24;font-size:14px;font-weight:700;font-family:inherit;padding:0;}
+  .notice input::placeholder{color:rgba(251,191,36,.5);font-weight:600;}
+
+  .tabbar{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+  .tabbar::-webkit-scrollbar{display:none;}
+  .tab{flex:0 0 auto;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:10px 15px;color:var(--dim);font-size:13.5px;font-weight:700;cursor:pointer;transition:.12s;white-space:nowrap;}
+  .tab.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+  .tab .cnt{font-size:11px;font-weight:600;color:var(--faint);margin-left:5px;}
+  .tab.active .cnt{color:var(--accent);opacity:.85;}
+  .tab.add{padding:10px 14px;color:var(--accent);font-size:17px;font-weight:800;}
+
+  .meta{display:flex;gap:8px;margin-bottom:12px;}
+  .meta .field{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:8px 11px;display:flex;flex-direction:column;gap:2px;}
+  .meta .field label{font-size:10.5px;color:var(--faint);font-weight:700;}
+  .meta .field input{background:transparent;border:none;outline:none;color:var(--text);font-size:14.5px;font-weight:600;width:100%;font-family:inherit;}
+  .meta .field input::-webkit-calendar-picker-indicator{filter:invert(.6);opacity:.7;cursor:pointer;}
+  .meta .field input::placeholder{color:var(--faint);font-weight:500;}
+
+  .sec-edit{display:none;gap:8px;margin-bottom:12px;align-items:center;}
+  .sec-edit.show{display:flex;}
+  #secNameInput{flex:1;background:var(--surface);border:1px solid var(--border-lite);border-radius:11px;color:var(--text);font-size:14.5px;font-weight:700;font-family:inherit;padding:11px 13px;outline:none;}
+  #secNameInput:focus{border-color:var(--accent);}
+  #secDelBtn{flex:0 0 auto;background:rgba(248,113,113,.12);border:none;border-radius:11px;color:var(--danger);font-size:13px;font-weight:700;padding:0 15px;cursor:pointer;height:43px;}
+
+  .prog{display:flex;align-items:center;gap:11px;margin-bottom:11px;padding:0 3px;}
+  .prog-txt{font-size:13px;font-weight:700;color:var(--dim);white-space:nowrap;}
+  .prog-bar{flex:1;height:7px;background:var(--surface2);border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .25s;}
+  .prog.done .prog-txt{color:var(--accent);}
+  .prog.done .prog-fill{box-shadow:0 0 10px rgba(45,212,191,.5);}
+
+  .list{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+  .item{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
+  .item:last-child{border-bottom:none;}
+  .item:active{background:var(--surface2);}
+  .box{flex:0 0 auto;width:26px;height:26px;border-radius:8px;border:2px solid var(--border-lite);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;color:var(--faint);margin-top:1px;transition:.12s;}
+  .item.done .box{background:var(--accent);border-color:var(--accent);color:#06201d;font-size:15px;}
+  .txt{flex:1;min-width:0;padding-top:2px;}
+  .txt .main{font-size:15.5px;font-weight:600;line-height:1.4;letter-spacing:-.01em;word-break:keep-all;}
+  .txt .sub{font-size:11.5px;color:var(--faint);line-height:1.45;margin-top:3px;word-break:keep-all;}
+  .item.done .txt .main{color:var(--dim);}
+
+  .item.editing{cursor:default;}
+  .item.editing:active{background:transparent;}
+  .edit-input{flex:1;min-width:0;background:var(--bg);border:1px solid var(--border-lite);border-radius:9px;color:var(--text);font-size:15px;font-weight:600;font-family:inherit;padding:8px 10px;outline:none;}
+  .edit-input:focus{border-color:var(--accent);}
+  .del-btn{flex:0 0 auto;width:30px;height:30px;border-radius:8px;background:rgba(248,113,113,.12);border:none;color:var(--danger);font-size:17px;font-weight:700;cursor:pointer;margin-top:2px;display:flex;align-items:center;justify-content:center;}
+  .drag-handle{flex:0 0 auto;color:var(--faint);font-size:16px;margin-top:5px;cursor:grab;user-select:none;}
+  .item.drag-over{border-top:2px solid var(--accent);}
+
+  .add-row{display:none;gap:8px;margin-top:10px;}
+  .add-row.show{display:flex;}
+  #addInput{flex:1;background:var(--surface);border:1px solid var(--border-lite);border-radius:11px;color:var(--text);font-size:15px;font-weight:600;font-family:inherit;padding:11px 13px;outline:none;}
+  #addInput:focus{border-color:var(--accent);}
+  #addBtn{flex:0 0 auto;background:var(--accent);border:none;border-radius:11px;color:#06201d;font-size:14px;font-weight:800;padding:0 18px;cursor:pointer;}
+
+  .actions{display:flex;gap:8px;margin-top:14px;}
+  .btn{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-weight:700;font-family:inherit;padding:13px;cursor:pointer;transition:.12s;}
+  .btn:active{background:var(--surface2);}
+  .btn.edit-on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+  .btn.danger{color:var(--danger);}
+  .btn.danger:active{background:rgba(248,113,113,.1);}
+
+  /* empty state */
+  .empty{display:none;text-align:center;padding:46px 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);}
+  .empty.show{display:block;}
+  .empty .ico{font-size:38px;margin-bottom:14px;}
+  .empty h2{font-size:17px;font-weight:800;margin-bottom:8px;}
+  .empty p{font-size:13.5px;color:var(--dim);line-height:1.6;margin-bottom:22px;}
+  .empty .ebtn{display:block;width:100%;border:none;border-radius:12px;font-size:15px;font-weight:800;font-family:inherit;padding:14px;cursor:pointer;margin-top:10px;}
+  .ebtn.primary{background:var(--accent);color:#06201d;}
+  .ebtn.ghost{background:transparent;border:1px solid var(--border-lite);color:var(--text);}
+
+  .foot{text-align:center;margin-top:22px;font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.03em;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <div class="store-row">
+      <input id="storeInput" type="text" placeholder="매장 이름" maxlength="24" autocomplete="off">
+      <span class="pencil">✎</span>
+    </div>
+    <div class="head-sub">매장 체크리스트</div>
+    <div class="notice"><span class="micon">📣</span><input id="noticeInput" type="text" placeholder="알림 문구 입력" maxlength="40" autocomplete="off"></div>
+  </div>
+
+  <div class="tabbar" id="tabbar"></div>
+
+  <div class="meta" id="meta">
+    <div class="field"><label>날짜</label><input id="dateInput" type="date"></div>
+    <div class="field"><label>담당자</label><input id="mgrInput" type="text" placeholder="이름 입력" maxlength="12" autocomplete="off"></div>
+  </div>
+
+  <div class="sec-edit" id="secEdit">
+    <input id="secNameInput" type="text" placeholder="체크리스트 이름" maxlength="20" autocomplete="off">
+    <button id="secDelBtn">삭제</button>
+  </div>
+
+  <div class="prog" id="prog">
+    <span class="prog-txt" id="progTxt">0 / 0</span>
+    <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <div class="add-row" id="addRow">
+    <input id="addInput" type="text" placeholder="새 항목 입력" maxlength="60" autocomplete="off">
+    <button id="addBtn">추가</button>
+  </div>
+
+  <div class="actions" id="actions">
+    <button class="btn" id="editBtn">＋ / 편집</button>
+    <button class="btn danger" id="resetBtn">전체 해제</button>
+  </div>
+
+  <div class="empty" id="empty">
+    <div class="ico">📋</div>
+    <h2>체크리스트가 없어요</h2>
+    <p>F&amp;B 매장 기본 템플릿을 불러와<br>바로 시작하세요.</p>
+    <button class="ebtn primary" id="emptyTemplate">매장 체크리스트 불러오기</button>
+  </div>
+
+  <div class="foot">모든 변경사항 자동 저장</div>
+</div>
+
+<script>
+"use strict";
+const KEY = "demo_store_checklist_v1";
+const DEFAULT_NOTICE = "마감 완료 시 업무 단톡방에 공유해주세요";
+
+function today(){const d=new Date(),z=n=>String(n).padStart(2,"0");return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`;}
+function uid(){return "i"+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36);}
+function mk(arr){return arr.map(o=>({id:uid(),text:o.t,sub:o.s||"",checked:false}));}
+
+function fnbTemplate(){
+  return [
+    {id:uid(),name:"마감",date:today(),mgr:"",items:mk([
+      {t:"가스 & 보일러 OFF"},{t:"식기세척기 물 빼고 전원 OFF"},{t:"주방 바닥 청소"},
+      {t:"주방 창문 닫기",s:"창고, 식세기 옆"},{t:"흡연실 정리 & 화장실 청소"},
+      {t:"포스 슬립모드 & 전원 OFF / CCTV 전원 OFF"},{t:"냉난방기 전원 OFF"},
+      {t:"비상구 잠그기 & 창문 닫기"},{t:"홀 냉장고 소등 & 엠프 전원 OFF"},{t:"객실 창문 닫기"},
+    ])},
+    {id:uid(),name:"오픈",date:today(),mgr:"",items:mk([
+      {t:"화장실 체크",s:"쓰레기통·가글·손세정제·페이퍼타올·롤휴지·방향제·거미줄 등"},
+      {t:"테이블 세팅"},{t:"테이블 & 의자 & 바닥 청결 확인"},{t:"매장 계단 & 입구 카펫 청결 확인"},
+      {t:"품절 여부 확인",s:"모든 메뉴"},{t:"예약자 확인 및 포스팅"},
+    ])},
+    {id:uid(),name:"주간",date:today(),mgr:"",items:mk([
+      {t:"구석 거미줄 체크"},{t:"태블릿 PC 세척"},{t:"창틀 청소"},
+    ])},
+    {id:uid(),name:"월간",date:today(),mgr:"",items:mk([
+      {t:"테이블 세척"},{t:"에어컨 필터 청소"},
+    ])},
+  ];
+}
+
+let state, editMode=false, dragId=null;
+
+function load(){
+  try{const raw=localStorage.getItem(KEY);if(raw){state=JSON.parse(raw);if(state&&Array.isArray(state.sections)){if(state.notice===undefined)state.notice=DEFAULT_NOTICE;return;}}}catch(e){}
+  const secs=fnbTemplate();
+  state={store:"",active:secs[0].id,sections:secs,notice:DEFAULT_NOTICE};
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+const $=id=>document.getElementById(id);
+const cur=()=>state.sections.find(s=>s.id===state.active)||null;
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+/* visibility: empty vs filled */
+function refreshView(){
+  const has=state.sections.length>0;
+  ["tabbar","meta","prog","list","actions"].forEach(id=>$(id).style.display=has?"":"none");
+  $("empty").classList.toggle("show",!has);
+  if(has){
+    if(!cur()) state.active=state.sections[0].id;
+    syncHeader(); renderTabs(); renderList();
+  }else{
+    if(editMode) toggleEdit(false);
+    $("secEdit").classList.remove("show");
+    $("addRow").classList.remove("show");
+    $("meta").style.display="none"; $("prog").style.display="none";
+  }
+}
+
+/* header / meta */
+function syncHeader(){
+  $("storeInput").value=state.store||"";
+  const c=cur(); if(!c)return;
+  $("dateInput").value=c.date||today();
+  $("mgrInput").value=c.mgr||"";
+  $("secNameInput").value=c.name||"";
+}
+$("storeInput").addEventListener("input",e=>{state.store=e.target.value;save();});
+$("noticeInput").addEventListener("input",e=>{state.notice=e.target.value;save();});
+$("dateInput").addEventListener("change",e=>{if(cur()){cur().date=e.target.value;save();}});
+$("mgrInput").addEventListener("input",e=>{if(cur()){cur().mgr=e.target.value;save();}});
+$("secNameInput").addEventListener("input",e=>{if(cur()){cur().name=e.target.value;save();renderTabs();}});
+
+/* tabs */
+function renderTabs(){
+  const box=$("tabbar");box.innerHTML="";
+  state.sections.forEach(s=>{
+    const done=s.items.filter(i=>i.checked).length;
+    const el=document.createElement("div");
+    el.className="tab"+(s.id===state.active?" active":"");
+    el.innerHTML=`${esc(s.name||"체크리스트")}<span class="cnt">${done}/${s.items.length}</span>`;
+    el.onclick=()=>{state.active=s.id;if(editMode)toggleEdit(false);save();syncHeader();renderTabs();renderList();};
+    box.appendChild(el);
+  });
+  const add=document.createElement("div");
+  add.className="tab add";add.textContent="＋";
+  add.onclick=addSection;
+  box.appendChild(add);
+}
+
+function addSection(){
+  const s={id:uid(),name:"새 체크리스트",date:today(),mgr:"",items:[]};
+  state.sections.push(s);state.active=s.id;save();
+  refreshView();
+  if(!editMode) toggleEdit(true);
+  $("secNameInput").focus(); $("secNameInput").select();
+}
+
+/* progress */
+function updateProg(){
+  const c=cur();if(!c)return;
+  const items=c.items,done=items.filter(i=>i.checked).length,total=items.length;
+  $("progTxt").textContent= total?`${done} / ${total}`+(done===total?"  ✓ 전체 완료":""):"0 / 0";
+  $("progFill").style.width= total?(done/total*100)+"%":"0%";
+  $("prog").classList.toggle("done",total>0&&done===total);
+}
+
+/* list */
+function renderList(){
+  const box=$("list"),c=cur();if(!c)return;box.innerHTML="";
+  c.items.forEach((it,idx)=>{
+    const row=document.createElement("div");
+    row.className="item"+(it.checked?" done":"")+(editMode?" editing":"");
+    row.dataset.id=it.id;
+    if(editMode){
+      row.draggable=true;
+      row.innerHTML=`<span class="drag-handle">⠿</span><input class="edit-input" data-id="${it.id}" value="${esc(it.text)}" maxlength="60"><button class="del-btn" data-id="${it.id}">×</button>`;
+    }else{
+      const sub=it.sub?`<div class="sub">${esc(it.sub)}</div>`:"";
+      row.innerHTML=`<div class="box">${it.checked?"✓":(idx+1)}</div><div class="txt"><div class="main">${esc(it.text)}</div>${sub}</div>`;
+    }
+    box.appendChild(row);
+  });
+  if(c.items.length===0 && !editMode){
+    box.innerHTML=`<div style="padding:26px 15px;text-align:center;color:var(--faint);font-size:13.5px;font-weight:600;">항목이 없어요. 아래 ＋/편집 으로 추가하세요.</div>`;
+  }
+  updateProg(); renderTabs();
+}
+
+/* list events */
+$("list").addEventListener("click",e=>{
+  const del=e.target.closest(".del-btn");
+  if(del){const id=del.dataset.id;cur().items=cur().items.filter(i=>i.id!==id);save();renderList();return;}
+  if(editMode)return;
+  const row=e.target.closest(".item");if(!row)return;
+  const it=cur().items.find(i=>i.id===row.dataset.id);if(!it)return;
+  it.checked=!it.checked;save();renderList();
+});
+$("list").addEventListener("input",e=>{
+  const inp=e.target.closest(".edit-input");if(!inp)return;
+  const it=cur().items.find(i=>i.id===inp.dataset.id);if(it){it.text=inp.value;save();}
+});
+
+/* drag reorder */
+$("list").addEventListener("dragstart",e=>{const row=e.target.closest(".item");if(!row)return;dragId=row.dataset.id;e.dataTransfer.effectAllowed="move";});
+$("list").addEventListener("dragover",e=>{e.preventDefault();const row=e.target.closest(".item");document.querySelectorAll(".item.drag-over").forEach(r=>r.classList.remove("drag-over"));if(row&&row.dataset.id!==dragId)row.classList.add("drag-over");});
+$("list").addEventListener("drop",e=>{
+  e.preventDefault();const row=e.target.closest(".item");
+  document.querySelectorAll(".item.drag-over").forEach(r=>r.classList.remove("drag-over"));
+  if(!row||!dragId)return;
+  const items=cur().items,from=items.findIndex(i=>i.id===dragId),to=items.findIndex(i=>i.id===row.dataset.id);
+  if(from<0||to<0||from===to)return;
+  const [m]=items.splice(from,1);items.splice(to,0,m);
+  dragId=null;save();renderList();
+});
+
+/* add item */
+function addItem(){
+  const v=$("addInput").value.trim();if(!v||!cur())return;
+  cur().items.push({id:uid(),text:v,sub:"",checked:false});
+  $("addInput").value="";save();renderList();$("addInput").focus();
+}
+$("addBtn").addEventListener("click",addItem);
+$("addInput").addEventListener("keydown",e=>{if(e.key==="Enter")addItem();});
+
+/* edit toggle */
+function toggleEdit(force){
+  editMode=(typeof force==="boolean")?force:!editMode;
+  $("editBtn").classList.toggle("edit-on",editMode);
+  $("editBtn").textContent=editMode?"완료":"＋ / 편집";
+  $("addRow").classList.toggle("show",editMode);
+  $("secEdit").classList.toggle("show",editMode);
+  renderList();
+}
+$("editBtn").addEventListener("click",()=>toggleEdit());
+
+/* delete section */
+$("secDelBtn").addEventListener("click",()=>{
+  const c=cur();if(!c)return;
+  if(confirm(`"${c.name||"체크리스트"}" 체크리스트를 삭제할까요?`)){
+    state.sections=state.sections.filter(s=>s.id!==c.id);
+    state.active=state.sections[0]?state.sections[0].id:null;
+    toggleEdit(false);save();refreshView();
+  }
+});
+
+/* reset checks */
+$("resetBtn").addEventListener("click",()=>{
+  const c=cur();if(!c)return;
+  if(confirm(`"${c.name||"체크리스트"}" 체크를 모두 해제할까요?`)){
+    c.items.forEach(i=>i.checked=false);save();renderList();
+  }
+});
+
+/* empty actions */
+$("emptyTemplate").addEventListener("click",()=>{
+  state.sections=fnbTemplate();state.active=state.sections[0].id;save();refreshView();
+});
+
+/* init */
+load();
+$("storeInput").value=state.store||"";
+$("noticeInput").value=state.notice||"";
+save();
+refreshView();
+</script>
+</body>
+</html>

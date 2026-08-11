@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#11151b" />
+<title>보건증 만료 관리 — 포트폴리오 데모</title>
+<link rel="manifest" href="manifest.json" />
+<style>
+  :root{
+    --bg:#11151b; --surface:#171d25; --surface2:#202833; --well:#0d1117;
+    --line:#2c3644; --line2:#222b36; --text:#f2efe8; --muted:#8f98a6;
+    --red:#ec5145; --red2:#ff8b7f; --amber:#e3ad41; --green:#6fcf97; --blue:#7cc7df;
+    --shadow:0 16px 50px rgba(0,0,0,.28);
+    --sans:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",system-ui,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  body{min-height:100svh}
+  button,input,select,textarea{font-family:inherit}
+  button{cursor:pointer}
+  .wrap{width:100%;max-width:760px;margin:0 auto;padding:18px 14px 90px}
+  .top{position:sticky;top:0;z-index:10;margin:0 -14px;padding:14px 14px 12px;background:linear-gradient(180deg,rgba(17,21,27,.98),rgba(17,21,27,.92));backdrop-filter:blur(16px);border-bottom:1px solid rgba(44,54,68,.45)}
+  .hd{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .title h1{margin:0;font-size:24px;letter-spacing:-.04em;line-height:1.1}
+  .title p{margin:7px 0 0;color:var(--muted);font-size:12.5px;font-weight:600;line-height:1.35}
+  .pill{white-space:nowrap;border:1px solid rgba(124,199,223,.35);background:rgba(124,199,223,.10);color:var(--blue);padding:8px 10px;border-radius:999px;font-size:11.5px;font-weight:800}
+  .dash{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0 13px}
+  .stat{background:var(--surface);border:1px solid var(--line2);border-radius:14px;padding:12px 10px;min-width:0}
+  .stat b{display:block;font-size:22px;line-height:1.05;letter-spacing:-.03em}
+  .stat span{display:block;margin-top:6px;color:var(--muted);font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stat.danger b{color:var(--red2)} .stat.warn b{color:var(--amber)} .stat.ok b{color:var(--green)}
+  .tools{display:flex;gap:8px;align-items:center}
+  .search{flex:1;display:flex;align-items:center;gap:8px;background:var(--well);border:1px solid var(--line);border-radius:13px;padding:0 12px}
+  .search input{width:100%;background:transparent;border:0;outline:0;color:var(--text);font-size:15px;padding:12px 0}
+  .search input::placeholder{color:#687382}
+  .smallbtn,.mainbtn,.ghostbtn{border:0;border-radius:12px;font-weight:850;letter-spacing:-.01em}
+  .mainbtn{background:var(--red);color:white;padding:13px 15px;font-size:14px;box-shadow:0 10px 26px rgba(236,81,69,.22)}
+  .ghostbtn{background:var(--surface2);border:1px solid var(--line);color:var(--text);padding:12px 13px;font-size:13px}
+  .smallbtn{background:var(--surface2);border:1px solid var(--line);color:var(--text);padding:9px 10px;font-size:12px}
+  .smallbtn:active,.mainbtn:active,.ghostbtn:active{transform:scale(.985)}
+  .tabs{display:flex;gap:7px;overflow-x:auto;padding:0 0 3px;margin-top:10px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+  .tab{flex:none;background:var(--surface);color:var(--muted);border:1px solid var(--line2);border-radius:10px;padding:9px 12px;font-size:12.5px;font-weight:750}
+  .tab.active{background:var(--blue);color:#081014;border-color:var(--blue)}
+  .notice{background:linear-gradient(135deg,rgba(227,173,65,.13),rgba(236,81,69,.08));border:1px solid rgba(227,173,65,.25);border-radius:14px;padding:12px 13px;margin:14px 0;color:#f4e4bd;font-size:12.5px;line-height:1.5}
+  .notice b{color:#ffd479}
+  .formcard,.card,.panel{background:var(--surface);border:1px solid var(--line2);border-radius:16px;box-shadow:var(--shadow)}
+  .formcard{display:none;padding:14px;margin:12px 0 14px}.formcard.show{display:block}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}
+  label{font-size:12px;color:var(--muted);font-weight:800}
+  input,select{width:100%;background:var(--well);border:1px solid var(--line);border-radius:12px;color:var(--text);font-size:15px;padding:12px;outline:0}
+  input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(124,199,223,.12)}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.right{justify-content:flex-end}.between{justify-content:space-between}
+  .hint{font-size:11.5px;color:var(--muted);line-height:1.45;margin:8px 0 0}
+  .list{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+  .card{padding:13px;box-shadow:none;overflow:hidden}
+  .cardHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .name{font-size:17px;font-weight:900;letter-spacing:-.025em;line-height:1.25}.sub{font-size:12px;color:var(--muted);font-weight:650;margin-top:5px;line-height:1.35}
+  .badge{flex:none;border-radius:999px;padding:6px 9px;font-size:11.5px;font-weight:900;border:1px solid var(--line);white-space:nowrap}
+  .badge.expired{color:#ffd0cc;background:rgba(236,81,69,.15);border-color:rgba(236,81,69,.35)}
+  .badge.danger{color:#ffd0cc;background:rgba(236,81,69,.12);border-color:rgba(236,81,69,.3)}
+  .badge.warn{color:#ffe2a4;background:rgba(227,173,65,.12);border-color:rgba(227,173,65,.3)}
+  .badge.ok{color:#c8f7dc;background:rgba(111,207,151,.11);border-color:rgba(111,207,151,.28)}
+  .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}
+  .m{background:var(--well);border:1px solid var(--line2);border-radius:12px;padding:9px}.m span{display:block;color:var(--muted);font-size:10.5px;font-weight:800}.m b{display:block;margin-top:5px;font-size:13px;letter-spacing:-.02em}
+  .memo{margin-top:10px;background:rgba(124,199,223,.07);border:1px solid rgba(124,199,223,.15);color:#cfe9f1;border-radius:12px;padding:9px 10px;font-size:12.5px;line-height:1.45}
+  .actions{display:flex;gap:7px;margin-top:11px;justify-content:flex-end;flex-wrap:wrap}
+  .empty{padding:42px 18px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6;background:var(--surface);border:1px dashed var(--line);border-radius:16px;margin-top:12px}
+  .panel{padding:14px;margin-top:14px;box-shadow:none}.panel h2{font-size:16px;margin:0 0 10px;letter-spacing:-.03em}.panel p{font-size:12.5px;line-height:1.55;color:var(--muted);margin:0 0 10px}
+  .fileinput{display:none}
+  .toast{position:fixed;left:14px;right:14px;bottom:18px;z-index:50;background:#0b0f14;border:1px solid var(--line);color:var(--text);border-radius:14px;padding:13px 14px;box-shadow:0 18px 60px rgba(0,0,0,.48);font-size:13px;font-weight:750;display:none}.toast.show{display:block}
+  .modal{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.62);display:none;align-items:flex-end}.modal.show{display:flex}
+  .sheet{width:100%;max-width:760px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:20px 20px 0 0;padding:16px 14px 18px;box-shadow:0 -20px 70px rgba(0,0,0,.5)}
+  .sheet h2{margin:0;font-size:18px;letter-spacing:-.03em}.sheet p{color:var(--muted);font-size:12.5px;line-height:1.55}.sheet .row button{flex:1}
+  @media (max-width:560px){.wrap{padding-left:12px;padding-right:12px}.top{margin-left:-12px;margin-right:-12px;padding-left:12px;padding-right:12px}.dash{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.meta{grid-template-columns:1fr 1fr}.tools{align-items:stretch}.mainbtn{padding-left:13px;padding-right:13px}.title h1{font-size:22px}.pill{display:none}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="hd">
+        <div class="title">
+          <h1>보건증 만료 관리</h1>
+          <p>취득일 입력 → 만료일 자동계산 → 일주일 전 체크</p>
+        </div>
+        <span class="pill">Made by 윤식</span>
+      </div>
+      <div class="dash">
+        <div class="stat"><b id="stTotal">0</b><span>전체</span></div>
+        <div class="stat danger"><b id="stExpired">0</b><span>만료</span></div>
+        <div class="stat warn"><b id="stSoon">0</b><span>7일 이내</span></div>
+        <div class="stat ok"><b id="stOk">0</b><span>정상</span></div>
+      </div>
+      <div class="tools">
+        <div class="search"><input id="search" type="search" placeholder="이름 / 파트 / 메모 검색" autocomplete="off" /></div>
+        <button class="mainbtn" id="toggleForm">추가</button>
+      </div>
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-filter="all">전체</button>
+        <button class="tab" data-filter="soon">7일 이내</button>
+        <button class="tab" data-filter="expired">만료</button>
+        <button class="tab" data-filter="ok">정상</button>
+      </div>
+    </div>
+
+    <div class="notice">
+      <b>알림 방식:</b> 이 앱은 서버 없이 폰/브라우저에 저장됩니다. 진짜 휴대폰 푸시를 확실히 받으려면 아래 <b>캘린더 알림 파일</b>을 만들어 Google/Apple 캘린더에 넣는 방식이 제일 안정적입니다.
+    </div>
+
+    <section class="formcard" id="formCard">
+      <form id="personForm">
+        <input type="hidden" id="editId" />
+        <div class="grid">
+          <div class="field">
+            <label for="name">이름</label>
+            <input id="name" required placeholder="예: 김민수" />
+          </div>
+          <div class="field">
+            <label for="part">파트 / 직책</label>
+            <input id="part" placeholder="예: 주방 / 홀 / 알바" />
+          </div>
+          <div class="field">
+            <label for="issued">보건증 취득일 / 검진일</label>
+            <input id="issued" type="date" required />
+          </div>
+          <div class="field">
+            <label for="reminderDays">알림 기준</label>
+            <select id="reminderDays">
+              <option value="7" selected>만료 7일 전</option>
+              <option value="14">만료 14일 전</option>
+              <option value="30">만료 30일 전</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="memo">메모</label>
+            <input id="memo" placeholder="예: 새로 들어온 알바 / 재검 예정 / 보건소 위치" />
+          </div>
+        </div>
+        <p class="hint">기본 계산: 취득일 기준 다음 해 같은 날짜의 전날을 만료일로 계산합니다. 예: 2026-06-17 → 2027-06-16</p>
+        <div class="row right" style="margin-top:12px">
+          <button type="button" class="ghostbtn" id="cancelEdit">취소</button>
+          <button type="submit" class="mainbtn" id="saveBtn">저장</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="row between" style="margin-top:12px">
+      <button class="ghostbtn" id="notifyBtn">오늘 알림 확인</button>
+      <button class="ghostbtn" id="calendarBtn">캘린더 알림 파일</button>
+    </div>
+
+    <div class="list" id="list"></div>
+    <div class="empty" id="empty" style="display:none">등록된 직원이 없습니다.<br>상단의 <b>추가</b> 버튼으로 먼저 입력하세요.</div>
+
+    <section class="panel">
+      <h2>백업 / 옮기기</h2>
+      <p>이 앱은 개인정보를 서버로 보내지 않고 현재 브라우저에만 저장합니다. 폰을 바꾸거나 다른 기기에서 쓰려면 백업 파일을 내보낸 뒤 가져오세요.</p>
+      <div class="row">
+        <button class="smallbtn" id="exportJson">백업 내보내기</button>
+        <button class="smallbtn" id="importJsonBtn">백업 가져오기</button>
+        <button class="smallbtn" id="exportCsv">CSV 내보내기</button>
+        <button class="smallbtn" id="sampleBtn">샘플 넣기</button>
+      </div>
+      <input class="fileinput" id="importJson" type="file" accept="application/json,.json" />
+    </section>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="sheet">
+      <h2>휴대폰 알림 받는 법</h2>
+      <p>브라우저 알림은 앱을 닫아두면 기기마다 안 울릴 수 있습니다. 매장 관리용은 캘린더에 넣는 방식이 가장 안전합니다.</p>
+      <p><b>1)</b> 아래 버튼으로 .ics 파일 다운로드<br><b>2)</b> Google Calendar 또는 Apple Calendar에 가져오기<br><b>3)</b> 각 직원 만료일 7일 전에 휴대폰 알림</p>
+      <div class="row">
+        <button class="mainbtn" id="downloadIcs">.ics 만들기</button>
+        <button class="ghostbtn" id="closeModal">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+<script>
+const STORE='demo_health-cert-manager-v1';
+let people=[]; let filter='all';
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
+const today=()=>{const d=new Date(); return new Date(d.getFullYear(),d.getMonth(),d.getDate(),12)};
+function parseDate(s){ if(!s) return null; const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d,12); }
+function fmt(d){ return d ? `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}` : ''; }
+function addYearsMinusDay(date, years=1){ const d=new Date(date); d.setFullYear(d.getFullYear()+years); d.setDate(d.getDate()-1); return d; }
+function addDays(date, days){ const d=new Date(date); d.setDate(d.getDate()+days); return d; }
+function diffDays(a,b){ return Math.ceil((a-b)/(1000*60*60*24)); }
+function esc(s=''){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function toast(msg){ const t=$('toast'); t.innerHTML=msg; t.classList.add('show'); clearTimeout(t._tm); t._tm=setTimeout(()=>t.classList.remove('show'),2600); }
+function save(){ localStorage.setItem(STORE, JSON.stringify(people)); }
+function load(){ try{ people=JSON.parse(localStorage.getItem(STORE)||'[]')||[]; }catch{ people=[]; } }
+function statusOf(p){ const exp=parseDate(p.expiry); const d=diffDays(exp,today()); const reminder=Number(p.reminderDays||7); if(d<0) return {key:'expired', label:`만료 ${Math.abs(d)}일 지남`, d}; if(d===0) return {key:'danger', label:'오늘 만료', d}; if(d<=reminder) return {key:'danger', label:`D-${d}`, d}; if(d<=30) return {key:'warn', label:`D-${d}`, d}; return {key:'ok', label:`D-${d}`, d}; }
+function calcExpiry(issued){ const d=parseDate(issued); return d ? fmt(addYearsMinusDay(d,1)) : ''; }
+function reminderDate(p){ return fmt(addDays(parseDate(p.expiry), -Number(p.reminderDays||7))); }
+function sorted(){ return [...people].sort((a,b)=>parseDate(a.expiry)-parseDate(b.expiry)); }
+function counts(){ let total=people.length, expired=0, soon=0, ok=0; people.forEach(p=>{const st=statusOf(p); if(st.key==='expired') expired++; else if(st.d<=Number(p.reminderDays||7)) soon++; else ok++;}); $('stTotal').textContent=total; $('stExpired').textContent=expired; $('stSoon').textContent=soon; $('stOk').textContent=ok; }
+function render(){ counts(); const q=($('search').value||'').trim().toLowerCase().replace(/\s+/g,''); const list=$('list'); list.innerHTML=''; let rows=sorted().filter(p=>{ const st=statusOf(p); let ok=true; if(filter==='soon') ok=st.key!=='expired' && st.d<=Number(p.reminderDays||7); if(filter==='expired') ok=st.key==='expired'; if(filter==='ok') ok=st.key==='ok'||st.key==='warn'; const hay=(p.name+p.part+p.memo).toLowerCase().replace(/\s+/g,''); return ok && (!q || hay.includes(q)); });
+  $('empty').style.display=rows.length?'none':'block';
+  rows.forEach(p=>{ const st=statusOf(p); const card=document.createElement('article'); card.className='card'; card.innerHTML=`
+    <div class="cardHead">
+      <div><div class="name">${esc(p.name)}</div><div class="sub">${esc(p.part||'파트 미입력')}</div></div>
+      <span class="badge ${st.key}">${esc(st.label)}</span>
+    </div>
+    <div class="meta">
+      <div class="m"><span>취득일</span><b>${esc(p.issued)}</b></div>
+      <div class="m"><span>만료일</span><b>${esc(p.expiry)}</b></div>
+      <div class="m"><span>알림일</span><b>${esc(reminderDate(p))}</b></div>
+    </div>
+    ${p.memo?`<div class="memo">${esc(p.memo)}</div>`:''}
+    <div class="actions">
+      <button class="smallbtn" data-act="renew" data-id="${p.id}">갱신</button>
+      <button class="smallbtn" data-act="edit" data-id="${p.id}">수정</button>
+      <button class="smallbtn" data-act="del" data-id="${p.id}">삭제</button>
+    </div>`; list.appendChild(card); });
+}
+function resetForm(){ $('editId').value=''; $('personForm').reset(); $('reminderDays').value='7'; $('saveBtn').textContent='저장'; }
+$('toggleForm').onclick=()=>{ $('formCard').classList.toggle('show'); if($('formCard').classList.contains('show')) setTimeout(()=>$('name').focus(),100); };
+$('cancelEdit').onclick=()=>{ resetForm(); $('formCard').classList.remove('show'); };
+$('issued').onchange=()=>{};
+$('personForm').onsubmit=e=>{ e.preventDefault(); const id=$('editId').value||uid(); const issued=$('issued').value; const p={ id, name:$('name').value.trim(), part:$('part').value.trim(), issued, expiry:calcExpiry(issued), reminderDays:Number($('reminderDays').value||7), memo:$('memo').value.trim(), updatedAt:new Date().toISOString()}; if(!p.name||!p.issued) return toast('이름과 취득일은 꼭 입력하세요.'); const idx=people.findIndex(x=>x.id===id); if(idx>=0) people[idx]=p; else people.push(p); save(); resetForm(); $('formCard').classList.remove('show'); render(); toast('저장했습니다.'); };
+$('list').onclick=e=>{ const btn=e.target.closest('button[data-act]'); if(!btn) return; const id=btn.dataset.id; const p=people.find(x=>x.id===id); if(!p) return; if(btn.dataset.act==='del'){ if(confirm(`${p.name} 님을 삭제할까요?`)){ people=people.filter(x=>x.id!==id); save(); render(); toast('삭제했습니다.'); } }
+  if(btn.dataset.act==='edit'){ $('formCard').classList.add('show'); $('editId').value=p.id; $('name').value=p.name; $('part').value=p.part||''; $('issued').value=p.issued; $('reminderDays').value=p.reminderDays||7; $('memo').value=p.memo||''; $('saveBtn').textContent='수정 저장'; window.scrollTo({top:0,behavior:'smooth'}); }
+  if(btn.dataset.act==='renew'){ const d=prompt(`${p.name} 님 새 보건증 취득일을 입력하세요.`, fmt(today())); if(d && /^\d{4}-\d{2}-\d{2}$/.test(d)){ p.issued=d; p.expiry=calcExpiry(d); p.updatedAt=new Date().toISOString(); save(); render(); toast('갱신했습니다.'); } }
+};
+$('search').oninput=render;
+$('tabs').onclick=e=>{ const b=e.target.closest('.tab'); if(!b) return; document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); b.classList.add('active'); filter=b.dataset.filter; render(); };
+$('notifyBtn').onclick=async()=>{ const due=people.filter(p=>{ const st=statusOf(p); return st.key==='expired' || st.d<=Number(p.reminderDays||7); }); if(!due.length) return toast('오늘 기준 알림 대상이 없습니다.'); const txt=due.map(p=>`${p.name}: ${p.expiry} 만료 (${statusOf(p).label})`).join('<br>'); toast(txt); if('Notification' in window){ const perm=Notification.permission==='granted'? 'granted' : await Notification.requestPermission(); if(perm==='granted') new Notification('보건증 만료 알림', {body: due.map(p=>`${p.name} ${statusOf(p).label}`).join(' / ')}); } };
+$('calendarBtn').onclick=()=>{$('modal').classList.add('show')}; $('closeModal').onclick=()=>{$('modal').classList.remove('show')}; $('modal').onclick=e=>{if(e.target.id==='modal') $('modal').classList.remove('show')};
+function download(filename, content, type='text/plain;charset=utf-8'){ const blob=new Blob([content],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
+function icsDate(dstr){ return dstr.replaceAll('-',''); }
+function makeIcs(){ const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Yoonsik//Health Cert Manager//KO','CALSCALE:GREGORIAN','METHOD:PUBLISH']; people.forEach(p=>{ const exp=parseDate(p.expiry); const next=addDays(exp,1); lines.push('BEGIN:VEVENT',`UID:${p.id}@health-cert-manager`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z`,`DTSTART;VALUE=DATE:${icsDate(p.expiry)}`,`DTEND;VALUE=DATE:${icsDate(fmt(next))}`,`SUMMARY:${escapeIcs('보건증 만료 - '+p.name)}`,`DESCRIPTION:${escapeIcs(`${p.name} / ${p.part||''}\n취득일: ${p.issued}\n만료일: ${p.expiry}\n메모: ${p.memo||''}`)}`,'BEGIN:VALARM',`TRIGGER:-P${Number(p.reminderDays||7)}D`,'ACTION:DISPLAY',`DESCRIPTION:${escapeIcs(`${p.name} 보건증 ${Number(p.reminderDays||7)}일 전`)}`,'END:VALARM','END:VEVENT'); }); lines.push('END:VCALENDAR'); return lines.join('\r\n'); }
+function escapeIcs(s){ return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n'); }
+$('downloadIcs').onclick=()=>{ if(!people.length) return toast('먼저 직원을 등록하세요.'); download('보건증_만료_캘린더알림.ics', makeIcs(), 'text/calendar;charset=utf-8'); $('modal').classList.remove('show'); toast('.ics 파일을 만들었습니다. 캘린더에 가져오세요.'); };
+$('exportJson').onclick=()=>download('보건증_관리_백업.json', JSON.stringify({version:1, exportedAt:new Date().toISOString(), people}, null, 2), 'application/json;charset=utf-8');
+$('importJsonBtn').onclick=()=>$('importJson').click();
+$('importJson').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; try{ const obj=JSON.parse(await f.text()); const arr=Array.isArray(obj)?obj:obj.people; if(!Array.isArray(arr)) throw new Error('bad'); people=arr.map(x=>({...x, id:x.id||uid(), expiry:x.expiry||calcExpiry(x.issued), reminderDays:Number(x.reminderDays||7)})); save(); render(); toast('백업을 가져왔습니다.'); }catch{ toast('백업 파일을 읽지 못했습니다.'); } e.target.value=''; };
+$('exportCsv').onclick=()=>{ const header=['이름','파트','취득일','만료일','알림일','상태','메모']; const rows=sorted().map(p=>[p.name,p.part,p.issued,p.expiry,reminderDate(p),statusOf(p).label,p.memo]); const csv=[header,...rows].map(r=>r.map(v=>'"'+String(v||'').replace(/"/g,'""')+'"').join(',')).join('\n'); download('보건증_만료현황.csv','\ufeff'+csv,'text/csv;charset=utf-8'); };
+$('sampleBtn').onclick=()=>{ if(people.length && !confirm('샘플 3명을 추가할까요?')) return; const base=today(); const samples=[['김주방','주방',fmt(addDays(base,-358))],['박홀','홀',fmt(addDays(base,-330))],['이알바','알바',fmt(addDays(base,-120))]]; samples.forEach(s=>people.push({id:uid(),name:s[0],part:s[1],issued:s[2],expiry:calcExpiry(s[2]),reminderDays:7,memo:'샘플 데이터'})); save(); render(); toast('샘플을 넣었습니다.'); };
+/* 데모: 서비스워커 비활성 */
+load();
+
+/* 데모: 첫 방문 시 샘플 직원 6명을 심는다 (상태 4단계가 한 화면에 보이도록) */
+(function seedDemo(){
+  try{ if(localStorage.getItem(STORE)) return; }catch(e){ return; }
+  const t=today(), mk=(name,part,store,offsetDays,reminder)=>{
+    const exp=addDays(t,offsetDays);
+    return {id:uid(), name, part, memo:store, issued:fmt(addDays(exp,-364)),
+            expiry:fmt(exp), reminderDays:reminder,
+            updatedAt:new Date().toISOString()};
+  };
+  people=[ mk('직원 A','주방','매장1',-12,7), mk('직원 B','홀','매장1',3,7),
+           mk('직원 C','주방','매장2',0,7),   mk('직원 D','홀','매장3',24,7),
+           mk('직원 E','알바','매장4',96,14), mk('직원 F','주방','매장6',210,7) ];
+  save();
+})();
+ render();
+</script>
+</body>
+</html>

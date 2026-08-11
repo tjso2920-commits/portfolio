@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>음료 교육 — 포트폴리오 데모</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap');
+:root{--bg:#0f0d0b;--s1:#1a1714;--s2:#221f1b;--bd:#2e2a24;--am:#c8862a;--aml:#e8a84a;--gd:#f0c060;--tx:#e8e0d0;--td:#9a8f7e;--tx2:#5a5248;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
+
+/* HEADER */
+header{background:linear-gradient(180deg,#1a1410,var(--bg));border-bottom:1px solid var(--bd);padding:16px 16px 0;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.htop{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.htitle{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:700;color:var(--aml)}
+.hsub{font-size:11px;color:var(--td);letter-spacing:.5px}
+.madeby{font-size:11px;color:var(--am);border:1px solid rgba(200,134,42,.4);border-radius:20px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+
+
+/* TABS */
+.tabbar{display:flex;gap:4px}
+.tabbtn{flex:1;background:none;border:none;border-bottom:3px solid transparent;padding:10px 8px;color:var(--td);font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.tabbtn.on{color:var(--aml);border-bottom-color:var(--am)}
+
+/* PANELS — 핵심: JS로만 제어, CSS는 초기값만 */
+#panel-hb{display:block}
+#panel-bt{display:none}
+
+main{padding:16px;max-width:600px;margin:0 auto}
+.sec-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--tx2);margin:18px 0 8px;padding-left:2px}
+
+/* HB CARD */
+.hbc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.hbc:hover{border-color:var(--am)}
+.hbh{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;user-select:none;-webkit-user-select:none}
+
+
+.bottle-ph span{font-size:9px;color:var(--tx2);text-align:center}
+.hbmeta{flex:1;min-width:0}
+.hbname{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:600}
+.hbtags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.tag{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
+.ts{background:rgba(200,134,42,.15);color:var(--aml);border:1px solid rgba(200,134,42,.3)}
+.ty{background:rgba(90,138,90,.12);color:#7ab07a;border:1px solid rgba(90,138,90,.25)}
+.td2{background:rgba(58,106,154,.15);color:#6a9aca;border:1px solid rgba(58,106,154,.3)}
+.tg{background:rgba(240,192,96,.1);color:var(--gd);border:1px solid rgba(240,192,96,.25)}
+.tna{background:rgba(160,64,64,.12);color:#ca7070;border:1px solid rgba(160,64,64,.3)}
+.chev{color:var(--tx2);font-size:11px;transition:transform .2s;flex-shrink:0}
+.hbc.open .chev{transform:rotate(180deg)}
+
+/* DETAIL */
+.hbd{display:none;border-top:1px solid var(--bd)}
+.hbc.open .hbd{display:block}
+
+/* MODE SWITCH */
+.modesw{display:flex;margin:12px 14px 0;background:var(--s2);border-radius:8px;padding:3px;gap:2px}
+.mbtn{flex:1;background:none;border:none;border-radius:6px;padding:7px 4px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;color:var(--td);cursor:pointer;transition:all .2s}
+.mbtn.on{background:var(--am);color:#1a1200}
+
+.simv,.prov{padding:12px 14px 14px}
+
+/* RECIPE BOX */
+.rbox{background:var(--s2);border-radius:8px;padding:12px;margin-bottom:10px}
+.rrow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--bd)}
+.rrow:last-child{border-bottom:none}
+.rname{font-size:13px;color:var(--tx);display:flex;align-items:center;gap:6px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--am);flex-shrink:0}
+.ramt{font-size:13px;font-weight:700;color:var(--aml)}
+.stepbox{margin-top:6px}
+.step{display:flex;gap:10px;align-items:flex-start;padding:4px 0}
+.snum{width:20px;height:20px;border-radius:50%;background:var(--am);color:#1a1200;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.stxt{font-size:13px;color:var(--tx);line-height:1.5}
+.garline{display:flex;align-items:center;gap:8px;margin-top:8px;padding:7px 11px;background:rgba(240,192,96,.06);border:1px solid rgba(240,192,96,.2);border-radius:8px;font-size:13px}
+.glbl{color:var(--td);font-size:11px}
+.gval{color:var(--gd);font-weight:500}
+
+/* PRO */
+.prosec{margin-bottom:14px}
+.prostitle{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--am);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--bd)}
+.protxt{font-size:13px;color:var(--tx);line-height:1.75}
+.protxt strong{color:var(--aml);font-weight:500}
+.kp{background:var(--s2);border-left:3px solid var(--am);padding:9px 11px;border-radius:0 8px 8px 0;font-size:13px;color:var(--tx);line-height:1.6;margin-top:7px}
+.gtip{background:rgba(240,192,96,.06);border:1px solid rgba(240,192,96,.2);border-radius:8px;padding:9px 11px;font-size:13px;color:var(--tx);line-height:1.6}
+.gtip::before{content:'💬 손님 설명: ';color:var(--gd);font-weight:500}
+.warn{background:rgba(240,192,96,.08);border:1px solid rgba(240,192,96,.2);border-radius:8px;padding:9px 11px;font-size:12px;color:var(--gd);margin:7px 0}
+
+/* METHOD 섹션 */
+.method-card{background:linear-gradient(160deg,#1c1813,#161310);border:1px solid var(--bd);border-radius:14px;margin-bottom:14px;overflow:hidden}
+.method-head{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.method-icon{font-size:22px;flex-shrink:0}
+.method-tt{flex:1}
+.method-title{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;color:var(--aml)}
+.method-sub{font-size:10px;color:var(--td);letter-spacing:.5px;margin-top:2px}
+.method-body{display:none;padding:0 16px 16px;border-top:1px solid var(--bd)}
+.method-card.open .method-body{display:block}
+.method-card.open .chev{transform:rotate(180deg)}
+.mblock{margin-top:14px}
+.mblock-t{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--am);margin-bottom:7px;font-weight:700}
+.mtxt{font-size:13px;color:var(--tx);line-height:1.75}
+.mtxt strong{color:var(--aml);font-weight:500}
+/* 무게감 스케일 바 */
+.weight-row{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px}
+.weight-label{width:78px;flex-shrink:0;color:var(--td)}
+.weight-bar{flex:1;height:7px;background:var(--s2);border-radius:4px;overflow:hidden}
+.weight-fill{height:100%;background:linear-gradient(90deg,var(--am),var(--gd));border-radius:4px}
+.weight-val{width:64px;flex-shrink:0;text-align:right;color:var(--aml);font-weight:500}
+/* 비교 테이블 */
+.cmp{display:flex;gap:8px;margin-top:8px}
+.cmp-col{flex:1;background:var(--s2);border-radius:8px;padding:10px}
+.cmp-h{font-size:12px;font-weight:700;color:var(--aml);margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid var(--bd)}
+.cmp-li{font-size:11px;color:var(--tx);line-height:1.5;padding:2px 0;display:flex;gap:5px}
+.cmp-li::before{content:'·';color:var(--am)}
+/* 시럽 칩 그리드 */
+.syr-item{background:var(--s2);border-radius:8px;padding:9px 11px;margin-bottom:6px}
+.syr-name{font-size:12px;font-weight:600;color:var(--aml);margin-bottom:3px}
+.syr-desc{font-size:12px;color:var(--td);line-height:1.5}
+/* 환경/온도 노트 */
+.env-row{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);align-items:flex-start}
+.env-row:last-child{border-bottom:none}
+.env-icon{font-size:14px;flex-shrink:0;width:20px}
+mark.hl{background:rgba(240,192,96,.22);color:var(--gd);font-weight:600;padding:1px 4px;border-radius:3px}
+.env-txt{font-size:12px;color:var(--tx);line-height:1.5}
+.env-txt b{color:var(--aml);font-weight:500}
+.sub-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx2);margin:18px 0 8px;padding-left:2px}
+
+/* 큰 카테고리 구분선 (가독성) */
+.catdiv{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;color:var(--aml);margin:24px 0 12px;padding:10px 14px;background:linear-gradient(90deg,rgba(200,134,42,.18),rgba(200,134,42,.02));border-left:4px solid var(--am);border-radius:0 8px 8px 0;letter-spacing:.5px}
+.catdiv:first-of-type{margin-top:8px}
+
+/* 정의 카드 (📖) */
+.defcard{background:linear-gradient(160deg,#1c1813,#161310);border-color:rgba(200,134,42,.35)}
+.defcard .btname{color:var(--gd)}
+
+/* BOTTLE CARD */
+.btc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.btc:hover{border-color:var(--am)}
+.bth{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.btmeta{flex:1;min-width:0}
+.btname{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:600}
+.bten{font-size:11px;color:var(--td);margin-top:2px}
+.btbadges{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.badge{font-size:10px;padding:2px 8px;border-radius:4px}
+.bcat{background:rgba(200,134,42,.15);color:var(--aml);border:1px solid rgba(200,134,42,.3)}
+.breg{background:rgba(90,90,130,.15);color:#9090c0;border:1px solid rgba(90,90,130,.3)}
+.babv{background:rgba(160,64,64,.12);color:#ca7070;border:1px solid rgba(160,64,64,.3)}
+.bprc{background:rgba(240,192,96,.1);color:var(--gd);border:1px solid rgba(240,192,96,.25)}
+.btd{display:none;border-top:1px solid var(--bd)}
+.btc.open .btd{display:block}
+.btc.open .chev{transform:rotate(180deg)}
+
+/* FILTER */
+.fbar{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;scrollbar-width:none}
+.fbar::-webkit-scrollbar{display:none}
+.fchip{flex-shrink:0;background:var(--s1);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--td);cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'Noto Sans KR',sans-serif}
+.fchip.on{background:var(--am);border-color:var(--am);color:#1a1200;font-weight:700}
+
+/* PORTFOLIO OVERLAY */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* SCROLL TOP */
+.stbtn{position:fixed;bottom:24px;right:20px;width:40px;height:40px;background:var(--am);border:none;border-radius:50%;color:#1a1200;font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(200,134,42,.4);z-index:200}
+.stbtn.vis{display:flex}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="htop">
+    <div>🥃</div>
+    <div>
+      <div class="htitle">음료 교육 <span class="madeby">made by 윤식</span></div>
+      <div class="hsub">STAFF GUIDE · HIGHBALL &amp; BOTTLE</div>
+    </div>
+  </div>
+  <div class="tabbar">
+    <button class="tabbtn on" id="tbhb" onclick="goTab('hb')">🍹 하이볼 · 음료</button>
+    <button class="tabbtn" id="tbbt" onclick="goTab('bt')">🍶 보틀 설명</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════
+     하이볼 패널
+═══════════════════════════ -->
+<div id="panel-hb">
+
+<!-- ═══ 하이볼 METHOD ═══ -->
+<div class="sub-label">먼저 읽기 · 하이볼의 원리</div>
+
+<div class="method-card" id="m-def">
+  <div class="method-head" onclick="tog('m-def')">
+    <div class="method-icon">📖</div>
+    <div class="method-tt"><div class="method-title">하이볼이란?</div><div class="method-sub">정의 · DEFINITION</div></div>
+    <div class="chev">▼</div>
+  </div>
+  <div class="method-body">
+    <div class="mblock">
+      <div class="mtxt">하이볼은 <strong>증류주(기주)에 그보다 많은 양의 탄산 믹서를 섞어 얼음과 함께 길게 마시는 롱드링크</strong>다. 보통 기주 1 : 믹서 2~4 비율로, 얼음 가득한 큰 잔에 낸다. 가장 원형이 되는 형태는 <strong>스카치 + 소다(Scotch &amp; Soda)</strong>로, 19세기 말 영미권에서 시작됐다.</div>
+      <div class="mtxt" style="margin-top:8px">핵심은 <strong>"술을 약하게, 시원하게, 음식과 함께"</strong>. 도수 높은 술을 그대로 마시는 대신 얼음과 탄산으로 길게 늘려 누구나 부담 없이 마시게 만든 술이다. 그래서 식사·안주와 함께 마시기 좋다.</div>
+      <div class="kp">일본이 이걸 예술로 끌어올렸다. 산토리가 가쿠빈으로 대중화하면서 <strong>"하이볼=위스키+소다"</strong>가 국민 음료가 됐고(일본에선 그냥 "하이볼"이 위스키 소다를 뜻함), 다른 베이스는 우롱하이·츄하이처럼 뒤에 "-하이"를 붙여 부른다. 우리 가게 하이볼도 이 <strong>일본식 이자카야 하이볼</strong>에 뿌리를 둔다.</div>
+      <div class="mtxt" style="margin-top:8px"><strong>한 줄 정의:</strong> 기주 + 얼음 + 탄산 믹서. 여기에 레몬·시럽·과일을 더해 다양한 베리에이션을 만든 것이다.</div>
+      <div class="warn" style="color:var(--td)">💡 알바생 암기 포인트: "하이볼 = 술 + 얼음 + 탄산. 우리집은 진로토닉 베이스 + 레몬웻지."</div>
+    </div>
+  </div>
+</div>
+
+<div class="method-card" id="m-balance">
+  <div class="method-head" onclick="tog('m-balance')">
+    <div class="method-icon">⚖️</div>
+    <div class="method-tt"><div class="method-title">하이볼 밸런스의 4축</div><div class="method-sub">기주 · 탄산 · 산 · 시럽(무게감)</div></div>
+    <div class="chev">▼</div>
+  </div>
+  <div class="method-body">
+    <div class="mblock">
+      <div class="mtxt">하이볼은 결국 <strong>네 가지가 균형</strong>을 잡는 음료다. 하나가 세지면 다른 걸로 잡아준다. 이 관계만 이해하면 어떤 하이볼이든 맛을 조절할 수 있다.</div>
+    </div>
+
+    <div class="mblock">
+      <div class="mblock-t">① 기주 (베이스 술)</div>
+      <div class="mtxt">향과 알코올의 뼈대. <strong>위스키(40%)</strong>는 30ml, <strong>증류식 소주(25%)</strong>는 같은 볼륨감을 내려면 60ml가 필요하다(추사 하이볼이 60ml인 이유). 향이 강한 기주(짐빔)는 탄산·산을 더 넉넉히, 향이 약한 기주는 부재료가 튀지 않게.</div>
+    </div>
+
+    <div class="mblock">
+      <div class="mblock-t">② 탄산 (진로 토닉워터)</div>
+      <div class="mtxt">청량감과 음료의 길이를 만든다. 탄산이 살아있어야 첫 모금이 산다. 두 가지를 동시에 잡아야 한다 — <strong>젓는 건 최소화하되, 술과 탄산은 최대한 잘 섞이게.</strong> 바 스푼을 잔 바닥까지 넣고 <strong>아래에서 위로 한두 번</strong> 부드럽게 끌어올리면, 탄산을 거의 안 죽이고도 술이 고르게 섞인다. 마구 휘젓는 건 금물.</div>
+      <div class="kp">⚠️ 탄산은 <strong>무조건 냉장고 보관.</strong> 탄산은 온도가 낮을수록 액체에 더 많이·오래 녹아있는다(용해도↑). 미지근한 토닉을 쓰면 따르는 순간 탄산이 확 날아가 김빠진 하이볼이 된다. 차가운 토닉 = 강하고 오래가는 탄산.</div>
+      <div class="mtxt" style="margin-top:8px"><strong>🌡️ 온도 격차 — 전문 지식:</strong> 하이볼은 <strong>기주의 온도와 탄산의 온도 차이가 작을수록</strong> 탄산이 덜 깨지고 잘 섞인다. 차가운 탄산에 미지근한 술을 부으면 온도 충격으로 탄산이 급격히 빠진다. <strong>그래서 전문 바에서는 기주와 얼음을 먼저 스터(stir)해서 술 온도를 충분히 내린 뒤 탄산을 붓는다.</strong> 우리 업장은 기주를 냉장 보관하기 어려워 이 방법이 제한적이지만, <strong>"왜 그렇게 하는가"는 알고 있어야 한다</strong> — 최소한 얼음을 가득 채워 술을 빠르게 식힌 뒤 탄산을 붓는 식으로 격차를 줄일 수 있다.</div>
+    </div>
+
+    <div class="mblock">
+      <div class="mblock-t">③ 산 (레몬웻지)</div>
+      <div class="mtxt"><strong>산(신맛)은 단맛과 알코올의 무게를 끊어준다.</strong> 레몬웻지를 짜 넣으면 끝맛이 깔끔하게 떨어지고(드라이해짐), 껍질 오일에서 향이 한 겹 올라온다. 단 시럽이 들어간 하이볼일수록 레몬의 산이 중요해진다 — 안 그러면 끝맛이 물리게 단다.</div>
+      <div class="mblock-t" style="margin-top:12px">🍋 산(酸)과 탄산이 만나면 — 탄산이 죽는다</div>
+      <div class="mtxt"><strong>산(시트릭산 등)이 탄산음료에 닿으면 CO₂ 방출이 빨라진다.</strong> 레몬즙을 탄산에 직접 부으면 기포가 확 올라오면서 탄산이 빠르게 빠진다. 즉 레몬을 잘못 넣으면 탄산을 죽이는 거다.</div>
+      <div class="mtxt" style="margin-top:8px">그래서 <strong>넣는 순서가 중요하다:</strong></div>
+      <div class="warn" style="margin-top:6px">
+        <div style="margin-bottom:6px"><mark class="hl">① 기주 + 레몬즙 먼저</mark> 글라스에 넣기</div>
+        <div style="margin-bottom:6px"><mark class="hl">② 얼음으로 스터</mark> — 섞이면서 온도를 내린다</div>
+        <div><mark class="hl">③ 탄산은 마지막에 천천히</mark> — 산과의 충격을 최소화</div>
+      </div>
+      <div class="mtxt" style="margin-top:10px">또는 <strong>플로팅 방식:</strong></div>
+      <div class="warn" style="margin-top:6px"><mark class="hl">탄산을 먼저 채우고, 레몬웻지를 맨 위에 올린다.</mark> 손님이 첫 모금에 레몬 향을 맡고 직접 짜서 먹는 방식. 탄산이 죽지 않고, 레몬 타격감도 극대화된다.</div>
+      <div class="kp" style="margin-top:10px">핵심: <strong>산과 탄산은 만나는 순간 탄산이 빠진다.</strong> 순서를 지키거나(기주+산 먼저 → 탄산 마지막), 플로팅으로 분리하거나 — 둘 중 하나로 탄산을 지켜야 한다.</div>
+    </div>
+
+    <div class="mblock">
+      <div class="mblock-t">④ 시럽 = 무게감(바디)</div>
+      <div class="mtxt">시럽은 단맛만이 아니라 <strong>음료의 무게(바디감)</strong>를 만든다. 시럽이 많을수록 묵직하고 입에 오래 남고, 적을수록 가볍고 깔끔하다. 무게가 무거워지면 그만큼 산(레몬)으로 균형을 잡아야 한다.</div>
+      <div class="weight-row"><span class="weight-label">가쿠/짐빔 하이볼</span><span class="weight-bar"><span class="weight-fill" style="width:15%"></span></span><span class="weight-val">가벼움</span></div>
+      <div class="weight-row"><span class="weight-label">레몬/얼그레이 하이볼</span><span class="weight-bar"><span class="weight-fill" style="width:45%"></span></span><span class="weight-val">중간</span></div>
+      <div class="weight-row"><span class="weight-label">자몽/피치 하이볼</span><span class="weight-bar"><span class="weight-fill" style="width:70%"></span></span><span class="weight-val">묵직</span></div>
+      <div class="weight-row"><span class="weight-label">츠루우메 하이볼</span><span class="weight-bar"><span class="weight-fill" style="width:90%"></span></span><span class="weight-val">가장 묵직</span></div>
+      <div class="kp">왜 <strong>츠루우메(유자)가 가장 묵직</strong>한가: 츠루우메는 시럽이 아니라 <strong>유자 리큐르(과실주, 7도)</strong> 자체다. 당도·점도·과육감이 시럽보다 높고, 우리집은 <strong>반잔(~15ml)</strong>이나 넣는다. 당도+점성+사용량 3박자가 겹쳐서 가장 바디가 무겁고 달다 → 그만큼 레몬 산미로 끝맛을 꼭 잡아줘야 한다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 진로토닉 비교 -->
+<div class="method-card" id="m-tonic">
+  <div class="method-head" onclick="tog('m-tonic')">
+    <div class="method-icon">🫧</div>
+    <div class="method-tt"><div class="method-title">진로토닉 vs 제로 / 탄산의 성질</div><div class="method-sub">토닉 ≠ 탄산수, 제로 = 제로슈거</div></div>
+    <div class="chev">▼</div>
+  </div>
+  <div class="method-body">
+    <div class="mblock">
+      <div class="mtxt">먼저, <strong>탄산수 ≠ 토닉워터</strong>. 탄산수(싱하 등)는 그냥 탄산 든 물이고, <strong>토닉워터는 단맛 + 쌉쌀한 쓴맛(퀴닌 향)</strong>이 들어있다. 우리집 하이볼은 토닉 베이스라 살짝 달고 쌉쌀한 맛이 깔린다.</div>
+      <div class="mblock-t" style="margin-top:12px">🫧 진로토닉 탄산 vs 싱하 탄산수 탄산 — 성질이 다르다</div>
+      <div class="mtxt">둘 다 탄산이지만 <strong>기포의 성질과 지속력이 다르다.</strong></div>
+      <div class="cmp">
+        <div class="cmp-col">
+          <div class="cmp-h">진로토닉 탄산</div>
+          <div class="cmp-li">기포가 곱고 부드러운 편</div>
+          <div class="cmp-li">당·향 성분이 있어 탄산이 비교적 잔잔하게 유지</div>
+          <div class="cmp-li">술과 섞였을 때 둥글게 어우러짐</div>
+          <div class="cmp-li">토닉향·단맛이 베이스로 깔림</div>
+        </div>
+        <div class="cmp-col">
+          <div class="cmp-h">싱하 탄산수</div>
+          <div class="cmp-li">기포가 굵고 강하게 치고 올라옴</div>
+          <div class="cmp-li">아무 맛 없는 순수 탄산 → 날카롭고 드라이</div>
+          <div class="cmp-li">탄산 자체는 더 쎄게 느껴지나 빨리 빠지는 편</div>
+          <div class="cmp-li">술 본연의 맛이 그대로 드러남</div>
+        </div>
+      </div>
+      <div class="mtxt" style="margin-top:8px;font-size:12px;color:var(--td)">※ 같은 탄산이라도 토닉은 "부드럽고 지속적", 탄산수는 "강하고 쨍하지만 빨리 빠짐". 그래서 토닉 베이스 하이볼은 끝까지 둥근 맛이 유지되는 편.</div>
+    </div>
+    <div class="mblock">
+      <div class="mblock-t">진로토닉 vs 제로 (둘 다 단맛 있음)</div>
+      <div class="cmp">
+        <div class="cmp-col">
+          <div class="cmp-h">진로토닉 오리지널</div>
+          <div class="cmp-li">설탕 + 기타과당으로 단맛</div>
+          <div class="cmp-li">당류 약 61g / 255kcal (600ml)</div>
+          <div class="cmp-li">바디감 있고 풍부한 단맛</div>
+          <div class="cmp-li">기본값</div>
+        </div>
+        <div class="cmp-col">
+          <div class="cmp-h">진로토닉 제로</div>
+          <div class="cmp-li">제로 슈거(설탕 무첨가)</div>
+          <div class="cmp-li">알룰로스·스테비아·수크랄로스 등 대체감미료로 단맛</div>
+          <div class="cmp-li">당류 약 2g / 10kcal (300ml)</div>
+          <div class="cmp-li">더 가볍고 깔끔, 요청 시 교체</div>
+        </div>
+      </div>
+      <div class="kp">⚠️ 중요: 제로도 <strong>"단맛이 없는 게 아니라 설탕을 안 쓴 것"</strong>(제로 슈거). 대체감미료로 단맛은 그대로 난다. 손님이 "안 달게" 해달라고 제로를 찾아도, 시럽 들어간 메뉴는 시럽 단맛이 남는다는 점 기억.</div>
+      <div class="mtxt" style="margin-top:8px;font-size:12px"><strong>안내 팁:</strong> "당/칼로리 신경 쓰시면 제로로 드릴까요?" — 다이어트·혈당 관리 손님에게 어필. 자몽·피치처럼 이미 단 메뉴에 특히 좋다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 얼음 + 계절 + 온도 -->
+<div class="method-card" id="m-env">
+  <div class="method-head" onclick="tog('m-env')">
+    <div class="method-icon">🧊</div>
+    <div class="method-tt"><div class="method-title">얼음 · 계절 · 온도 변수</div><div class="method-sub">제빙기 얼음 / 희석·탄산 컨트롤</div></div>
+    <div class="chev">▼</div>
+  </div>
+  <div class="method-body">
+    <div class="mblock">
+      <div class="mblock-t">제빙기 얼음 특성</div>
+      <div class="mtxt">우리집은 <strong>제빙기 얼음</strong>을 쓴다. 크기가 작은 편이라 <strong>표면적이 넓어 일반 큰 각얼음보다 빨리 녹는다</strong> → 그만큼 희석이 빠르다. 잔에 <strong>얼음을 가득</strong> 채워야 (역설적으로) 얼음끼리 서로 차갑게 유지돼 녹는 속도가 느려지고 술이 덜 묽어진다. 얼음 적게 넣으면 더 빨리 물맛 된다.</div>
+    </div>
+    <div class="mblock">
+      <div class="mblock-t">계절 · 냉난방에 따른 변화</div>
+      <div class="env-row"><span class="env-icon">☀️</span><span class="env-txt"><b>여름 / 냉방 약할 때:</b> 얼음이 빨리 녹는다 → 탄산·음료를 더 차갑게 준비하고, 만들면 바로 서브. 미리 만들어두면 금방 묽어진다.</span></div>
+      <div class="env-row"><span class="env-icon">❄️</span><span class="env-txt"><b>겨울 / 난방 강할 때:</b> 잔과 실온이 따뜻하면 탄산이 빨리 빠진다. 잔을 미리 차갑게(냉동실), 토닉도 충분히 차가운 것으로.</span></div>
+      <div class="env-row"><span class="env-icon">🌡️</span><span class="env-txt"><b>탄산·음료 온도:</b> 토닉·데미소다·자몽에이드는 <b>차가울수록 탄산이 강하고 오래간다.</b> 미지근한 캔/병 쓰면 탄산이 약하고 금방 죽는다 → <mark class="hl">항상 냉장고에서 꺼낸 차가운 것 사용.</mark></span></div>
+      <div class="env-row"><span class="env-icon">🧊</span><span class="env-txt"><b>남은 음료:</b> 따고 남은 토닉·캔·병은 <mark class="hl">반드시 냉장 보관.</mark> 상온에 두면 탄산이 다 빠져서 다음 잔이 맹맹해진다.</span></div>
+      <div class="env-row"><span class="env-icon">⏱️</span><span class="env-txt"><b>서브 타이밍:</b> 하이볼은 만든 직후가 가장 맛있다. 얼음 녹기 전, 탄산 빠지기 전에 손님께 바로.</span></div>
+    </div>
+    <div class="kp">핵심 한 줄: <strong>모든 재료(잔·얼음·토닉·음료)는 차갑게, 만들면 바로 서브.</strong> 더울수록·따뜻할수록 이 원칙을 더 빡세게. (기주와 탄산의 온도 격차를 줄여야 탄산이 오래간다 → 밸런스 4축의 ② 탄산 참고)</div>
+  </div>
+</div>
+
+<div class="method-card" id="m-syrup">
+  <div class="method-head" onclick="tog('m-syrup')">
+    <div class="method-icon">🍯</div>
+    <div class="method-tt"><div class="method-title">시럽별 특징</div><div class="method-sub">Pomona 시럽 라인업</div></div>
+    <div class="chev">▼</div>
+  </div>
+  <div class="method-body">
+    <div class="mblock">
+      <div class="syr-item"><div class="syr-name">레몬 시럽 (Pomona)</div><div class="syr-desc">레몬농축액 3%, 스페인산 레몬. 당도+산미+레몬향이 균형. 가장 깔끔하고 무난한 베이스. 매번 일정한 맛이 장점.</div></div>
+      <div class="syr-item"><div class="syr-name">애플 시럽 (Pomona)</div><div class="syr-desc">사과농축액 + 발효식초 들어가 단맛 끝에 살짝 산미. 추사 하이볼(사과)에 쓰면 잘 어울림.</div></div>
+      <div class="syr-item"><div class="syr-name">모히토 시럽 (Pomona)</div><div class="syr-desc">애플민트·모히토향 베이스에 스페인산 산미. 녹황색이라 음료에 옅은 색이 든다. 민트 청량감이 핵심 — 여름 인기.</div></div>
+      <div class="syr-item"><div class="syr-name">블루큐라소 시럽 (Pomona)</div><div class="syr-desc">오렌지 껍질 향 + 파란 색소. 맛보다 비비드한 파란 비주얼이 메인. 오렌지향이라 위스키와 의외로 잘 붙음.</div></div>
+      <div class="syr-item"><div class="syr-name">스모키얼그레이 시럽 (Pomona Mixology)</div><div class="syr-desc">홍차(얼그레이) + 훈제 스모키향 + 베르가못. 단순 단맛이 아니라 복합적인 티 향. 향이 강해 손님이 향을 먼저 느낀다.</div></div>
+      <div class="syr-item"><div class="syr-name">위스키플레이버 시럽 (논알콜용)</div><div class="syr-desc">설탕+위스키향+카라멜색소. 알코올 없이 위스키의 향·색만 흉내. 논알콜 하이볼의 핵심 재료.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sub-label">기주 보틀 · 하이볼 3대 베이스</div>
+
+<!-- 가쿠빈 보틀 설명 -->
+<div class="hbc" id="b-gakubin">
+  <div class="hbh" onclick="tog('b-gakubin')">
+    <div class="hbmeta">
+      <div class="hbname">산토리 가쿠빈 <span style="font-size:11px;color:var(--td);font-weight:400">· 기주</span></div>
+      <div class="hbtags"><span class="tag ts">블렌디드 위스키</span><span class="tag td2">일본</span><span class="tag tg">40%</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="gtip">일본에서 제일 유명한 위스키예요. 1937년부터 나온 "각진 병"이라 가쿠빈이라고 불러요. 향이 가볍고 부드러워서 탄산이랑 섞으면 깔끔한 하이볼이 돼요. 일본 사람들이 밥 먹을 때 제일 많이 마시는 술이에요.</div>
+      <div class="warn" style="color:var(--td)">💡 알바생 암기 포인트: "가쿠 = 가볍고 깔끔한 일본 국민 하이볼"</div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt"><strong>산토리 가쿠빈(角瓶)</strong> · 1937년 출시된 일본 블렌디드 위스키. 야마자키·하쿠슈·치타 3개 증류소 원액을 블렌딩. 거북등(亀甲) 무늬의 각진 병이 상징. 도수 <strong>40%</strong>.</div></div>
+      <div class="prosec"><div class="prostitle">맛 프로파일</div><div class="protxt">가벼운 곡물향, 바닐라, 꿀의 부드러운 단맛, 드라이한 피니시. 피트(훈연)는 거의 없음. 개성을 주장하기보다 <strong>탄산·부재료를 받쳐주는 깔끔한 베이스</strong> 역할에 최적화된 맛.</div></div>
+      <div class="prosec"><div class="prostitle">하이볼 적용</div><div class="protxt">30ml 기준. 향이 약하고 깨끗해서 레몬·시럽 등 어떤 부재료와도 충돌 없이 섞인다. "가쿠하이(角ハイ)"는 일본 하이볼 문화의 원형. 토닉의 단맛/쓴맛이 가쿠의 가벼운 단맛과 자연스럽게 이어짐.</div>
+      <div class="kp">검수 메모: 향이 약한 게 단점이 아니라 <strong>설계된 강점</strong>. 가쿠로 만든 하이볼이 밍밍하면 탄산이 죽었거나 얼음이 녹은 것 — 술 탓이 아니다.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 짐빔 보틀 설명 -->
+<div class="hbc" id="b-jimbeam">
+  <div class="hbh" onclick="tog('b-jimbeam')">
+    <div class="hbmeta">
+      <div class="hbname">짐빔 <span style="font-size:11px;color:var(--td);font-weight:400">· 기주</span></div>
+      <div class="hbtags"><span class="tag ts">버번 위스키</span><span class="tag td2">미국 켄터키</span><span class="tag tg">40%</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="gtip">미국 켄터키에서 만드는 버번 위스키예요. 옥수수로 만들어서 바닐라랑 달달한 향이 나고, 가쿠보다 향이 진해요. 진한 맛 좋아하시는 분께 추천하면 좋아요.</div>
+      <div class="warn" style="color:var(--td)">💡 알바생 암기 포인트: "짐빔 = 바닐라 향 나는 진한 미국 버번"</div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt"><strong>짐빔(Jim Beam)</strong> · 1795년부터 이어진 미국 켄터키 버번 위스키. 세계에서 가장 많이 팔리는 버번 중 하나. 옥수수 51% 이상 + 새 오크통(charred oak) 숙성이 버번의 법적 조건. 도수 <strong>40%</strong>.</div></div>
+      <div class="prosec"><div class="prostitle">맛 프로파일</div><div class="protxt">새 오크통 숙성에서 오는 <strong>바닐라·캐러멜·오크</strong> 향이 뚜렷하고, 약간의 스파이시함과 단맛. 스카치·일본 위스키보다 향이 묵직하고 단내가 강하다.</div></div>
+      <div class="prosec"><div class="prostitle">하이볼 적용</div><div class="protxt">30ml 기준. 향이 강해서 하이볼로 희석해도 버번 개성이 살아남는다. 탄산 비율을 살짝 넉넉히 잡으면 균형이 맞음. 미국식으로는 레몬 없이 마시기도 하지만 우리집은 레몬웻지로 끝맛을 정리.</div>
+      <div class="kp">검수 메모: 가쿠 하이볼과 비교 추천 시 — "가쿠는 가볍고 깔끔, 짐빔은 바닐라 향에 묵직". 손님 취향 갈림길에서 이 한 문장이 먹힌다.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 존바 보틀 설명 -->
+<div class="hbc" id="b-johnbarr">
+  <div class="hbh" onclick="tog('b-johnbarr')">
+    <div class="hbmeta">
+      <div class="hbname">존바 (John Barr) <span style="font-size:11px;color:var(--td);font-weight:400">· 기주</span></div>
+      <div class="hbtags"><span class="tag ts">블렌디드 스카치</span><span class="tag td2">스코틀랜드</span><span class="tag tg">40%</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="gtip">스코틀랜드 위스키예요. 여러 위스키를 섞어 만들어서 부드럽고 균형이 좋아요. 시럽·과일이랑 섞는 하이볼(얼그레이·레몬·모히또 등)에 두루 쓰는 베이스 술이에요.</div>
+      <div class="warn" style="color:var(--td)">💡 알바생 암기 포인트: "존바 = 시럽 하이볼 다 받쳐주는 부드러운 스카치"</div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt"><strong>존바(John Barr)</strong> · 스코틀랜드 블렌디드 스카치 위스키. Whyte &amp; Mackay에서 생산. Highland·Speyside 지역 몰트와 그레인 위스키 다수를 블렌딩하고 셰리 캐스크 숙성을 거친다. 도수 <strong>40%</strong>. (조니워커와 무관한 별개 브랜드)</div></div>
+      <div class="prosec"><div class="prostitle">맛 프로파일</div><div class="protxt">셰리 캐스크에서 오는 <strong>꿀·바닐라·베이크드 애플</strong> 계열의 부드러운 단향. 모난 데 없이 둥근 맛이라 부재료를 눌러버리지 않는다. 그래서 향·색이 들어가는 시럽 하이볼의 공용 베이스로 적합.</div></div>
+      <div class="prosec"><div class="prostitle">하이볼 적용</div><div class="protxt">30ml 기준. 얼그레이·레몬·모히또·블루·자몽·피치·우롱·녹차·츠루우메 — 시럽/음료 기반 하이볼 전부 존바 베이스. 기주의 개성보다 <strong>부재료의 향을 살리는 캐리어</strong> 역할이 핵심.</div>
+      <div class="kp">검수 메모: 가쿠/짐빔은 단독 하이볼(술맛 자체가 주인공), 존바는 시럽 하이볼의 받침. 역할이 다르다. 손님이 "무슨 위스키냐" 물으면 "스카치 블렌디드, 부드러운 편"이라고 답하면 충분.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sub-label">하이볼 · 12종</div>
+
+<!-- 가쿠 -->
+<div class="hbc" id="c-gaku">
+  <div class="hbh" onclick="tog('c-gaku')">
+    <div class="hbmeta">
+      <div class="hbname">산토리 가쿠 하이볼</div>
+      <div class="hbtags"><span class="tag ts">가쿠빈 30ml</span><span class="tag td2">진로 토닉워터</span><span class="tag tg">레몬웻지</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>산토리 가쿠빈</span><span class="ramt">30ml (1지거)</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">가쿠빈 30ml 붓기</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">글라스에 얼음 가득 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">진로 토닉워터 천천히 채우기 (탄산 죽지 않게)</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">레몬웻지 올려서 서브</div></div>
+      </div>
+      <div class="garline"><span>🍋</span><span class="glbl">가니쉬</span><span class="gval">레몬웻지</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">🥃 술 설명</div><div class="protxt"><strong>산토리 가쿠빈(角瓶)</strong> — 1937년 출시, 일본 국민 블렌디드 위스키. 각진 병 모양이 특징. <strong>40%</strong>. 달콤하고 가벼운 곡물향. 일본 이자카야에서 가장 많이 쓰이는 하이볼 베이스.</div></div>
+      <div class="prosec"><div class="prostitle">⚙️ 방법론</div><div class="protxt">핵심은 <strong>탄산 보존</strong>. 술을 먼저 부어 베이스 향을 자리잡게 한 뒤, 얼음을 가득 채워 술을 빠르게 식히고(온도 충격↓) 토닉을 붓는다. 토닉을 부은 다음엔 <strong>바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만</strong> 부드럽게 끌어올려 최소한으로 섞는다 — 탄산은 거의 안 죽이고 술만 고르게. 마구 휘젓는 건 금물.</div><div class="kp">글라스는 냉동실 미리 넣어두면 더 좋음. 제로 진로토닉으로 변경 가능.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">일본 이자카야에서 제일 많이 마시는 하이볼이에요. 가볍고 깔끔해서 음식이랑 같이 드시기 좋아요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 짐빔 -->
+<div class="hbc" id="c-jb">
+  <div class="hbh" onclick="tog('c-jb')">
+    <div class="hbmeta">
+      <div class="hbname">짐빔 하이볼</div>
+      <div class="hbtags"><span class="tag ts">짐빔 30ml</span><span class="tag td2">진로 토닉워터</span><span class="tag tg">레몬웻지</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>짐빔 버번</span><span class="ramt">30ml (1지거)</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">짐빔 30ml 붓기</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">얼음 가득 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">진로 토닉워터 천천히 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">레몬웻지 올려서 서브</div></div>
+      </div>
+      <div class="garline"><span>🍋</span><span class="glbl">가니쉬</span><span class="gval">레몬웻지</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">🥃 술 설명</div><div class="protxt"><strong>짐빔(Jim Beam)</strong> — 미국 켄터키산 버번 위스키. <strong>40%</strong>. 바닐라·캐러멜·오크 향 강함. 가쿠빈보다 묵직하고 개성 있는 맛. 버번 특유의 달콤한 향이 특징.</div></div>
+      <div class="prosec"><div class="prostitle">⚙️ 방법론</div><div class="protxt">버번은 향이 강해서 진로 토닉 비율 넉넉하게. 가쿠보다 진한 맛 선호 손님한테 추천 가능.</div><div class="kp">제로 진로토닉으로 변경 가능.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">미국 버번 위스키라서 바닐라 향이 나요. 가쿠보다 조금 더 진한 맛 좋아하시는 분께 잘 맞아요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 존바 공통 이미지 변수: 아래 카드들 모두 존바 사용 -->
+
+<!-- 얼그레이 -->
+<div class="hbc" id="c-eg">
+  <div class="hbh" onclick="tog('c-eg')">
+    <div class="hbmeta">
+      <div class="hbname">얼그레이 하이볼</div>
+      <div class="hbtags"><span class="tag ts">존바 30ml</span><span class="tag ty">스모키얼그레이 시럽</span><span class="tag td2">진로 토닉워터</span><span class="tag tg">레몬웻지</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>존바 (John Barr)</span><span class="ramt">30ml</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>스모키얼그레이 시럽 (Pomona)</span><span class="ramt">2펌프</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">존바 30ml + 얼그레이 시럽 2펌프</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">진로 토닉워터 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">레몬웻지 서브</div></div>
+      </div>
+      <div class="garline"><span>🍋</span><span class="glbl">가니쉬</span><span class="gval">레몬웻지</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">🥃 존바 설명</div><div class="protxt"><strong>존바(John Barr)</strong> — 스코틀랜드 블렌디드 위스키. <strong>40%</strong>. Highland·Speyside 몰트 40가지 블렌딩. 셰리캐스크 숙성. 허니·바닐라·베이크드애플 노트. 가성비 좋은 하이볼 베이스.</div></div>
+      <div class="prosec"><div class="prostitle">🍵 시럽 설명</div><div class="protxt"><strong>스모키얼그레이 시럽(Pomona Mixology)</strong> — 얼그레이 홍차 베이스 + 훈제 스모키향. 단순한 단맛이 아니라 복합적인 티 향이 핵심. 진로 토닉의 쓴맛(quinine)이 얼그레이 쌉싸름한 티 향과 균형.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">얼그레이 홍차 향 나는 하이볼이에요. 위스키랑 홍차가 잘 어울려서 독특한 맛이에요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 레몬 -->
+<div class="hbc" id="c-lemon">
+  <div class="hbh" onclick="tog('c-lemon')">
+    <div class="hbmeta">
+      <div class="hbname">레몬 하이볼</div>
+      <div class="hbtags"><span class="tag ts">존바 30ml</span><span class="tag ty">레몬 시럽</span><span class="tag td2">진로 토닉워터</span><span class="tag tg">레몬웻지</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>존바</span><span class="ramt">30ml</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>레몬 시럽 (Pomona)</span><span class="ramt">2펌프</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">존바 30ml + 레몬시럽 2펌프</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">진로 토닉워터 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">레몬웻지 서브</div></div>
+      </div>
+      <div class="garline"><span>🍋</span><span class="glbl">가니쉬</span><span class="gval">레몬웻지</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">⚙️ 방법론</div><div class="protxt">Pomona 레몬시럽은 당도+산미+레몬향 균형잡혀 매번 일정한 맛. 진로 토닉의 쓴맛이 레몬 산미를 잡아줌. 제로 진로토닉으로 변경 가능.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">상큼하고 깔끔한 레몬 향 하이볼이에요. 처음 드시는 분도 부담없는 맛이에요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 모히또 -->
+<div class="hbc" id="c-moji">
+  <div class="hbh" onclick="tog('c-moji')">
+    <div class="hbmeta">
+      <div class="hbname">모히또 하이볼</div>
+      <div class="hbtags"><span class="tag ts">존바 30ml</span><span class="tag ty">모히토 시럽</span><span class="tag td2">진로 토닉워터</span><span class="tag tg">레몬웻지</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>존바</span><span class="ramt">30ml</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>모히토 시럽 (Pomona)</span><span class="ramt">2펌프</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">존바 30ml + 모히토 시럽 2펌프</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">진로 토닉워터 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">레몬웻지 서브</div></div>
+      </div>
+      <div class="garline"><span>🍋</span><span class="glbl">가니쉬</span><span class="gval">레몬웻지</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">🌿 시럽 설명</div><div class="protxt"><strong>모히토 시럽(Pomona Mixology)</strong> — 민트+라임+설탕 베이스. 청량감이 강해서 여름에 특히 인기. 존바가 베이스 알코올만 제공하고 민트향을 살림.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">민트 향 나는 상큼한 하이볼이에요. 여름에 특히 인기 많아요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 블루 -->
+<div class="hbc" id="c-blue">
+  <div class="hbh" onclick="tog('c-blue')">
+    <div class="hbmeta">
+      <div class="hbname">블루 하이볼 (큐라소)</div>
+      <div class="hbtags"><span class="tag ts">존바 30ml</span><span class="tag ty">블루큐라소 시럽</span><span class="tag td2">진로 토닉워터</span><span class="tag tg">레몬웻지</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>존바</span><span class="ramt">30ml</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>블루큐라소 시럽 (Pomona)</span><span class="ramt">2펌프</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">존바 30ml + 블루큐라소 시럽 2펌프</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">진로 토닉워터 채우기 — 파란 색감 확인</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">레몬웻지 서브</div></div>
+      </div>
+      <div class="garline"><span>🍋</span><span class="glbl">가니쉬</span><span class="gval">레몬웻지</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">🍊 시럽 설명</div><div class="protxt"><strong>블루큐라소 시럽(Pomona)</strong> — 오렌지 껍질 향 + 파란 색소. 비비드한 파란색이 핵심. 얼음이 맑을수록 색이 예쁘게 나옴 — 얼음 품질 체크 포인트.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">오렌지 향 나는 파란색 하이볼이에요. 색이 예뻐서 인기 많아요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 자몽 -->
+<div class="hbc" id="c-gf">
+  <div class="hbh" onclick="tog('c-gf')">
+    <div class="hbmeta">
+      <div class="hbname">자몽 하이볼</div>
+      <div class="hbtags"><span class="tag ts">존바 30ml</span><span class="tag td2">미닛메이드 자몽에이드탄산</span><span class="tag tg">레몬웻지</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>존바</span><span class="ramt">30ml</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>미닛메이드 자몽에이드탄산 (캔)</span><span class="ramt">1캔</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">존바 30ml 붓기</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">자몽에이드 캔 따서 조심스럽게 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">레몬웻지 서브</div></div>
+      </div>
+      <div class="garline"><span>🍋</span><span class="glbl">가니쉬</span><span class="gval">레몬웻지</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">⚙️ 방법론</div><div class="protxt">캔 음료 사용 — 시럽 없이 단맛+자몽향+탄산 한 번에. 캔 따고 탄산 빠지기 전에 빨리 서브 포인트.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">자몽 탄산음료에 위스키 넣은 거예요. 쌉쌀한 자몽 향이 특징이에요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 피치 -->
+<div class="hbc" id="c-peach">
+  <div class="hbh" onclick="tog('c-peach')">
+    <div class="hbmeta">
+      <div class="hbname">피치 하이볼</div>
+      <div class="hbtags"><span class="tag ts">존바 30ml</span><span class="tag td2">데미소다 복숭아</span><span class="tag tg">황도슬라이스</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>존바</span><span class="ramt">30ml</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>데미소다 복숭아</span><span class="ramt">1캔</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">존바 30ml 붓기</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">데미소다 복숭아 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">황도슬라이스 가니쉬</div></div>
+      </div>
+      <div class="garline"><span>🍑</span><span class="glbl">가니쉬</span><span class="gval">황도슬라이스</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">⚙️ 방법론</div><div class="protxt">데미소다 복숭아 — 이미 단맛 강해서 시럽 불필요. 황도슬라이스 가니쉬는 비주얼+향 보완. 여성 손님 인기.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">복숭아 탄산에 위스키 넣은 달콤한 하이볼이에요. 술 향 강하지 않아서 부담없이 드세요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 우롱 -->
+<div class="hbc" id="c-ool">
+  <div class="hbh" onclick="tog('c-ool')">
+    <div class="hbmeta">
+      <div class="hbname">우롱차 하이볼</div>
+      <div class="hbtags"><span class="tag ts">존바 30ml</span><span class="tag ty">티백 우롱차</span><span class="tag td2">진로 토닉워터</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>존바</span><span class="ramt">30ml</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>우롱차 (티백 추출)</span><span class="ramt">적당량</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">우롱차 티백 미리 추출해두기</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">존바 30ml 붓기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">우롱차 + 진로 토닉워터로 채우기</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+      </div>
+      <div class="garline"><span>✕</span><span class="glbl">가니쉬</span><span class="gval">없음</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">⚙️ 방법론</div><div class="protxt">술 향을 차향이 잡아주는 구조. 너무 진하게 우리면 쓴맛 나오니 주의. 음식이랑 먹을 때 구미 돋우는 역할.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">우롱차랑 위스키 조합이에요. 차향이 은은해서 음식이랑 드시기 정말 잘 맞아요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 녹차 -->
+<div class="hbc" id="c-green">
+  <div class="hbh" onclick="tog('c-green')">
+    <div class="hbmeta">
+      <div class="hbname">녹차 하이볼</div>
+      <div class="hbtags"><span class="tag ts">존바 30ml</span><span class="tag ty">티백 녹차</span><span class="tag td2">진로 토닉워터</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>존바</span><span class="ramt">30ml</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>녹차 (티백 추출)</span><span class="ramt">적당량</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">녹차 티백 추출 (1~2분, 짧게)</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">존바 30ml 붓기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">녹차 + 진로 토닉워터 채우기</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+      </div>
+      <div class="garline"><span>✕</span><span class="glbl">가니쉬</span><span class="gval">없음</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">⚙️ 방법론</div><div class="protxt">녹차는 우롱보다 떫은맛 쉽게 나와서 <strong>추출 1~2분 이내</strong>. 우롱이 더 풍부, 녹차는 더 가벼운 편.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">녹차 향 은은한 가벼운 하이볼이에요. 담백하게 드시고 싶은 분께 추천해요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 츠루우메 -->
+<div class="hbc" id="c-tsuru">
+  <div class="hbh" onclick="tog('c-tsuru')">
+    <div class="hbmeta">
+      <div class="hbname">츠루우메 하이볼 (유자)</div>
+      <div class="hbtags"><span class="tag ts">존바 30ml</span><span class="tag ty">츠루우메 반잔</span><span class="tag td2">진로 토닉워터</span><span class="tag tg">레몬웻지</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>존바</span><span class="ramt">30ml</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>츠루우메 (유즈 리큐르)</span><span class="ramt">반잔 (~15ml)</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">존바 30ml + 츠루우메 반잔</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">진로 토닉워터 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">레몬웻지 서브</div></div>
+      </div>
+      <div class="garline"><span>🍋</span><span class="glbl">가니쉬</span><span class="gval">레몬웻지</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">⚙️ 방법론</div><div class="protxt"><strong>츠루우메(유즈 리큐르) 반잔(~15ml)</strong> — 시럽이 아니라 유자 리큐르(7도, 천연 유자 50%) 자체를 넣는다. 그래서 유자 향이 진하고 무게감이 가장 묵직. 존바 + 츠루우메로 술이 두 가지 들어가는 셈이라 풍미가 깊다.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">진짜 유자 리큐르를 넣은 하이볼이에요. 달콤하고 상큼한 유자 향이 진하게 나요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 논알콜 -->
+<div class="hbc" id="c-na">
+  <div class="hbh" onclick="tog('c-na')">
+    
+    <div class="hbmeta">
+      <div class="hbname">논알콜 하이볼</div>
+      <div class="hbtags"><span class="tag tna">알코올 1% 미만</span><span class="tag ty">위스키플레이버 시럽</span><span class="tag td2">진로 토닉워터</span><span class="tag tg">레몬웻지</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>위스키플레이버 시럽</span><span class="ramt">2펌프</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>논알콜 시럽 (2종)</span><span class="ramt">각 2펌프</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">위스키플레이버 시럽 + 논알콜 시럽</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">진로 토닉워터 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">레몬웻지 서브</div></div>
+      </div>
+      <div class="garline"><span>🍋</span><span class="glbl">가니쉬</span><span class="gval">레몬웻지</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">⚙️ 방법론</div><div class="protxt">위스키플레이버 시럽으로 위스키 향·색 흉내. 진로 토닉의 탄산+쓴맛으로 알코올 느낌 대체. 운전자 테이블에서 중요한 메뉴.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">알코올 거의 없는 하이볼이에요. 운전하시는 분도 하이볼 느낌으로 즐기실 수 있어요.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 추사 -->
+<div class="hbc" id="c-chusa">
+  <div class="hbh" onclick="tog('c-chusa')">
+    
+    <div class="hbmeta">
+      <div class="hbname">추사 하이볼</div>
+      <div class="hbtags"><span class="tag ts">추사백25 60ml (2샷)</span><span class="tag td2">진로 토닉워터</span><span class="tag tg">레몬웻지</span></div>
+    </div><div class="chev">▼</div>
+  </div>
+  <div class="hbd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">⚡ 간단 레시피</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv">
+      <div class="rbox">
+        <div class="rrow"><span class="rname"><span class="dot"></span>추사백25</span><span class="ramt">60ml (지거 2번)</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>얼음</span><span class="ramt">가득</span></div>
+        <div class="rrow"><span class="rname"><span class="dot"></span>진로 토닉워터</span><span class="ramt">채워서</span></div>
+      </div>
+      <div class="warn">⚠️ 다른 하이볼은 30ml — 추사만 60ml (2배)</div>
+      <div class="stepbox">
+        <div class="step"><div class="snum">1</div><div class="stxt">추사백25 60ml (지거로 2번)</div></div>
+        <div class="step"><div class="snum">2</div><div class="stxt">얼음 채우기</div></div>
+        <div class="step"><div class="snum">3</div><div class="stxt">진로 토닉워터 채우기</div></div>
+        <div class="step"><div class="snum">4</div><div class="stxt">바스푼을 잔 바닥까지 넣고 아래에서 위로 1~2번만 (최소한으로, 탄산 보존)</div></div>
+        <div class="step"><div class="snum">5</div><div class="stxt">레몬웻지 서브</div></div>
+      </div>
+      <div class="garline"><span>🍋</span><span class="glbl">가니쉬</span><span class="gval">레몬웻지</span></div>
+    </div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">🍎 술 설명</div><div class="protxt"><strong>추사백25</strong> — 충남 예산 사과로 만든 <strong>사과 증류주</strong>(25도). 쌀 소주가 아니라 사과를 증류·오크 숙성한 한국형 칼바도스. 은은한 사과향·바닐라·초콜릿 향. 60ml 쓰는 이유: 소주 25도 = 위스키 40%의 절반 수준이라, 알코올 볼륨감을 맞추려 2배(2샷) 사용.</div></div>
+      <div class="prosec"><div class="prostitle">🫧 탄산이 약해질 수 있음</div><div class="protxt">우리집 모든 하이볼은 같은 <strong>가쿠빈 하이볼 전용잔(약 375ml)</strong>에 만든다. 얼음을 채우고 남은 공간에 <strong>기주 + 탄산</strong>이 들어가는데, 추사는 기주가 60ml(2배)라 그만큼 <strong>탄산이 들어갈 공간이 줄어든다</strong> → 다른 하이볼보다 탄산감이 상대적으로 약할 수 있다. 레몬웻지로 청량감을 보완해주면 좋다.</div></div>
+      <div class="prosec"><div class="prostitle">💬 손님 안내</div><div class="gtip">충남 예산 사과로 만든 증류주로 만든 하이볼이에요. 위스키와 다른 은은한 사과 향이 특징이에요.</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end panel-hb -->
+
+
+<!-- ═══════════════════════════
+     보틀 패널
+═══════════════════════════ -->
+<div id="panel-bt">
+
+<div class="fbar">
+  <div class="fchip on" onclick="filt(this,'all')">전체</div>
+  <div class="fchip" onclick="filt(this,'wh')">🥃 위스키</div>
+  <div class="fchip" onclick="filt(this,'cg')">🍇 코냑</div>
+  <div class="fchip" onclick="filt(this,'sp')">🍾 스파클링</div>
+  <div class="fchip" onclick="filt(this,'wn')">🍷 와인</div>
+  <div class="fchip" onclick="filt(this,'sk')">🍶 사케</div>
+  <div class="fchip" onclick="filt(this,'kr')">🏺 전통주</div>
+  <div class="fchip" onclick="filt(this,'sj')">🍾 소주</div>
+</div>
+
+<!-- ══════ 위스키 ══════ -->
+<div class="catdiv btsec" data-cat="wh">🥃 위스키 WHISKY</div>
+
+<div class="btc defcard" data-cat="wh" id="def-wh">
+  <div class="bth" onclick="tog('def-wh')">
+    <div class="btmeta"><div class="btname">📖 위스키란?</div><div class="bten">기본 개념 · 클릭</div></div><div class="chev">▼</div>
+  </div>
+  <div class="btd">
+    <div class="prov" style="display:block;padding:14px 16px 16px">
+      <div class="prosec"><div class="prostitle">정의</div><div class="protxt"><strong>위스키</strong>는 보리·옥수수·호밀·밀 같은 <strong>곡물을 발효·증류한 뒤 오크통에서 숙성</strong>한 술이다. 숙성 과정에서 색(호박색)과 바닐라·오크·캐러멜 향이 생긴다. 도수는 보통 40% 이상.</div></div>
+      <div class="prosec"><div class="prostitle">큰 분류</div><div class="protxt"><strong>· 싱글몰트</strong> — 한 증류소에서 보리(맥아)만으로 만든 것. 개성이 강함 (예: 야마자키, 하쿠슈, 글렌모렌지)<br><strong>· 블렌디드</strong> — 여러 증류소의 몰트 + 그레인 위스키를 섞은 것. 균형·부드러움 (예: 가쿠빈, 발렌타인, 존바)<br><strong>· 버번</strong> — 미국, 옥수수 51%+ 새 오크통. 달고 묵직 (예: 짐빔)<br><strong>· 스카치</strong> — 스코틀랜드산. <strong>재팬</strong> — 일본산.</div></div>
+      <div class="prosec"><div class="prostitle">숙성 연수</div><div class="protxt">병에 적힌 숫자(12년, 21년)는 <strong>블렌딩에 쓰인 가장 어린 원액의 숙성 연수</strong>. 오래 숙성할수록 부드럽고 복잡해지지만 그만큼 비싸진다. 숫자 없는 제품(NAS)도 많다.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="wh" id="bt-kakubin">
+  <div class="bth" onclick="tog('bt-kakubin')"><div class="btmeta"><div class="btname">산토리 가쿠빈</div><div class="bten">Suntory Kakubin</div><div class="btbadges"><span class="badge bcat">블렌디드</span><span class="badge breg">일본</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">1937년부터 만든 일본 대표 위스키예요. 네모난 병이 트레이드마크고, 향이 부드럽고 가벼워서 하이볼로 제일 많이 마셔요.</div><div class="kp" style="margin-top:8px">💡 우리집 가쿠 하이볼 기주. 향이 약한 편이라 탄산이 죽으면 맛이 급격히 밋밋해진다 → 서브 타이밍 철저히.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">산토리의 대표 블렌디드 위스키. 야마자키·하쿠슈·치타 증류소 원액을 블렌딩. 거북등 무늬 각병이 상징. 일본 하이볼 문화의 아이콘.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">가벼운 곡물향, 은은한 바닐라·꿀. 피트(훈연향) 거의 없음. 단독보다 <strong>탄산과 만났을 때</strong>를 위해 설계된 하이볼 최적화 블렌드.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="wh" id="bt-yamazaki">
+  <div class="bth" onclick="tog('bt-yamazaki')"><div class="btmeta"><div class="btname">야마자키 12년</div><div class="bten">Yamazaki 12 Year</div><div class="btbadges"><span class="badge bcat">싱글몰트</span><span class="badge breg">일본 오사카</span><span class="badge babv">43%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">일본 최초의 위스키 증류소에서 만든 싱글몰트예요. 12년 숙성으로 달콤하고 과일향이 풍부해요. 세계적으로 유명한 고급 위스키예요.</div><div class="kp" style="margin-top:8px">💡 스트레이트·온더락 추천. 과일향 강해 달달한 걸 좋아하는 손님에게. 하이볼로도 물론 마실 수 있다.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">1923년 설립된 일본 최초 증류소 산토리 야마자키의 싱글몰트. 미즈나라(일본 오크)·버번·셰리통 믹스 숙성.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">화이트피치·살구·자두의 과일향, 버번통의 바닐라, 미즈나라 특유의 백단향. 피트 거의 없음. 세계 위스키 어워드 다수 수상.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="wh" id="bt-yamazaki-dr">
+  <div class="bth" onclick="tog('bt-yamazaki-dr')"><div class="btmeta"><div class="btname">야마자키 DR</div><div class="bten">Yamazaki Distiller's Reserve</div><div class="btbadges"><span class="badge bcat">싱글몰트</span><span class="badge breg">일본 오사카</span><span class="badge babv">43%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">야마자키 12년의 동생격 제품이에요. 숙성 연수 표기는 없지만 더 과일향이 화사하고 부드러워요. 12년보다 합리적인 가격에 야마자키를 즐길 수 있어요.</div><div class="kp" style="margin-top:8px">💡 "12년은 더 깊고 묵직, DR은 더 화사하고 부드럽다"로 비교 추천. 입문용 야마자키로 적합.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">야마자키의 NAS(숙성연수 미표기) 제품. DR = Distiller's Reserve. 셰리통·미즈나라통 비율을 높여 블렌딩.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">베리·체리 같은 붉은 과일향이 12년보다 더 화사하게 도드라짐. 부드럽고 달콤한 미들, 가벼운 스파이시 피니시. 12년보다 영(young)하지만 접근성 좋음.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="wh" id="bt-hakushu">
+  <div class="bth" onclick="tog('bt-hakushu')"><div class="btmeta"><div class="btname">하쿠슈 DR</div><div class="bten">Hakushu Distiller's Reserve</div><div class="btbadges"><span class="badge bcat">싱글몰트</span><span class="badge breg">일본 야마나시</span><span class="badge babv">43%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">야마자키랑 같은 산토리인데 훨씬 청량하고 허브향이 나요. 숲속 느낌의 위스키예요. 하이볼로 만들면 정말 상쾌해요.</div><div class="kp" style="margin-top:8px">💡 "야마자키=달콤·과일, 하쿠슈=청량·허브". 하쿠슈 하이볼은 특히 상쾌해서 인기.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">해발 700m 알프스 산속 증류소의 싱글몰트. NAS 제품. 산토리 3대 증류소 중 가장 청량한 스타일.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">그린애플·키위·오이·민트의 풋풋함, 약한 피트(훈연). 야마자키의 달콤함과 대비되는 드라이·허브 스타일.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="wh" id="bt-val21">
+  <div class="bth" onclick="tog('bt-val21')"><div class="btmeta"><div class="btname">발렌타인 21년</div><div class="bten">Ballantine's 21</div><div class="btbadges"><span class="badge bcat">블렌디드 스카치</span><span class="badge breg">스코틀랜드</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">21년 숙성한 스카치 위스키예요. 오래 숙성할수록 부드럽고 복잡한 맛이 나요. 접대나 선물용으로 많이 찾으세요.</div><div class="kp" style="margin-top:8px">💡 스트레이트·온더락. "숙성 연수가 높을수록 부드럽고 복잡하다" 설명이 잘 먹힌다.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">50개 이상 원액 블렌딩. 가장 어린 원액도 21년 이상 숙성. 셰리통 비율이 높다.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">건과일·다크초콜릿·바닐라·오크. 매우 부드럽고 긴 피니시.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="wh" id="bt-val30">
+  <div class="bth" onclick="tog('bt-val30')"><div class="btmeta"><div class="btname">발렌타인 30년</div><div class="bten">Ballantine's 30</div><div class="btbadges"><span class="badge bcat">블렌디드 스카치</span><span class="badge breg">스코틀랜드</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">30년 숙성 위스키예요. 잔에 따랐을 때 올라오는 향만으로도 특별해요. 특별한 날을 위한 최고급 위스키예요.</div><div class="kp" style="margin-top:8px">💡 얼음 넣지 말 것. 상온에서 향을 즐기는 게 포인트.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">30년 이상 숙성 원액 블렌딩. 발렌타인 라인업 최상위급.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">꿀·오렌지마멀레이드·다크초콜릿·시나몬·오크. 끝없이 이어지는 긴 여운. 세계 위스키 어워드 금메달 다수.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="wh" id="bt-royal">
+  <div class="bth" onclick="tog('bt-royal')"><div class="btmeta"><div class="btname">로얄살루트 21년</div><div class="bten">Royal Salute 21</div><div class="btbadges"><span class="badge bcat">블렌디드 스카치</span><span class="badge breg">스코틀랜드</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">1953년 엘리자베스 2세 여왕 대관식을 기념해 만든 위스키예요. 도자기 병이 특징이고 선물용으로 제일 인기 많아요.</div><div class="kp" style="margin-top:8px">💡 병 자체가 선물. "빈 병도 가져가시는 분 많아요"로 어필.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">1953년 엘리자베스 2세 대관식 기념 출시. 최소 21년 숙성. 세라믹(도자기) 병이 아이코닉.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">셰리통 중심 → 건자두·다크초콜릿·향신료·꽃. 풍성하고 달콤한 편.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="wh" id="bt-glenmo">
+  <div class="bth" onclick="tog('bt-glenmo')"><div class="btmeta"><div class="btname">글렌모렌지 시그넷</div><div class="bten">Glenmorangie Signet</div><div class="btbadges"><span class="badge bcat">싱글몰트</span><span class="badge breg">스코틀랜드 하이랜드</span><span class="badge babv">46%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">초콜릿·커피 같은 진한 향이 나는 특별한 싱글몰트예요. 위스키인데 디저트 같은 느낌이라 평소 위스키 안 드시던 분도 좋아하세요.</div><div class="kp" style="margin-top:8px">💡 니트로 천천히. 식후주(디저트 대용)로 추천하면 반응 좋다.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">글렌모렌지의 최상위 표현. <strong>초콜릿 몰트(고온 로스팅한 보리)</strong>를 사용한 독특한 제법. 숙성 연수 미표기지만 고숙성 원액 포함.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">에스프레소·다크초콜릿·오렌지·계피·견과. 묵직하고 풍부하면서 46도라 힘이 있다. 디저트 같은 단향이 특징.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ 코냑 ══════ -->
+<div class="catdiv btsec" data-cat="cg">🍇 코냑 COGNAC</div>
+
+<div class="btc defcard" data-cat="cg" id="def-cg">
+  <div class="bth" onclick="tog('def-cg')"><div class="btmeta"><div class="btname">📖 코냑이란? (XO/VSOP 차이)</div><div class="bten">기본 개념 · 클릭</div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="prov" style="display:block;padding:14px 16px 16px">
+      <div class="prosec"><div class="prostitle">정의</div><div class="protxt"><strong>코냑</strong>은 <strong>프랑스 코냑 지방에서 포도(주로 위니블랑)로 만든 와인을 두 번 증류해 오크통 숙성한 브랜디</strong>다. "모든 코냑은 브랜디지만, 모든 브랜디가 코냑은 아니다" — 코냑 지역+규정을 지켜야만 코냑이라 부른다.</div></div>
+      <div class="prosec"><div class="prostitle">숙성 등급 (가장 어린 원액 기준)</div><div class="protxt"><strong>· VS</strong> (Very Special) — 최소 2년<br><strong>· VSOP</strong> (Very Superior Old Pale) — 최소 4년<br><strong>· Napoléon</strong> — VSOP와 XO 사이 (약 6년)<br><strong>· XO</strong> (Extra Old) — 최소 10년 (2018년 이전엔 6년)<br><strong>· XXO</strong> (Extra Extra Old) — 최소 14년, 2018년 신설<br><strong>· Hors d'Âge</strong> — "나이를 초월", 비공식, 보통 30년+</div></div>
+      <div class="prosec"><div class="prostitle">한 줄 정리</div><div class="kp"><strong>숫자가 아니라 알파벳이 숙성 등급.</strong> VS → VSOP → XO → XXO 순으로 오래 숙성=더 부드럽고 복잡=더 비쌈. XO라는 말은 1870년 헤네시가 처음 만들었다.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="cg" id="bt-hennessy">
+  <div class="bth" onclick="tog('bt-hennessy')"><div class="btmeta"><div class="btname">헤네시 XO</div><div class="bten">Hennessy XO</div><div class="btbadges"><span class="badge bcat">코냑 XO</span><span class="badge breg">프랑스</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">세계에서 제일 유명한 코냑 브랜드의 XO 등급이에요. 포도로 만든 고급 브랜디고, 진하고 부드러워서 식후에 천천히 즐기기 좋아요.</div><div class="kp" style="margin-top:8px">💡 니트 또는 살짝 데운 글라스에. 식후주로 최고. 코냑 글라스(튤립형)에 서브.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">헤네시가 1870년 <strong>XO라는 등급 자체를 처음 만든</strong> 장본인. XO = 최소 10년 숙성 원액 블렌딩(실제로는 더 오래된 원액 다수 포함).</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">건과일·다크초콜릿·가죽·후추·오크의 묵직하고 복합적인 풍미. 풀바디, 긴 여운.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="cg" id="bt-hennessy-xxo">
+  <div class="bth" onclick="tog('bt-hennessy-xxo')"><div class="btmeta"><div class="btname">헤네시 XXO</div><div class="bten">Hennessy XXO</div><div class="btbadges"><span class="badge bcat">코냑 XXO</span><span class="badge breg">프랑스</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">헤네시 XO보다 한 등급 위인 최상급 코냑이에요. XXO는 더 오래 숙성해서 향이 훨씬 깊고 진해요. 아주 특별한 자리에 어울리는 술이에요.</div><div class="kp" style="margin-top:8px">💡 니트로 천천히, 향을 즐기는 술. 얼음 넣지 말 것. XO와 비교하면 "더 오래 숙성한 윗 등급"으로 설명.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt"><strong>XXO(Extra Extra Old)</strong> = 2018년 신설된 코냑 최상위 공식 등급. 가장 어린 원액도 <strong>최소 14년</strong> 숙성(XO는 10년). 헤네시 XXO는 더 오래된 원액 다수를 블렌딩한 프리미엄 라인.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">XO보다 한층 농축된 건과일·꿀·말린 꽃·향신료·가죽·고숙성 우드. 더 깊고 묵직하며 여운이 매우 길다.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ 스파클링 ══════ -->
+<div class="catdiv btsec" data-cat="sp">🍾 스파클링 SPARKLING</div>
+
+<div class="btc defcard" data-cat="sp" id="def-sp">
+  <div class="bth" onclick="tog('def-sp')"><div class="btmeta"><div class="btname">📖 스파클링 와인이란?</div><div class="bten">기본 개념 · 클릭</div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="prov" style="display:block;padding:14px 16px 16px">
+      <div class="prosec"><div class="prostitle">정의</div><div class="protxt"><strong>스파클링 와인</strong>은 <strong>기포(탄산)가 있는 와인</strong>이다. 와인을 한 번 더 발효시켜 그때 생기는 이산화탄소를 병/탱크 안에 가둬 만든다. 그래서 잔에 따르면 미세한 기포가 계속 올라온다.</div></div>
+      <div class="prosec"><div class="prostitle">⭐ 샴페인 = 스파클링의 최고봉</div><div class="protxt"><strong>"샴페인(Champagne)"은 아무 스파클링한테나 못 붙인다.</strong> 오직 <strong>프랑스 샹파뉴(Champagne) 지방</strong>에서, <strong>전통 방식(메토드 트라디시오넬)</strong>으로 만든 것만 샴페인이라 부를 수 있다(법으로 보호되는 명칭).<br><br>전통 방식 = <strong>병 안에서 2차 발효</strong>를 시켜 기포를 만드는 방법. 효모 찌꺼기와 함께 오래 숙성돼서 <strong>브리오슈(빵)·토스트·견과 향</strong>의 복합미가 생긴다. 기포도 더 곱고 오래간다. 손이 많이 가서 비싸다.<br><br>주 품종: <strong>샤르도네 · 피노누아 · 피노뮈니에</strong> 3가지.</div></div>
+      <div class="prosec"><div class="prostitle">산지별 이름</div><div class="protxt"><strong>· 샴페인</strong> — 프랑스 샹파뉴 + 전통 방식만. 최고급<br><strong>· 카바(Cava)</strong> — 스페인, 샴페인과 같은 전통 방식(병내 2차발효)<br><strong>· 프로세코</strong> — 이탈리아, 주로 탱크 방식. 가볍고 과일향, 가성비<br><strong>· 젝트(Sekt)</strong> — 독일 스파클링<br><strong>· 크레망</strong> — 프랑스 샹파뉴 외 지역의 전통 방식 스파클링</div></div>
+      <div class="prosec"><div class="prostitle">당도 표기 (드라이 → 단맛)</div><div class="protxt"><strong>· Brut Nature / Extra Brut</strong> — 거의 무가당, 가장 드라이<br><strong>· Brut(브뤼)</strong> — 드라이. 가장 흔하고 식사에 무난<br><strong>· Extra Dry</strong> — 약간 단 (이름과 달리 Brut보다 닮)<br><strong>· Sec / Demi-Sec</strong> — 단맛 있음, 디저트용</div></div>
+      <div class="prosec"><div class="prostitle">서빙 팁</div><div class="kp">6~8℃로 <strong>차갑게</strong>, 좁고 긴 <strong>플루트 잔</strong>에. 차가워야 기포가 곱고 오래간다. 따를 때 잔을 기울여 거품이 넘치지 않게. 식전주(아페리티프)·축하용으로 최적.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="sp" id="bt-henkell">
+  <div class="bth" onclick="tog('bt-henkell')"><div class="btmeta"><div class="btname">헨켈 트로켄</div><div class="bten">Henkell Trocken</div><div class="btbadges"><span class="badge bcat">젝트(스파클링)</span><span class="badge breg">독일</span><span class="badge babv">11.5%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">독일의 대표 스파클링 와인이에요. 깔끔하고 상큼한 기포가 특징이라 식사 시작할 때나 가볍게 축하할 때 잘 어울려요.</div><div class="kp" style="margin-top:8px">💡 차갑게(6~8℃) 플루트 잔에. 식전주(아페리티프)나 가벼운 건배용으로 추천.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">독일 젝트(Sekt)의 대표 브랜드. "트로켄(Trocken)"은 독일어로 <strong>드라이</strong>라는 뜻.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">사과·시트러스의 상큼함, 깔끔하고 가벼운 드라이 피니시. 기포가 섬세한 편.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ 와인 ══════ -->
+<div class="btc" data-cat="sp" id="bt-laffeyne">
+  <div class="bth" onclick="tog('bt-laffeyne')"><div class="btmeta"><div class="btname">어니스트 라페뉴</div><div class="bten">Ernest Rapeneau · Brut</div><div class="btbadges"><span class="badge bcat">샴페인</span><span class="badge breg">프랑스 샹파뉴</span><span class="badge bprc">Brut(드라이)</span><span class="badge babv">12%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">진짜 프랑스 샴페인이에요. (샴페인은 프랑스 샹파뉴 지방 것만 부를 수 있어요.) "브뤼(Brut)"라 달지 않고 깔끔·드라이해서 식사 시작이나 축하 자리에 잘 어울려요.</div><div class="kp" style="margin-top:8px">💡 6~8℃로 차갑게, 플루트 잔. "샴페인은 샹파뉴 것만, 브뤼는 안 단 깔끔한 타입"이라는 두 포인트로 설명하면 좋다.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">프랑스 샹파뉴 지방의 역사 깊은 샴페인 하우스 Rapeneau. <strong>전통 방식(병 내 2차 발효)</strong>으로 만든 정통 샴페인. 품종은 <strong>샤르도네·피노누아·피노뮈니에</strong> 블렌딩.</div></div>
+      <div class="prosec"><div class="prostitle">🥂 Brut(브뤼)란</div><div class="protxt"><strong>Brut = 샴페인의 당도 등급 중 "드라이"</strong>를 뜻한다. 2차 발효 후 효모 찌꺼기를 빼낼 때 소량의 당분(도사주)을 넣는데, 그 양으로 당도가 갈린다. <strong>리터당 잔당 12g 미만</strong>이 Brut. 가장 대중적이고 음식과 두루 맞는 표준 당도라, 전 세계 샴페인의 대부분이 Brut다.</div><div class="kp">당도 순서: <strong>Brut Nature/Extra Brut(거의 무가당) → Brut(드라이) → Extra Dry(약간 단) → Sec/Demi-Sec(단맛)</strong>. 라페뉴는 이 중 Brut라 "달지 않고 산뜻"한 쪽.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">사과·시트러스·브리오슈(빵)의 향, 섬세하고 지속적인 기포. Brut답게 단맛이 절제돼 깔끔하고 산뜻한 피니시.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="catdiv btsec" data-cat="wn">🍷 와인 WINE</div>
+
+<div class="btc defcard" data-cat="wn" id="def-wn">
+  <div class="bth" onclick="tog('def-wn')"><div class="btmeta"><div class="btname">📖 와인이란?</div><div class="bten">기본 개념 · 클릭</div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="prov" style="display:block;padding:14px 16px 16px">
+      <div class="prosec"><div class="prostitle">정의</div><div class="protxt"><strong>와인</strong>은 <strong>포도를 발효시킨 술</strong>이다. 증류하지 않아 도수는 보통 12~15%. 포도 품종·산지·숙성에 따라 맛이 천차만별.</div></div>
+      <div class="prosec"><div class="prostitle">큰 분류</div><div class="protxt"><strong>· 레드</strong> — 껍질째 발효, 탄닌(떫음)·바디감. 고기와 잘 맞음<br><strong>· 화이트</strong> — 껍질 빼고 발효, 산뜻·상큼. 생선·해산물<br><strong>· 로제</strong> — 분홍빛, 가벼움<br><strong>· 스파클링</strong> — 기포 있음 (위 참고)</div></div>
+      <div class="prosec"><div class="prostitle">스페인 숙성 등급</div><div class="kp">스페인 와인은 숙성 기간으로 등급을 나눈다: <strong>Crianza(크리안자) → Reserva(레세르바) → Gran Reserva(그란 레세르바)</strong> 순으로 오래 숙성. 그란 레세르바가 최고 등급(레드 기준 최소 5년 숙성).</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="wn" id="bt-marques">
+  <div class="bth" onclick="tog('bt-marques')"><div class="btmeta"><div class="btname">마르케스 데 리스칼 리제르바</div><div class="bten">Marqués de Riscal Reserva</div><div class="btbadges"><span class="badge bcat">레드와인</span><span class="badge breg">스페인 리오하</span><span class="badge babv">14%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">스페인의 유명한 레드와인이에요. 묵직하고 부드러워서 고기 요리랑 잘 어울려요. 와인 좋아하시는 분들이 많이 찾는 안정적인 선택이에요.</div><div class="kp" style="margin-top:8px">💡 16~18℃ 레드와인 잔. 디캔팅하면 더 부드러워짐. 고기·치즈와 페어링.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">스페인 리오하의 명가. 템프라니요 품종 중심. <strong>Reserva(레세르바)</strong> = 최소 3년 숙성(오크통 1년+) 등급.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">검은 과일·바닐라·가죽·담뱃잎. 부드러운 탄닌, 균형 잡힌 미디엄~풀바디.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="wn" id="bt-perez">
+  <div class="bth" onclick="tog('bt-perez')"><div class="btmeta"><div class="btname">페레즈 크루즈 카베르네 쇼비뇽 그랑 리제르바</div><div class="bten">Pérez Cruz Cabernet Sauvignon Gran Reserva</div><div class="btbadges"><span class="badge bcat">레드와인</span><span class="badge breg">칠레 마이포</span><span class="badge babv">14%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">칠레의 고급 레드와인이에요. 카베르네 쇼비뇽 품종으로 만들어서 진하고 묵직해요. 스테이크 같은 진한 고기 요리랑 환상적이에요.</div><div class="kp" style="margin-top:8px">💡 16~18℃, 디캔팅 권장. 붉은 고기·스테이크·양고기와 최상의 궁합.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">칠레 마이포 밸리의 명가 Pérez Cruz. <strong>카베르네 쇼비뇽</strong> 품종 + <strong>그란 레세르바</strong>(장기 숙성) 등급. 칠레는 카베르네 쇼비뇽 명산지.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">블랙커런트·블랙베리·삼나무·다크초콜릿. 탄탄한 탄닌과 풀바디, 긴 여운. 묵직하고 구조감 있는 스타일.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ 사케 ══════ -->
+<div class="catdiv btsec" data-cat="sk">🍶 사케 SAKE</div>
+
+<div class="btc defcard" data-cat="sk" id="def-sk">
+  <div class="bth" onclick="tog('def-sk')"><div class="btmeta"><div class="btname">📖 사케란? (정미율 = 품질)</div><div class="bten">기본 개념 · 클릭</div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="prov" style="display:block;padding:14px 16px 16px">
+      <div class="prosec"><div class="prostitle">정의</div><div class="protxt"><strong>사케(일본 청주)</strong>는 <strong>쌀을 발효시킨 양조주</strong>다. 도수는 보통 14~16%. 증류하지 않는다.</div></div>
+      <div class="prosec"><div class="prostitle">⭐ 정미율(精米율)이 핵심</div><div class="protxt"><strong>정미율 = 쌀을 깎고 남은 비율.</strong> 쌀의 바깥쪽에는 단백질·지방이 많아 잡맛을 낸다. 그래서 <strong>바깥을 많이 깎아낼수록(=정미율 숫자가 낮을수록) 중심부의 깨끗한 전분만 남아 깔끔하고 향이 좋은 고급 사케</strong>가 된다.</div><div class="mtxt" style="margin-top:8px;font-size:12px;color:var(--td)">예: 정미율 60% = 바깥 40%를 깎아냄 / 정미율 50% = 절반을 깎아냄(더 고급). 많이 깎을수록 쌀·시간·비용이 더 들어 비싸진다.</div></div>
+      <div class="prosec"><div class="prostitle">등급 (정미율 기준)</div><div class="protxt"><strong>· 다이긴조(大吟醸)</strong> — 정미율 50% 이하. 최고급<br><strong>· 긴조(吟醸)</strong> — 정미율 60% 이하<br><strong>· 혼조조(本醸造)</strong> — 정미율 70% 이하 + 소량의 양조 알코올<br><strong>"준마이(純米)"</strong>가 붙으면 = <strong>양조 알코올 무첨가</strong>, 쌀·물·누룩만으로 만든 것. 더 순수하고 묵직. (준마이+긴조 = 준마이긴조)</div></div>
+      <div class="prosec"><div class="prostitle">한 줄 정리</div><div class="kp"><strong>준마이다이긴조 = 준마이(순미) + 다이긴조(50%↓)</strong> → 가장 고급 라인. 정미율 숫자가 낮을수록, "준마이"가 붙을수록 고급이라고 보면 된다. 사케는 <strong>차갑게(레이슈)</strong> 마실수록 고급 향이 산다.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="sk" id="bt-kubota">
+  <div class="bth" onclick="tog('bt-kubota')"><div class="btmeta"><div class="btname">쿠보타 만쥬</div><div class="bten">Kubota Manju</div><div class="btbadges"><span class="badge bcat">준마이다이긴조</span><span class="badge breg">니가타</span><span class="badge babv">15%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">일본 사케 중 최고급 라인이에요. 깔끔하고 과일향이 나면서 뒷맛이 부드러워요. 사케 처음 드시는 분도 맛있게 드실 수 있어요.</div><div class="kp" style="margin-top:8px">💡 반드시 차갑게(레이슈). 사시미와 페어링 최고. 작은 사케잔에 서브.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">니가타 아사히슈조의 플래그십. <strong>준마이다이긴조</strong>(정미율 50% 이하 + 양조알코올 무첨가) = 최고급 등급.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">배·멜론·꽃의 화사한 향, 은은한 단맛과 산미의 균형. 물처럼 깔끔하게 넘어가면서 복합적.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="sk" id="bt-gekkeikan-dg">
+  <div class="bth" onclick="tog('bt-gekkeikan-dg')"><div class="btmeta"><div class="btname">월계관 준마이 다이긴조</div><div class="bten">Gekkeikan Junmai Daiginjo</div><div class="btbadges"><span class="badge bcat">준마이다이긴조</span><span class="badge breg">교토</span><span class="badge babv">15%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">일본의 오래된 사케 명가 월계관에서 만든 최고급 등급이에요. 쌀을 많이 깎아 만들어서 깔끔하고 향이 화사해요.</div><div class="kp" style="margin-top:8px">💡 차갑게. 정미율 많이 깎은 고급 라인이라 향이 핵심 → 와인잔이나 작은 사케잔에.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">교토의 대표 사케 브랜드 월계관(1637년 창업). <strong>준마이다이긴조</strong> = 정미율 50% 이하 + 양조알코올 무첨가 최고급 등급.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">화사한 과일향(긴조카), 깔끔하고 부드러운 목넘김. 균형 잡힌 단맛·산미.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="sk" id="bt-hanakizakura">
+  <div class="bth" onclick="tog('bt-hanakizakura')"><div class="btmeta"><div class="btname">하나기자쿠라 준마이긴조</div><div class="bten">Hana Kizakura Junmai Ginjo</div><div class="btbadges"><span class="badge bcat">준마이긴조</span><span class="badge breg">교토</span><span class="badge babv">15%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">교토 키자쿠라에서 만든 사케예요. 부드럽고 향긋해서 사케 입문하는 분께 좋아요.</div><div class="kp" style="margin-top:8px">💡 차갑게 또는 상온. 다이긴조보다 가볍게 접근하기 좋은 등급으로 설명.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">교토 키자쿠라(黄桜)의 준마이긴조. <strong>준마이긴조</strong> = 정미율 60% 이하 + 양조알코올 무첨가.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">부드러운 쌀의 단맛과 은은한 과일향. 깔끔하면서 마시기 편한 균형형.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="sk" id="bt-gekkeikan-jm">
+  <div class="bth" onclick="tog('bt-gekkeikan-jm')"><div class="btmeta"><div class="btname">월계관 준마이 750</div><div class="bten">Gekkeikan Junmai 750</div><div class="btbadges"><span class="badge bcat">준마이</span><span class="badge breg">교토</span><span class="badge babv">14.5%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">쌀로만 빚은 깔끔한 사케예요. 750ml 큰 용량이라 여럿이 나눠 마시기 좋고, 따뜻하게(데워서) 드셔도 맛있어요.</div><div class="kp" style="margin-top:8px">💡 차갑게도, <strong>따뜻하게(아츠캉)</strong>도 좋다. 준마이는 데웠을 때 쌀 풍미가 살아나는 타입.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">월계관의 <strong>준마이</strong>(양조알코올 무첨가, 쌀·물·누룩만) 등급. 750ml 대용량.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">쌀의 구수한 단맛과 묵직한 바디. 다이긴조보다 정미율은 높지만(덜 깎음) 그만큼 쌀 풍미가 진하다.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="sk" id="bt-ganbaru">
+  <div class="bth" onclick="tog('bt-ganbaru')"><div class="btmeta"><div class="btname">간바레 오또상</div><div class="bten">Ganbare Otosan</div><div class="btbadges"><span class="badge bcat">준마이긴조</span><span class="badge breg">일본</span><span class="badge babv">15%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">"아버지 힘내세요"라는 뜻의 사케예요. 이름이 재밌고 가성비 좋아서 사케 입문용으로 추천해요.</div><div class="kp" style="margin-top:8px">💡 이름 때문에 기억하기 쉬움. 사케 입문 손님에게 부담 없이 추천.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">한국에서 인지도 높은 가성비 사케. 준마이긴조 등급(정미율 60% 이하).</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">가볍고 깔끔한 과일향, 부담 없는 목넘김.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="sk" id="bt-yohachiro">
+  <div class="bth" onclick="tog('bt-yohachiro')"><div class="btmeta"><div class="btname">요하찌로 (与八郎)</div><div class="bten">Yohachiro · 富士山伏流水仕込 · 1.8L</div><div class="btbadges"><span class="badge bcat">청주(日本酒)</span><span class="badge breg">일본 도치기현</span><span class="badge babv">14.5~14.9%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">후지산 맑은 물로 빚은 일본 청주예요. 목 넘김이 부드럽고 깔끔하면서 은은한 감칠맛이 나요. 부담 없이 매일 즐기기 좋아 이자카야 하우스 사케로 많이 써요.</div><div class="kp" style="margin-top:8px">💡 차갑게 칠링하면 청량감이, 따뜻하게 데우면(오캉) 부드러운 풍미가 산다. 회·나베·꼬치구이·튀김 등 일식 전반과 잘 맞음.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt"><strong>与八郎(よはちろう)</strong> — 일본 <strong>도치기현 홋칸주조(北関酒造)</strong>의 청주. <strong>1.8L 대용량</strong> 가성비 사케로, 후지산의 맑은 물(복류수)로 빚는다. 도수 <strong>14.5~14.9%</strong>. 이자카야 하우스 사케로 널리 쓰인다.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">목 넘김이 매우 부드럽고 깔끔하며, 후지산 연수 특유의 잡맛 없는 맑음에 은은한 감칠맛(우마미)이 받쳐준다. 개성을 내세우기보다 식사와 함께 편하게 마시는 데일리 타입.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="sk" id="bt-tsuruume">
+  <div class="bth" onclick="tog('bt-tsuruume')"><div class="btmeta"><div class="btname">츠루우메 유즈</div><div class="bten">Tsuruume Yuzu 鶴梅</div><div class="btbadges"><span class="badge bcat">유자 리큐르</span><span class="badge breg">일본 와카야마</span><span class="badge babv">7%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">진짜 유자가 절반이나 들어간 유자 사케예요. 새콤달콤하고 향이 진해서 술 약하신 분도 부담 없이 즐기세요. 그냥(온더락)도, 탄산 타서(하이볼)도 맛있어요.</div><div class="kp" style="margin-top:8px">💡 우리집 "츠루우메 하이볼"이 바로 이 술 베이스 + 토닉 + 레몬. 도수 7도로 낮아 부드럽지만 향은 진하다. 온더락·하이볼 둘 다 추천. 잘 넘어가니 마시는 속도 안내.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">와카야마 <strong>헤이와 주조(平和酒造)</strong>의 리큐르 브랜드 "츠루우메(鶴梅)" 라인. <strong>와카야마산 천연 유자 50% 이상 + 사케(청주) 베이스</strong>. 도수 7%. 일본 전국 리큐르 콘테스트 대상 수상.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">병을 열면 터지는 듯한 생생한 유자 향. 새콤달콤한 과즙감에 사케 베이스가 중심을 잡고, 유자 껍질의 기분 좋은 쌉쌀함이 균형을 잡아 질리지 않는다. 상단에 유자 부유물이 뜬다(천연 함량 증거).</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ 한국 전통주 ══════ -->
+<div class="catdiv btsec" data-cat="kr">🏺 한국 전통주</div>
+
+<div class="btc defcard" data-cat="kr" id="def-kr">
+  <div class="bth" onclick="tog('def-kr')"><div class="btmeta"><div class="btname">📖 한국 전통주란?</div><div class="bten">기본 개념 · 클릭</div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="prov" style="display:block;padding:14px 16px 16px">
+      <div class="prosec"><div class="prostitle">큰 분류</div><div class="protxt"><strong>· 증류식 소주</strong> — 발효주를 증류. 도수 높고(25~40%) 깔끔 (화요, 추사, 문배술)<br><strong>· 약주/청주</strong> — 쌀 발효 후 맑게 거른 것 (한산소곡주)<br><strong>· 리큐르/약재주</strong> — 증류주에 약재·과실 침출 (감홍로, 이강주, 죽력고)</div></div>
+      <div class="prosec"><div class="prostitle">희석식 vs 증류식 소주</div><div class="protxt"><strong>· 희석식</strong>(참이슬·처음처럼) — 주정(에탄올)에 물·감미료. 향 없고 저렴<br><strong>· 증류식</strong>(화요·추사) — 곡물·과일을 발효·증류. 향과 풍미가 살아있고 고급</div></div>
+      <div class="prosec"><div class="prostitle">조선 3대 명주</div><div class="kp"><strong>감홍로 · 이강주 · 죽력고</strong> — 조선시대부터 이름난 3대 명주. 약재가 들어가 복합적이고 귀하다.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-chusa25">
+  <div class="bth" onclick="tog('bt-chusa25')"><div class="btmeta"><div class="btname">추사 백25</div><div class="bten">Chusa Baek 25</div><div class="btbadges"><span class="badge bcat">사과 증류주</span><span class="badge breg">충남 예산</span><span class="badge babv">25%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">충남 예산 사과로만 만든 증류주예요. 사과 향이 은은하게 나면서 부드럽고 깔끔해요. 일반 소주랑 전혀 다른, 프랑스 사과 브랜디(칼바도스) 같은 느낌이에요.</div><div class="kp" style="margin-top:8px">💡 온더락이면 사과 청량감이 살아난다. 사과 하이볼(추사+토닉)로도 좋다. "쌀 소주가 아니라 사과로 만든 증류주"가 핵심 설명 포인트.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">예산사과와인에서 <strong>예산 후지 사과를 증류해 오크 숙성</strong>한 사과 증류주. 원료는 사과증류원액 + 정제수뿐(주정·물 첨가 없음). <strong>한국형 칼바도스</strong>를 목표로 개발. 조선 실학자 김정희(추사)의 고향 예산에서 이름을 땄다.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">맑고 투명. 은은한 <strong>사과 향</strong>에 바닐라·초콜릿 향이 따르고, 목 넘김 뒤 가벼운 스파이시함. 전체적으로 가볍고 깔끔, 여운은 길지 않음.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-gamhong">
+  <div class="bth" onclick="tog('bt-gamhong')"><div class="btmeta"><div class="btname">감홍로</div><div class="bten">Gamhongro</div><div class="btbadges"><span class="badge bcat">증류식·약재주</span><span class="badge breg">평양 원산</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">조선시대 3대 명주 중 하나예요. 붉은 빛깔이 아름답고 한약재 향이 독특해요. 향이 강해서 좋아하시는 분들은 정말 좋아하세요.</div><div class="kp" style="margin-top:8px">💡 스트레이트 또는 살짝 온더락. 색깔과 "한약재 7종" 스토리로 어필.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">조선 3대 명주. 40도 증류주에 지초·정향·계피·감초·생강 등 <strong>7가지 한약재</strong>를 넣어 우림. 붉은색은 지초에서.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">달콤한 약재향과 스파이시함, 복합적인 풍미. 진(Gin)의 보태니컬과 비슷한 복잡도.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-juky">
+  <div class="bth" onclick="tog('bt-juky')"><div class="btmeta"><div class="btname">죽력고</div><div class="bten">Jukyeokgo</div><div class="btbadges"><span class="badge bcat">증류식·약재주</span><span class="badge breg">전북 정읍</span><span class="badge babv">32%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">대나무 진액으로 만든 희귀한 조선 3대 명주예요. 대나무 특유의 청량하고 독특한 향이 나요. 쉽게 접하기 어려운 술이에요.</div><div class="kp" style="margin-top:8px">💡 "대나무 진액으로 만든 조선 궁중 술" 스토리텔링이 핵심. 스트레이트로 천천히.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">조선 3대 명주. <strong>죽력(竹瀝, 대나무를 구워 받은 진액)</strong>에 솔잎·생강·계피 등 약재를 더해 증류한 약용 증류주. 동학농민운동의 녹두장군 <strong>전봉준이 고문당한 몸을 죽력고로 추슬렀다</strong>는 일화로 유명하다. 손이 많이 가 생산량이 적고 귀하다.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">대나무의 청량함, 약간의 스모키함과 약재향. 독특하고 복합적.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-igang19">
+  <div class="bth" onclick="tog('bt-igang19')"><div class="btmeta"><div class="btname">이강주 19</div><div class="bten">Igangju 19</div><div class="btbadges"><span class="badge bcat">증류식·약재주</span><span class="badge breg">전북 전주</span><span class="badge babv">19%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">배와 생강으로 만든 전통 술이에요. 19도라 부담 없고, 달콤하면서 생강 향이 은은해서 마시기 편해요.</div><div class="kp" style="margin-top:8px">💡 차갑게 스트레이트로 편하게. "배+생강 들어간 한국 리큐르"로 설명.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">조선 3대 명주. 이강(梨薑) = 배(梨) + 생강(薑). 소주에 배·생강·계피·울금·꿀을 넣어 만든다. 19도는 입문용.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">배의 청량한 단맛, 생강의 은은한 스파이시, 꿀의 부드러움. 황금빛.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-igang-emile">
+  <div class="bth" onclick="tog('bt-igang-emile')"><div class="btmeta"><div class="btname">이강주 에밀레종</div><div class="bten">Igangju Emile</div><div class="btbadges"><span class="badge bcat">증류식·약재주</span><span class="badge breg">전북 전주</span><span class="badge babv">38%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">이강주 19도의 고급·고도수 버전이에요. 38도라 더 진하고 강렬하지만 배·생강 향은 그대로예요. 선물용으로도 좋아요.</div><div class="kp" style="margin-top:8px">💡 온더락 추천. 19도와 비교: "같은 술 고도수·고급 버전". 선물 수요 어필.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">이강주의 <strong>38도 프리미엄 버전</strong>. 같은 배·생강 베이스지만 도수가 높아 더 깊고 강렬. "에밀레종" 이름의 고급 라인.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">19도보다 농축된 배·생강·계피, 묵직한 바디와 긴 여운.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-munbae-heritage">
+  <div class="bth" onclick="tog('bt-munbae-heritage')"><div class="btmeta"><div class="btname">문배술 헤리티지 25</div><div class="bten">Munbaeju Heritage 25</div><div class="btbadges"><span class="badge bcat">증류식 소주</span><span class="badge breg">경기 김포</span><span class="badge babv">25%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">국가무형문화재로 지정된 전통 증류주예요. 신기하게도 과일을 안 넣었는데 배(문배) 향이 난다고 해서 문배술이에요. 깔끔하고 향긋해요.</div><div class="kp" style="margin-top:8px">💡 "과일 안 넣었는데 배 향이 나는 무형문화재 술"이 대화 포인트. 차갑게 스트레이트.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt"><strong>국가무형문화재</strong> 문배주. 좁쌀·수수를 발효·증류. 문배(돌배) 과실을 넣지 않았는데도 문배 향이 난다 하여 붙은 이름. 헤리티지 25는 대중적인 25도 라인.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">은은한 배 향(문배향), 수수·좁쌀의 곡물풍미, 깔끔한 피니시.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-munbae-yongsang">
+  <div class="bth" onclick="tog('bt-munbae-yongsang')"><div class="btmeta"><div class="btname">문배술 용상 도자기</div><div class="bten">Munbaeju Yongsang (Ceramic)</div><div class="btbadges"><span class="badge bcat">증류식 소주</span><span class="badge breg">경기 김포</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">문배술의 고급 도자기 버전이에요. 40도로 진하고, 도자기 병이 멋스러워서 선물이나 특별한 자리에 잘 어울려요.</div><div class="kp" style="margin-top:8px">💡 도자기 병 = 선물·접대용 프레스티지. 온더락 또는 스트레이트.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">문배주의 <strong>40도 프리미엄 도자기 패키지</strong>. 무형문화재 전통 제법, 고도수 버전.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">진한 문배향과 곡물풍미, 40도의 묵직한 바디와 긴 여운.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-solsong-gold">
+  <div class="bth" onclick="tog('bt-solsong-gold')"><div class="btmeta"><div class="btname">솔송주 골드</div><div class="bten">Solsongju Gold</div><div class="btbadges"><span class="badge bcat">증류식 소주</span><span class="badge breg">경남 함양</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">소나무 새순(송순)과 솔잎으로 빚은 전통주예요. 솔향이 은은하게 나서 독특하고 깔끔해요.</div><div class="kp" style="margin-top:8px">💡 "소나무로 빚은 술"이 포인트. 차갑게 스트레이트.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">경남 함양의 전통주. <strong>송순(소나무 새순)·솔잎</strong>을 넣어 빚은 술의 증류 버전. 골드는 고급 라인.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">은은한 솔향과 부드러운 곡물 단맛, 깔끔한 피니시.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-solsong-baekja">
+  <div class="bth" onclick="tog('bt-solsong-baekja')"><div class="btmeta"><div class="btname">솔송주 백자 도자기</div><div class="bten">Solsongju Baekja (Ceramic)</div><div class="btbadges"><span class="badge bcat">증류식 소주</span><span class="badge breg">경남 함양</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">솔송주의 백자 도자기 고급 버전이에요. 솔향과 함께 도자기 병이 우아해서 선물용으로 좋아요.</div><div class="kp" style="margin-top:8px">💡 백자 병 = 선물·접대용. 골드와 비교해 더 프리미엄 포지션으로 안내.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">솔송주의 <strong>백자 도자기 프리미엄 패키지</strong>. 송순·솔잎 베이스 고급 라인.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">솔향과 곡물 풍미, 도자기 숙성감의 부드러움.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-chusa-brandy">
+  <div class="bth" onclick="tog('bt-chusa-brandy')"><div class="btmeta"><div class="btname">추사 브랜디 40</div><div class="bten">Chusa Brandy 40</div><div class="btbadges"><span class="badge bcat">사과 브랜디</span><span class="badge breg">충남 예산</span><span class="badge babv">40%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">추사백을 만든 곳에서 만든 40도 사과 브랜디예요. 사과를 오크통에 오래 숙성시켜서 위스키나 코냑처럼 진하고 부드러워요. 한국판 칼바도스예요.</div><div class="kp" style="margin-top:8px">💡 니트로 천천히, 식후주로. "한국 사과로 만든 칼바도스(프랑스 사과 브랜디)"로 설명.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">예산사과와인의 <strong>40도 사과 브랜디</strong>(오크 장기 숙성). 추사백25와 같은 사과 증류 베이스지만 고도수·장기숙성으로 브랜디급. 한국형 칼바도스의 정점.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">농축된 사과, 오크의 바닐라·캐러멜·향신료, 묵직하고 부드러운 바디. 코냑·칼바도스 애호가 취향.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="kr" id="bt-hansando">
+  <div class="bth" onclick="tog('bt-hansando')"><div class="btmeta"><div class="btname">한산 소곡주</div><div class="bten">Hansan Sogokju</div><div class="btbadges"><span class="badge bcat">약주</span><span class="badge breg">충남 서천</span><span class="badge babv">18%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">백제시대부터 내려온 전통 약주예요. "앉은뱅이술"이라는 별명처럼 너무 잘 넘어가서 마시다 보면 못 일어난다는 술이에요. 달콤하고 구수해요.</div><div class="kp" style="margin-top:8px">💡 "앉은뱅이술" 스토리로 대화. 상온 또는 살짝 차갑게. 도수 낮아 보여도 잘 취하니 안내.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">충남 서천 한산의 전통 약주. 찹쌀+누룩 장기 발효. "앉은뱅이술" 별명 — 맛있어서 자꾸 마시다 일어서기 힘들다는 데서 유래.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">달콤·구수한 쌀의 풍미, 꿀·과일 뉘앙스. 18도지만 부드럽게 넘어감.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ 소주 ══════ -->
+<div class="catdiv btsec" data-cat="sj">🍾 소주 SOJU</div>
+
+<div class="btc" data-cat="sj" id="bt-hwayo41">
+  <div class="bth" onclick="tog('bt-hwayo41')"><div class="btmeta"><div class="btname">화요 41</div><div class="bten">Hwayo 41</div><div class="btbadges"><span class="badge bcat">증류식 소주</span><span class="badge breg">경기 여주</span><span class="badge babv">41%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">41도 프리미엄 소주예요. 일반 소주랑 전혀 다르게 쌀로 만든 깔끔한 증류주라, 위스키처럼 즐기는 술이에요.</div><div class="kp" style="margin-top:8px">💡 "쌀로 만든 프리미엄 증류 소주". 온더락 추천.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">광주요 그룹의 프리미엄 증류식 소주. 쌀 100%, 여주 지하수. 41도 고도수 버전.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">불순물 없는 깔끔한 증류 풍미, 은은한 곡물 단맛. 희석식 소주와 차원이 다름.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="sj" id="bt-hwayo25">
+  <div class="bth" onclick="tog('bt-hwayo25')"><div class="btmeta"><div class="btname">화요 25</div><div class="bten">Hwayo 25</div><div class="btbadges"><span class="badge bcat">증류식 소주</span><span class="badge breg">경기 여주</span><span class="badge babv">25%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">화요 41도보다 가벼운 25도 버전이에요. 깔끔하고 부드러워서 처음 프리미엄 소주 드시는 분께 좋아요.</div><div class="kp" style="margin-top:8px">💡 "화요 41과 같은 술 25도 버전, 더 부드럽다"로 연결 추천.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">화요 41의 라이트 버전. 동일 증류 방식, 25도로 마시기 편함.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">차갑게 스트레이트로 마시면 쌀의 단맛이 잘 느껴짐. 깔끔·부드러움.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="btc" data-cat="sj" id="bt-ilpoom">
+  <div class="bth" onclick="tog('bt-ilpoom')"><div class="btmeta"><div class="btname">일품진로</div><div class="bten">Ilpoom Jinro</div><div class="btbadges"><span class="badge bcat">증류식 소주</span><span class="badge breg">한국</span><span class="badge babv">25%</span></div></div><div class="chev">▼</div></div>
+  <div class="btd">
+    <div class="modesw"><button class="mbtn on" onclick="swMode(this,'sim')">💬 손님 설명</button><button class="mbtn" onclick="swMode(this,'pro')">🎓 전문 설명</button></div>
+    <div class="simv"><div class="gtip">진로에서 만든 프리미엄 증류식 소주예요. 일반 참이슬보다 부드럽고 깔끔해서 반주로 즐기기 좋아요.</div><div class="kp" style="margin-top:8px">💡 차갑게 스트레이트. 화요보다 합리적인 증류식 입문 옵션으로 안내.</div></div>
+    <div class="prov" style="display:none">
+      <div class="prosec"><div class="prostitle">정체</div><div class="protxt">하이트진로의 증류식 소주. 일반 희석식(참이슬)과 달리 쌀 증류 원액 사용으로 풍미가 있다.</div></div>
+      <div class="prosec"><div class="prostitle">테이스팅</div><div class="protxt">부드러운 곡물 단맛, 깔끔한 피니시. 희석식과 프리미엄 증류식의 중간 접근성.</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end panel-bt -->
+
+
+</main>
+
+<!-- SCROLL TOP -->
+<button class="stbtn" id="stbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- PORTFOLIO -->
+  </div>
+</div>
+
+<script>
+// ── 탭 전환 ──
+function goTab(t) {
+  var hb = document.getElementById('panel-hb');
+  var bt = document.getElementById('panel-bt');
+  var tbhb = document.getElementById('tbhb');
+  var tbbt = document.getElementById('tbbt');
+  if (t === 'hb') {
+    hb.style.display = 'block';
+    bt.style.display = 'none';
+    tbhb.className = 'tabbtn on';
+    tbbt.className = 'tabbtn';
+  } else {
+    hb.style.display = 'none';
+    bt.style.display = 'block';
+    tbhb.className = 'tabbtn';
+    tbbt.className = 'tabbtn on';
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── 카드 토글 ──
+function tog(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ── 모드 전환 ──
+function swMode(btn, mode) {
+  var det = btn.closest('.hbd') || btn.closest('.btd');
+  var sim = det.querySelector('.simv');
+  var pro = det.querySelector('.prov');
+  det.querySelectorAll('.mbtn').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  if (mode === 'sim') { sim.style.display='block'; pro.style.display='none'; }
+  else { sim.style.display='none'; pro.style.display='block'; }
+}
+
+// ── 보틀 필터 ──
+function filt(chip, cat) {
+  document.querySelectorAll('.fchip').forEach(function(c){ c.classList.remove('on'); });
+  chip.classList.add('on');
+  document.querySelectorAll('.btc').forEach(function(c){
+    c.style.display = (cat==='all' || c.dataset.cat===cat) ? '' : 'none';
+  });
+  // 카테고리 구분선: 전체일 때 모두, 특정 선택 시 해당 구분선만
+  document.querySelectorAll('.btsec').forEach(function(s){
+    s.style.display = (cat==='all' || s.dataset.cat===cat) ? '' : 'none';
+  });
+}
+
+
+// ── 스크롤 탑 ──
+window.addEventListener('scroll', function(){
+  document.getElementById('stbtn').classList.toggle('vis', window.scrollY > 300);
+});
+</script>
+</body>
+</html>
