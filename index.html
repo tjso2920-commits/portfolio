@@ -221,7 +221,9 @@ summary:hover{background:var(--surface-2)}
 #lb .prev{left:8px} #lb .next{right:8px}
 /* ── 미디어 카드 ── */
 .media-grid{max-width:420px; display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin:16px 0 4px}
-.media-grid img{width:100%; border-radius:10px; border:1px solid var(--line); display:block}
+.media-grid img{width:100%; height:auto; border-radius:10px; border:1px solid var(--line); display:block;
+  /* .shot img 의 3:4 crop 을 무효화 — 인증패는 잘리면 글자가 날아간다 */
+  aspect-ratio:auto; object-fit:contain}
 .media-grid p{margin:8px 0 0; font-size:13px; color:var(--ink-3); font-weight:600}
 footer{
   margin-top:56px; padding:28px 0 60px; border-top:1px solid var(--line);
@@ -536,6 +538,13 @@ footer p{margin:0 0 6px}
         <li><span class="yr">2018</span><b>케이블TV</b> 방송 출연 (매장 촬영)</li>
         <li><span class="yr">2016</span><b>하바나 마스터 클래스 코리아</b> 우승</li>
       </ul>
+      <h4 class="gal-h">대한민국 하이볼 명가 100 인증 · 2024</h4>
+      <div class="media-grid">
+        <figure class="shot" data-cap="대한민국 하이볼 명가 100 인증점 선정 — 2024 (Beam Suntory)">
+          <img src="img/32.jpg" alt="하이볼 명가 100 인증패" loading="lazy" decoding="async">
+        </figure>
+      </div>
+
       <h4 class="gal-h">하바나 마스터 클래스 코리아 우승 · 2016</h4>
       <div class="media-grid">
         <figure class="shot" data-cap="하바나 마스터 클래스 코리아 우승 — 2016">
@@ -545,11 +554,14 @@ footer p{margin:0 0 6px}
 
       <h4 class="gal-h">케이블TV 방송 출연 · 2018 — 매장 촬영</h4>
       <div class="gal wide">
-        <figure class="shot" data-cap="케이블TV 방송 출연 — 매장 촬영 현장, 2018"><img src="img/26.jpg" alt="케이블TV 방송 출연 촬영 현장" loading="lazy" decoding="async"><figcaption>촬영 현장</figcaption></figure>
+        <figure class="shot" data-cap="촬영 현장 — 방송 제작 중 바 스테이션, 2018"><img src="img/33.jpg" alt="방송 촬영 현장" loading="lazy" decoding="async"><figcaption>촬영 현장</figcaption></figure>
+        <figure class="shot" data-cap="촬영 현장 — 매장에서, 2018"><img src="img/26.jpg" alt="촬영 현장" loading="lazy" decoding="async"><figcaption>촬영 현장 ②</figcaption></figure>
+        <figure class="shot" data-cap="방송 인터뷰 — 방송 촬영분, 2018"><img src="img/34.jpg" alt="방송 인터뷰 장면" loading="lazy" decoding="async"><figcaption>인터뷰</figcaption></figure>
         <figure class="shot" data-cap="완성한 칵테일 서브 — 방송 촬영분, 2018"><img src="img/27.jpg" alt="방송 중 칵테일 서브 장면" loading="lazy" decoding="async"><figcaption>칵테일 서브</figcaption></figure>
         <figure class="shot" data-cap="셰이킹 시연 — 방송 촬영분, 2018"><img src="img/28.jpg" alt="방송 중 셰이킹 시연" loading="lazy" decoding="async"><figcaption>셰이킹 시연 ①</figcaption></figure>
         <figure class="shot" data-cap="셰이킹 시연 — 방송 촬영분, 2018"><img src="img/29.jpg" alt="방송 중 셰이킹 시연" loading="lazy" decoding="async"><figcaption>셰이킹 시연 ②</figcaption></figure>
         <figure class="shot" data-cap="셰이킹 시연 — 방송 촬영분, 2018"><img src="img/30.jpg" alt="방송 중 셰이킹 시연" loading="lazy" decoding="async"><figcaption>셰이킹 시연 ③</figcaption></figure>
+        <figure class="shot" data-cap="바 & 테이블 전경 — 방송 촬영분, 2018"><img src="img/35.jpg" alt="바 및 테이블 전경" loading="lazy" decoding="async"><figcaption>바 &amp; 테이블</figcaption></figure>
         <figure class="shot" data-cap="촬영 매장 바 전경 — 방송 촬영분, 2018"><img src="img/31.jpg" alt="촬영 매장 바 전경" loading="lazy" decoding="async"><figcaption>바 전경</figcaption></figure>
       </div>
     </div>
