@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yoon-sik Jeong — Ten years in kitchens and bars, and the apps that now run them</title>
+<meta name="description" content="Yoon-sik Jeong — resume and portfolio. Native Korean speaker, ten years as a sashimi head chef and head bartender. Self-taught builder of eight web apps now running six restaurants. Live demos.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Yoon-sik Jeong — Kitchen and bar operations, rebuilt as web apps">
+<meta property="og:description" content="Native Korean speaker. Ten years in F&B. Eight self-built web apps running six restaurants.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧰</text></svg>">
+<style>
+:root{
+  --bg:#fbfaf8; --surface:#fff; --surface-2:#f4f2ee; --line:#e3e0d9;
+  --ink:#1b1a18; --ink-2:#4e4b45; --ink-3:#807b72;
+  --accent:#1f5f4e; --accent-soft:#e6f0ec; --accent-ink:#14453a;
+  --live:#1f7a4d; --live-bg:#e4f3ea;
+  --built:#6b6459; --built-bg:#efece6;
+  --wip:#9a6212; --wip-bg:#fbf0dd;
+  --shadow:0 1px 2px rgba(20,18,15,.05), 0 8px 24px -14px rgba(20,18,15,.22);
+  --radius:14px;
+  --sans:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+         Arial, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --mono:ui-monospace, SFMono-Regular, Menlo, "Cascadia Mono", monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#14140f; --surface:#1c1c17; --surface-2:#232320; --line:#33322c;
+    --ink:#efece4; --ink-2:#bab5aa; --ink-3:#8b8579;
+    --accent:#7fd0b4; --accent-soft:#1c2f29; --accent-ink:#a7e3cd;
+    --live:#6fce9c; --live-bg:#16301f;
+    --built:#a8a294; --built-bg:#282722;
+    --wip:#e0ab5c; --wip-bg:#33270f;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14140f; --surface:#1c1c17; --surface-2:#232320; --line:#33322c;
+  --ink:#efece4; --ink-2:#bab5aa; --ink-3:#8b8579;
+  --accent:#7fd0b4; --accent-soft:#1c2f29; --accent-ink:#a7e3cd;
+  --live:#6fce9c; --live-bg:#16301f;
+  --built:#a8a294; --built-bg:#282722;
+  --wip:#e0ab5c; --wip-bg:#33270f;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+  font-size:16px; line-height:1.68; letter-spacing:-.003em;
+  -webkit-font-smoothing:antialiased; overflow-wrap:break-word;
+}
+.wrap{max-width:820px; margin:0 auto; padding:0 20px}
+a{color:var(--accent-ink); text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── hero ── */
+.hero{padding:60px 0 34px; border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-size:12.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-3); margin:0 0 14px;
+}
+.hero h1{
+  margin:0 0 16px; font-size:clamp(27px,6.2vw,40px); line-height:1.26;
+  font-weight:800; letter-spacing:-.022em;
+}
+.hero h1 em{font-style:normal; color:var(--accent)}
+.lede{margin:0 0 22px; font-size:clamp(15px,3.6vw,17px); color:var(--ink-2); max-width:64ch}
+.facts{display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:0; list-style:none}
+.facts li{
+  font-size:13px; font-weight:600; color:var(--ink-2); background:var(--surface-2);
+  border:1px solid var(--line); border-radius:99px; padding:6px 13px;
+}
+
+/* ── table of contents ── */
+nav.toc{
+  position:sticky; top:0; z-index:20; background:var(--bg);
+  border-bottom:1px solid var(--line); margin-bottom:8px;
+}
+nav.toc ol{
+  display:flex; gap:4px; overflow-x:auto; list-style:none; margin:0;
+  padding:9px 20px; max-width:820px; margin-inline:auto;
+  scrollbar-width:none; -webkit-overflow-scrolling:touch;
+}
+nav.toc ol::-webkit-scrollbar{display:none}
+nav.toc a{
+  display:block; white-space:nowrap; font-size:13.5px; font-weight:700;
+  color:var(--ink-2); padding:8px 13px; border-radius:9px; min-height:44px;
+  line-height:28px;
+}
+nav.toc a:hover{background:var(--surface-2); text-decoration:none; color:var(--ink)}
+
+/* ── sections ── */
+section{padding:46px 0 8px; scroll-margin-top:64px}
+h2{
+  margin:0 0 6px; font-size:12.5px; font-weight:800; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--accent);
+}
+h2 + .sect-lede{margin:0 0 26px; font-size:20px; font-weight:750; letter-spacing:-.018em}
+.sect-note{margin:-18px 0 26px; font-size:14px; color:var(--ink-3); max-width:64ch}
+
+/* ── app cards ── */
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:22px; margin:0 0 16px;
+}
+.card-top{display:flex; align-items:flex-start; gap:12px; margin-bottom:6px; flex-wrap:wrap}
+.card h3{margin:0; font-size:19.5px; font-weight:800; letter-spacing:-.02em; flex:1 1 auto}
+.tag{
+  flex:0 0 auto; font-size:11.5px; font-weight:800; letter-spacing:.02em;
+  padding:4px 10px; border-radius:99px; white-space:nowrap;
+}
+.tag.live{color:var(--live); background:var(--live-bg)}
+.tag.built{color:var(--built); background:var(--built-bg)}
+.tag.wip{color:var(--wip); background:var(--wip-bg)}
+.card .sub{margin:0 0 16px; font-size:13.5px; color:var(--ink-3); font-weight:600}
+dl{margin:0; display:grid; grid-template-columns:92px 1fr; gap:9px 14px; align-items:baseline}
+dt{
+  font-size:11.5px; font-weight:800; letter-spacing:.06em; color:var(--ink-3);
+  padding-top:3px; text-transform:uppercase;
+}
+dd{margin:0; font-size:15px; color:var(--ink-2)}
+dd b{color:var(--ink); font-weight:700}
+dd.result{color:var(--ink); font-weight:600}
+@media (max-width:560px){
+  dl{grid-template-columns:1fr; gap:2px 0}
+  dt{padding-top:11px}
+  dd{padding-bottom:2px}
+}
+.stack{
+  display:flex; flex-wrap:wrap; gap:6px; margin:17px 0 0;
+  padding:15px 0 0; border-top:1px dashed var(--line);
+}
+.stack span{
+  font-family:var(--mono); font-size:11.5px; color:var(--ink-3);
+  background:var(--surface-2); border-radius:6px; padding:3px 8px;
+}
+.actions{display:flex; flex-wrap:wrap; gap:9px; margin-top:17px}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  min-height:44px; padding:10px 18px; border-radius:10px; font-size:14.5px;
+  font-weight:700; border:1px solid var(--line); background:var(--surface-2);
+  color:var(--ink); transition:.14s;
+}
+.btn:hover{text-decoration:none; border-color:var(--ink-3)}
+.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+:root:not([data-theme="light"]) .btn.primary{color:#10201b}
+@media (prefers-color-scheme:light){.btn.primary{color:#fff}}
+:root[data-theme="light"] .btn.primary{color:#fff}
+.btn.primary:hover{opacity:.9}
+.btn[aria-disabled="true"]{opacity:.5; pointer-events:none}
+
+/* ── tables ── */
+.table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:640px; font-size:14.5px}
+th,td{padding:13px 16px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:12px; font-weight:800; letter-spacing:.06em; color:var(--ink-3); background:var(--surface-2)}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:700; color:var(--ink)}
+td .tag{display:inline-block; margin-top:5px}
+
+/* on narrow screens the table stacks into cards rather than scrolling sideways */
+@media (max-width:640px){
+  .table-wrap{border:none; background:transparent; overflow:visible}
+  table{min-width:0; display:block}
+  thead{display:none}
+  tbody{display:block}
+  tbody tr{
+    display:block; background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:17px 19px; margin:0 0 12px;
+  }
+  tbody td{display:block; border:none; padding:0; font-size:14.5px}
+  tbody td:first-child{font-size:17px; font-weight:800}
+  tbody td:not(:first-child){margin-top:13px; color:var(--ink-2)}
+  tbody td:not(:first-child)::before{
+    content:attr(data-label); display:block;
+    font-size:11px; font-weight:800; letter-spacing:.07em;
+    color:var(--ink-3); margin-bottom:3px; text-transform:uppercase;
+  }
+}
+
+/* ── disclosure ── */
+details{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  margin:0 0 14px; overflow:hidden;
+}
+summary{
+  cursor:pointer; list-style:none; padding:17px 20px; min-height:44px;
+  font-size:16px; font-weight:750; display:flex; align-items:center; gap:10px;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+"; margin-left:auto; color:var(--ink-3); font-weight:700; font-size:20px}
+details[open] summary::after{content:"–"}
+summary:hover{background:var(--surface-2)}
+.details-body{padding:2px 20px 20px; border-top:1px solid var(--line)}
+.details-body > :first-child{margin-top:16px}
+
+/* ── misc ── */
+.plain{margin:0 0 12px; font-size:15px; color:var(--ink-2)}
+.milestones{list-style:none; margin:0; padding:0}
+.milestones li{padding:12px 0; border-bottom:1px solid var(--line); font-size:15px}
+.milestones li:last-child{border-bottom:none}
+.milestones .yr{
+  font-family:var(--mono); font-size:12.5px; color:var(--ink-3);
+  margin-right:12px; font-weight:600;
+}
+/* ── photo gallery ── */
+.gal-h{
+  margin:26px 0 10px; font-size:13px; font-weight:800; letter-spacing:.06em;
+  color:var(--ink-3); padding-bottom:7px; border-bottom:1px solid var(--line);
+  text-transform:uppercase;
+}
+.details-body > .gal-h:first-of-type{margin-top:18px}
+/* landscape captures get 4:3 — a 3:4 crop cuts the subject out */
+.gal.wide .shot img{aspect-ratio:4/3}
+.gal.wide{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+.gal{display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:10px}
+.shot{margin:0; cursor:zoom-in}
+.shot img{
+  width:100%; aspect-ratio:3/4; object-fit:cover; display:block;
+  border-radius:10px; background:var(--surface-2); border:1px solid var(--line);
+}
+.shot figcaption{
+  margin-top:6px; font-size:12px; line-height:1.45; color:var(--ink-3); font-weight:600;
+}
+/* ── lightbox ── */
+#lb{
+  position:fixed; inset:0; z-index:100; display:none; place-items:center;
+  background:rgba(12,11,9,.94); padding:20px; overscroll-behavior:contain;
+}
+#lb.on{display:grid}
+#lb img{max-width:100%; max-height:78vh; border-radius:10px; object-fit:contain}
+#lb .cap{
+  margin-top:14px; max-width:58ch; text-align:center; color:#e8e4da;
+  font-size:14px; line-height:1.6;
+}
+#lb .x{
+  position:absolute; top:10px; right:10px; width:48px; height:48px;
+  border:none; border-radius:12px; background:rgba(255,255,255,.12); color:#fff;
+  font-size:22px; cursor:pointer; line-height:48px;
+}
+#lb .nav{
+  position:absolute; top:50%; transform:translateY(-50%); width:48px; height:64px;
+  border:none; border-radius:12px; background:rgba(255,255,255,.1); color:#fff;
+  font-size:24px; cursor:pointer;
+}
+#lb .prev{left:8px} #lb .next{right:8px}
+/* ── media cards ── */
+.media-grid{max-width:420px; display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin:16px 0 4px}
+.media-grid img{width:100%; height:auto; border-radius:10px; border:1px solid var(--line); display:block;
+  /* cancel the 3:4 crop from .shot img — cropping the plaque cuts the text off */
+  aspect-ratio:auto; object-fit:contain}
+.media-grid p{margin:8px 0 0; font-size:13px; color:var(--ink-3); font-weight:600}
+/* ── summary and skills ── */
+.summary{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:22px; margin:0 0 16px;
+}
+.summary ul{margin:0; padding-left:19px}
+.summary li{font-size:15px; color:var(--ink-2); margin-bottom:9px}
+.summary li:last-child{margin-bottom:0}
+.summary li b{color:var(--ink); font-weight:700}
+.skills{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px}
+.skill{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:18px 20px;
+}
+.skill h4{
+  margin:0 0 10px; font-size:12px; font-weight:800; letter-spacing:.07em;
+  color:var(--accent); text-transform:uppercase;
+}
+.skill ul{margin:0; padding-left:17px}
+.skill li{font-size:14px; color:var(--ink-2); margin-bottom:5px}
+.skill li:last-child{margin-bottom:0}
+
+/* ── experience timeline ── */
+.job{padding:20px 0; border-bottom:1px solid var(--line)}
+.job:last-of-type{border-bottom:none}
+.job-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px}
+.job-head h3{margin:0; font-size:17.5px; font-weight:800; letter-spacing:-.018em}
+.job-head .role{font-size:14.5px; font-weight:700; color:var(--accent-ink)}
+.job-head .term{
+  margin-left:auto; font-family:var(--mono); font-size:12.5px;
+  color:var(--ink-3); font-weight:600; white-space:nowrap;
+}
+.job ul{margin:10px 0 0; padding-left:18px}
+.job li{font-size:14.5px; color:var(--ink-2); margin-bottom:3px}
+@media (max-width:560px){
+  .job-head .term{margin-left:0; width:100%; order:3}
+}
+.chips{display:flex; flex-wrap:wrap; gap:7px; margin:0; padding:0; list-style:none}
+.chips li{
+  font-size:13px; font-weight:600; color:var(--ink-2); background:var(--surface-2);
+  border:1px solid var(--line); border-radius:8px; padding:6px 12px;
+}
+.contact{
+  display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 0; padding:0; list-style:none;
+}
+.contact a{
+  display:inline-flex; align-items:center; min-height:44px; padding:9px 16px;
+  border:1px solid var(--line); border-radius:10px; background:var(--surface-2);
+  font-size:14.5px; font-weight:700; color:var(--ink);
+}
+.contact a:hover{text-decoration:none; border-color:var(--ink-3)}
+footer{
+  margin-top:56px; padding:28px 0 60px; border-top:1px solid var(--line);
+  font-size:13.5px; color:var(--ink-3);
+}
+footer p{margin:0 0 6px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Yoon-sik Jeong &middot; 정윤식</p>
+    <h1>Ten years in kitchens and bars.<br>Now I build the <em>software that runs them</em>.</h1>
+    <p class="lede">
+      I'm a sashimi head chef and head bartender, and I've run venues as well as worked in them —
+      general manager of one operation, branch manager of another, and an interim contract where
+      I took a bar over end to end. The jobs that used to eat the day — counting stock, chasing
+      reservations, tracking what suppliers charge, keeping recipes straight — I rebuilt as web apps.
+      Six restaurants run on them now. I planned, designed and wrote every one myself, and the links
+      below open working demos.
+    </p>
+    <ul class="facts">
+      <li>10 years in F&amp;B</li>
+      <li>GM &amp; interim operator</li>
+      <li>Native Korean speaker</li>
+      <li>8 apps built, 6 in daily use</li>
+      <li>Korea's Top 100 Highball Bars, 2024–25</li>
+      <li>Seoul, Korea</li>
+    </ul>
+    <ul class="contact">
+      <li><a href="mailto:ysjeongfnbdata@gmail.com">ysjeongfnbdata@gmail.com</a></li>
+      <li><a href="../">한국어 &rarr;</a></li>
+    </ul>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <ol>
+    <li><a href="#summary">Summary</a></li>
+    <li><a href="#ai">Operating experience</a></li>
+    <li><a href="#apps">Works</a></li>
+    <li><a href="#others">More</a></li>
+    <li><a href="#field">Experience</a></li>
+    <li><a href="#edu">Education</a></li>
+    <li><a href="#awards">Awards</a></li>
+    <li><a href="#resume">Resume</a></li>
+  </ol>
+</nav>
+
+<main class="wrap">
+
+<!-- ══════════ 00. summary ══════════ -->
+<section id="summary" style="padding-top:38px">
+  <h2>00 — Summary</h2>
+  <p class="sect-lede">Summary</p>
+  <div class="summary">
+    <ul>
+      <li><b>Ten years on the floor.</b> Sashimi head chef and head bartender at the same time, and general manager of a venue's whole operation.</li>
+      <li><b>I build my own tools.</b> Eight web apps — ordering, reservations, supplier pricing, recipes, checklists — planned and written on my own and rolled out to six restaurants.</li>
+      <li><b>I work in numbers, not impressions.</b> Eight months of supplier receipts structured into 163 items, normalized so different pack sizes compare, with species-level yield applied so the cost figure reflects the part you can actually serve.</li>
+      <li><b>I've worked across a language barrier for years.</b> Cooking steps written in Korean, Portuguese and Vietnamese side by side, plus definitions for 44 kitchen terms no dictionary carries.</li>
+      <li>Native Korean &middot; professional working English &middot; studying AI &amp; Data Science at Korea Cyber University &middot; Seoul</li>
+      <li>Open to remote contract work now. Available for full-time roles from November 2026.</li>
+    </ul>
+  </div>
+  <div class="skills">
+    <div class="skill">
+      <h4>Culinary</h4>
+      <ul>
+        <li>Whole-fish breakdown — flounder, salmon, red sea bream, Spanish mackerel, yellowtail</li>
+        <li>Sashimi prep and plating consistency</li>
+        <li>Japanese izakaya cooking, sashimi-led courses</li>
+        <li>Italian-influenced line cooking — steak, pasta</li>
+        <li>Reading a raw ingredient for structure and yield</li>
+      </ul>
+    </div>
+    <div class="skill">
+      <h4>Bar &amp; drinks</h4>
+      <ul>
+        <li>Classic and signature cocktails at volume</li>
+        <li>Seasonal highball menu development</li>
+        <li>Flavor structure and balance</li>
+        <li>Bar workflow and service execution</li>
+      </ul>
+    </div>
+    <div class="skill">
+      <h4>Operations</h4>
+      <ul>
+        <li>Running kitchen and bar together, and the venue around them</li>
+        <li>High-volume service — 200+ drinks a day</li>
+        <li>Workflow and service-speed improvement</li>
+        <li>Hygiene, quality control, small-team management</li>
+        <li>Back office — ordering, costing, reservations</li>
+      </ul>
+    </div>
+    <div class="skill">
+      <h4>Building &amp; data</h4>
+      <ul>
+        <li>Eight single-file web apps, scoped to shipped</li>
+        <li>Speech input and a Korean quantity parser I wrote</li>
+        <li>Google Apps Script pipeline: email &rarr; spreadsheet &rarr; screen</li>
+        <li>Yield-adjusted cost math, unit-price trend analysis</li>
+        <li>Evaluating Korean AI output and F&amp;B content</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 01. small business operating experience ══════════ -->
+<section id="ai">
+  <h2>01 — Relevance</h2>
+  <p class="sect-lede">Running a small business, in practice</p>
+  <p class="sect-note">
+    Written for AI training and evaluation work on small business operations —
+    the decisions below are ones I've actually had to make and live with.
+  </p>
+  <div class="summary">
+    <ul>
+      <li>
+        <b>I've run venues, not just worked in them.</b>
+        General manager of a whole izakaya operation for close to two years. Branch manager of a third
+        site while still working the main one. And a four-month interim contract where I took a bar over
+        outright, ran it end to end, then closed the contract out by handing the business on as a going
+        concern with a goodwill premium paid at transfer.
+      </li>
+      <li>
+        <b>Pricing and margin, with the real numbers.</b>
+        Sashimi is priced off an invoice, but more than half the fish is waste once it's broken down.
+        I structured eight months of receipts into 163 items, normalized them so different pack sizes
+        could be compared, and applied a per-species yield of 40–60% so the cost figure reflects what
+        you can actually sell. Menu prices then get set against that, not against the invoice.
+      </li>
+      <li>
+        <b>Vendor management.</b>
+        Five suppliers, 163 line items, eight months of history. I can tell when a supplier's price has
+        drifted before anyone mentions it, and I know how much leverage a small operator actually has
+        when it does.
+      </li>
+      <li>
+        <b>Staffing and compliance without an HR department.</b>
+        Statutory leave accrual under the Labor Standards Act, hourly-rate and ordinary-wage math for
+        part-time staff, and health-certificate expiry tracking because missing one is a fine.
+        Nobody was going to do that for us, so I built the tools that do it.
+      </li>
+      <li>
+        <b>Deciding under a resource constraint is the entire job.</b>
+        No IT budget, no developer, and 18 staff who were never required to adopt anything.
+        I shipped the tools anyway, and three people chose to keep using them daily. Where that landed
+        and why is a more useful thing to reason about than a headline adoption number.
+      </li>
+      <li>
+        <b>I can explain the reasoning, not only the outcome.</b>
+        I write my own work up as problem, decision, result, and what I'd still question — see the
+        "what I saw" note on the ordering app below, where adoption split by age and I report the number
+        that survived a free choice rather than the flattering one. That habit is most of what this
+        kind of evaluation work asks for.
+      </li>
+      <li>
+        <b>Native Korean, and a domain models get wrong quietly.</b>
+        On fish handling, yields, drink specs or how a Korean restaurant is actually staffed and paid,
+        I can say where an answer is wrong and why — not just that it reads oddly.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ 02. works ══════════ -->
+<section id="apps">
+  <h2>02 — Works</h2>
+  <p class="sect-lede">Four apps that started as problems on my own shift</p>
+  <p class="sect-note">
+    All of them are a single HTML file backed by browser storage, so a restaurant can adopt one without a server.
+    Every demo has had supplier names, prices and staff names replaced with invented values.
+    The demo interfaces are in Korean; the write-ups here explain what each screen does.
+  </p>
+
+  <!-- balju faster -->
+  <article class="card">
+    <div class="card-top">
+      <h3>Balju Faster — ordering by voice</h3>
+      <span class="tag live">In use</span>
+    </div>
+    <p class="sub">6 restaurants &middot; 3 supplier formats &middot; live since July 2026</p>
+    <dl>
+      <dt>Problem</dt>
+      <dd>Placing an order means walking the walk-in and the dry store and counting what's on the shelf. With around 140 items, <b>you can't look and write at the same time.</b> Hands in gloves or wet, nobody wants to pull out a phone and type, so people did a lap and then wrote the order up from memory. Suppliers wanted different formats on top of that — one takes a sentence over KakaoTalk, another takes a handwritten order sheet — so everything got copied out twice.</dd>
+      <dt>Solution</dt>
+      <dd><b>Now you walk, you talk, and it's saved where you're standing.</b> I wrote the parser myself so Korean spoken quantities land as numbers — <b>"one case of bean sprouts", "three hundred grams"</b> — across about 40 unit mappings. On devices where the browser blocks speech recognition it falls back to <b>Gemini audio</b>. Typing stayed in, because sometimes typing is faster and taking it away would have been a worse app. The same order then comes out two ways on its own: <b>a message to paste into KakaoTalk</b>, and <b>an image of the handwritten order sheet</b>.</dd>
+      <dt>Result</dt>
+      <dd class="result">Stock gets counted and ordered in one pass. The second lap is gone, and so is writing the sheet by hand to photograph it. It's open to 18 staff across six restaurants, and with nobody required to use it, <b>three have used it every shift for two months.</b></dd>
+      <dt>What I saw</dt>
+      <dd>Adoption <b>split by age.</b> Younger staff switched immediately; the rest kept their old method. There was never a rule making anyone use it, so the honest number is the one that survived a free choice, and that's the number I report.</dd>
+    </dl>
+    <div class="stack">
+      <span>Web Speech API</span><span>Gemini (flash-lite + fallback)</span>
+      <span>Canvas image generation</span><span>localStorage</span><span>iOS Safari</span>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="../demo/balju/">Open demo &rarr;</a>
+    </div>
+  </article>
+
+  <!-- reservation dashboard -->
+  <article class="card">
+    <div class="card-top">
+      <h3>Reservation dashboard — parsing the inbox</h3>
+      <span class="tag live">In use</span>
+    </div>
+    <p class="sub">6 restaurants &middot; Gmail &rarr; Apps Script &rarr; Sheets &rarr; web &middot; live since July 2026</p>
+    <dl>
+      <dt>Problem</dt>
+      <dd>Reservations arrived as email, scattered across six restaurants. Every morning someone opened the inbox and copied out times, party sizes and names by hand. Just working out when each restaurant's first booking was took real time.</dd>
+      <dt>Solution</dt>
+      <dd>A <b>Google Apps Script parses the reservation emails</b> into a spreadsheet, and this screen reads the sheet and lays it out per restaurant. Then I added the things people actually ask during service — covers <b>against the same weekday last week and the same nth weekday last month</b>, parties of ten or more flagged, a pending / arrived / no-show status, and a closing-duty rota that rotates itself.</dd>
+      <dt>Result</dt>
+      <dd class="result">The morning transcription <b>is gone.</b> First booking and large parties for all six restaurants sit on one screen.</dd>
+    </dl>
+    <div class="stack">
+      <span>Google Apps Script</span><span>Gmail parsing</span><span>Google Sheets</span>
+      <span>static front end</span>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="../demo/reserve/">Open demo &rarr;</a>
+    </div>
+    <p class="sub" style="margin:12px 0 0">The demo has the backend disconnected and runs on sample bookings. Comparisons, filters and the rota all still work.</p>
+  </article>
+
+  <!-- price tracker -->
+  <article class="card">
+    <div class="card-top">
+      <h3>Price tracker — what suppliers actually charge</h3>
+      <span class="tag live">In use</span>
+    </div>
+    <p class="sub">163 items &middot; 5 suppliers &middot; 8 months of order history</p>
+    <dl>
+      <dt>Problem</dt>
+      <dd>Supplier prices only existed on paper receipts, so nobody could say what had gone up. Sashimi is worse than that: <b>the invoice price isn't the cost.</b> More than half of a fish goes in the bin once it's broken down, and none of that loss was in anyone's cost figure.</dd>
+      <dt>Solution</dt>
+      <dd>I structured eight months of receipts into 163 items and added <b>month-by-month history, low and high, and direction of travel.</b> Everything normalizes to per-gram, per-ml or per-unit so items sold in different pack sizes can be compared at all. For sashimi it applies a <b>per-species yield of 40–60%</b> to get the true cost of the edible portion, down to the cost of a single slice. Search takes voice too.</dd>
+      <dt>Result</dt>
+      <dd class="result">"Is this dearer than last month?" is now a <b>five-second question,</b> and sashimi is priced against <b>real cost rather than the invoice.</b></dd>
+    </dl>
+    <div class="stack">
+      <span>receipt data structuring</span><span>unit conversion + yield math</span>
+      <span>Web Speech API</span><span>PWA</span>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="../demo/price/">Open demo &rarr;</a>
+    </div>
+    <p class="sub" style="margin:12px 0 0">Supplier names and prices in the demo are all invented. The structure and the calculations are the real ones.</p>
+  </article>
+
+  <!-- multilingual recipes -->
+  <article class="card">
+    <div class="card-top">
+      <h3>Multilingual kitchen recipes — KO / PT / VI</h3>
+      <span class="tag live">In use</span>
+    </div>
+    <p class="sub">54 dishes &middot; 6 groups &middot; 3 languages</p>
+    <dl>
+      <dt>Problem</dt>
+      <dd>We had cooks who don't read Korean, and the recipes were Korean only. The instructions were also full of kitchen-only shorthand — <b>"long spoon", "t", "knife-rice"</b> — that a translation app turns into nonsense.</dd>
+      <dt>Solution</dt>
+      <dd>Every step of 54 dishes is written in <b>Portuguese and Vietnamese with the Korean original kept directly underneath</b>, because the talking on the floor still happens in Korean and people need to connect the two. <b>44 kitchen terms are tappable</b> and give a definition in the reader's own language, with a collapsible glossary alongside. Each card carries a photo of the finished dish that opens full size.</dd>
+      <dt>Result</dt>
+      <dd class="result">Cooks read the steps <b>in their own language.</b> It's in use now. No native speaker has reviewed the translations yet, and I'd want that before calling it finished.</dd>
+    </dl>
+    <div class="stack">
+      <span>three-language rendering</span><span>glossary tooltips</span>
+      <span>embedded images + lightbox</span>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="../demo/recipe/">Open demo &rarr;</a>
+    </div>
+    <p class="sub" style="margin:12px 0 0">
+      Recipe quantities belong to the company, so the demo removes them from the data itself and shows a mask
+      in their place — the same position in all three languages, with nothing left in the page source.
+    </p>
+  </article>
+
+</section>
+
+<!-- ══════════ 03. more ══════════ -->
+<section id="others">
+  <h2>03 — More</h2>
+  <p class="sect-lede">Everything else I've built</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>App</th><th>Problem it solved</th><th>What it does</th><th>Demo</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Fukuoka trip planner<br><span class="tag wip">In progress</span></td>
+          <td data-label="Problem it solved">A Google Maps saved list piles up places but never turns them into a route, so the order had to be worked out by hand every time.</td>
+          <td data-label="What it does">Parses the saved-list CSV, enriches 137 spots with coordinates through the Maps Platform API (all of them resolved), then builds routes, recommends by purpose and deep-links back into Google Maps. Data and interface are kept apart so the same build can be pointed at another country or language.</td>
+          <td data-label="Demo">Coming</td>
+        </tr>
+        <tr>
+          <td>App hub<br><span class="tag live">In use</span></td>
+          <td data-label="Problem it solved">As the number of apps grew, staff had to remember a URL for each one.</td>
+          <td data-label="What it does">A tile launcher, per-person app selection, home-screen install (PWA), and one place to manage the app list.</td>
+          <td data-label="Demo"><a href="../demo/hub/">Open &rarr;</a></td>
+        </tr>
+        <tr>
+          <td>Drinks training<br><span class="tag live">In use</span></td>
+          <td data-label="Problem it solved">Every new hire meant repeating the same highball builds and bottle notes out loud.</td>
+          <td data-label="What it does">16 highball recipes in build order (spirit, ice, tonic, stir), 35 bottles, a toggle between the guest-facing explanation and the technical one, and category filters.</td>
+          <td data-label="Demo"><a href="../demo/bar/">Open &rarr;</a></td>
+        </tr>
+        <tr>
+          <td>Health certificate tracker<br><span class="tag built">Built</span></td>
+          <td data-label="Problem it solved">Missing a staff health certificate expiry means a fine.</td>
+          <td data-label="What it does">Expiry calculated from the issue date, a four-stage countdown, calendar (.ics) export for reminders, CSV backup.</td>
+          <td data-label="Demo"><a href="../demo/health/">Open &rarr;</a></td>
+        </tr>
+        <tr>
+          <td>Store checklists<br><span class="tag built">Built</span></td>
+          <td data-label="Problem it solved">Opening and closing checks differed from person to person, so things got missed.</td>
+          <td data-label="What it does">Opening, closing, weekly and monthly templates, drag-to-reorder items, and a record of who did what and how far they got.</td>
+          <td data-label="Demo"><a href="../demo/checklist/">Open &rarr;</a></td>
+        </tr>
+        <tr>
+          <td>Annual leave tracker<br><span class="tag built">Built</span></td>
+          <td data-label="Problem it solved">Statutory leave accrual was being worked out separately at every restaurant.</td>
+          <td data-label="What it does">Accrual under the Labor Standards Act, a tab per restaurant, per-account access limits, and hourly-rate and ordinary-wage calculations for part-time staff.</td>
+          <td data-label="Demo">—</td>
+        </tr>
+        <tr>
+          <td>Alphabet learning game<br><span class="tag wip">In progress</span></td>
+          <td data-label="Problem it solved">A child needed a way to practice letter formation and pronunciation without an adult sitting there.</td>
+          <td data-label="What it does">A 22&times;22 canvas tilemap you walk around, with camera scrolling and collision, native-speaker TTS that fires when you approach a character, and stroke-order tracing scored A through Z.</td>
+          <td data-label="Demo">—</td>
+        </tr>
+        <tr>
+          <td>Final settlement calculator &middot; task automation scripts</td>
+          <td data-label="What it does" colspan="2">Severance and settlement line items, plus scripts for the repetitive parts of admin work.</td>
+          <td data-label="Demo">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════ 04. experience ══════════ -->
+<section id="field">
+  <h2>04 — Experience</h2>
+  <p class="sect-lede">Experience</p>
+  <p class="sect-note">
+    Ten years holding a kitchen and a bar at once. It's also why I knew which problems the apps above were worth solving.
+  </p>
+    <article class="job">
+      <div class="job-head">
+        <h3>Izakaya Shiori</h3>
+        <span class="role">Sashimi head chef</span>
+        <span class="term">Sep 2025 – present</span>
+      </div>
+      <ul>
+        <li>Run the sashimi section — knife precision on whole-fish breakdown, and plating that looks the same every time</li>
+        <li>Hold quality across a wide range of species under service pressure</li>
+        <li>Own seafood quality, prep flow and the service workflow for private dining</li>
+        <li>Moved ordering, reservations, supplier pricing and recipes onto web apps and rolled them out to six restaurants while working the section</li>
+      </ul>
+    </article>
+    <article class="job">
+      <div class="job-head">
+        <h3>Poi Izakaya</h3>
+        <span class="role">General manager / head chef / bartender</span>
+        <span class="term">Jun 2023 – Mar 2025</span>
+      </div>
+      <ul>
+        <li>Ran the whole venue while working both the kitchen and the bar</li>
+        <li>Developed signature dishes, including straw-smoked tuna</li>
+        <li>Built the seasonal highball menus and set the direction for drinks</li>
+        <li>Reworked how the kitchen and bar hand off to each other, which took time out of service</li>
+        <li>Selected for Korea's Top 100 Highball Bars, 2024–2025</li>
+      </ul>
+    </article>
+    <article class="job">
+      <div class="job-head">
+        <h3>Bar Vesper</h3>
+        <span class="role">Head bartender / manager</span>
+        <span class="term">Jul 2020 – Apr 2023</span>
+      </div>
+      <ul>
+        <li>Managed bar operations and worked into the kitchen flow</li>
+        <li>Developed classic and signature cocktails</li>
+        <li>Handled food prep alongside drinks in an Italian-Japanese room</li>
+        <li>Featured in the lifestyle magazine Heypop, 2022</li>
+      </ul>
+    </article>
+    <article class="job">
+      <div class="job-head">
+        <h3>Bar EHN The Bermuda</h3>
+        <span class="role">Bartender / kitchen (both)</span>
+        <span class="term">Dec 2015 – Feb 2020</span>
+      </div>
+      <ul>
+        <li>Worked bar and kitchen at the same time in a high-volume room</li>
+        <li>Made <b>200+ drinks a day</b> without losing consistency or speed</li>
+        <li>One of the highest-grossing mojito bars in the country</li>
+        <li>Ran a shift-based rotation between the kitchen and the bar</li>
+      </ul>
+    </article>
+    <article class="job">
+      <div class="job-head">
+        <h3>Bar EHN Old Knives</h3>
+        <span class="role">Branch manager / kitchen &amp; bar (concurrent)</span>
+        <span class="term">Feb 2018 – Feb 2019</span>
+      </div>
+      <ul>
+        <li>Third venue in the Bar EHN group — managed it while still on the floor at the Bermuda</li>
+        <li>Ran a small premium dining bar where the kitchen and the bar were one operation</li>
+        <li>Delivered a no-menu format built around what each guest wanted that night</li>
+        <li>Filmed for cable television, 2018</li>
+      </ul>
+    </article>
+    <article class="job">
+      <div class="job-head">
+        <h3>Bar Rockeat</h3>
+        <span class="role">Interim operating manager</span>
+        <span class="term">Mar 2020 – Jun 2020</span>
+      </div>
+      <ul>
+        <li>Ran the venue end to end under an interim contract — bar and kitchen both</li>
+        <li>Made the drinks and handled guest service</li>
+        <li>Handled food prep and cooking, and managed the kitchen's flow</li>
+        <li>Ran open and close, and kept the bar and kitchen coordinated</li>
+        <li>Steadied the business and then closed the contract out by <b>handing it over as a going concern, with a goodwill premium paid on transfer</b></li>
+      </ul>
+    </article>
+
+  <h4 class="gal-h">Also worked at</h4>
+  <ul class="chips">
+    <li>Malahao Seocho &middot; kitchen</li>
+    <li>Clutch &amp; Bardot &middot; barista</li>
+    <li>Socialcode &middot; bartender</li>
+  </ul>
+
+  <h4 class="gal-h">Languages</h4>
+  <ul class="chips">
+    <li>Korean &middot; native</li>
+    <li>English &middot; professional working</li>
+    <li>Japanese &middot; basic</li>
+  </ul>
+
+  <h4 class="gal-h">Work on the pass</h4>
+  <details>
+    <summary>27 photographs of the work</summary>
+    <div class="details-body">
+        <h4 class="gal-h">Sashimi &amp; seafood</h4>
+        <div class="gal">
+          <figure class="shot" data-cap="Breaking down a whole fish — knife control, reading the bone line, clean fillet separation, keeping the flesh intact"><img src="../img/00.jpg" alt="Breaking down a whole fish" loading="lazy" decoding="async"><figcaption>Whole-fish breakdown</figcaption></figure>
+          <figure class="shot" data-cap="Sashimi service platter — species mix, portion balance, garnish placement, plated for actual service"><img src="../img/01.jpg" alt="Sashimi service platter" loading="lazy" decoding="async"><figcaption>Sashimi platter</figcaption></figure>
+        </div>
+        <h4 class="gal-h">Kitchen &amp; izakaya dishes</h4>
+        <div class="gal">
+          <figure class="shot" data-cap="Seafood moriawase — uni, monkfish liver sauce with lotus root crisps, straw-smoked Spanish mackerel and young bluefin, kombu-aged salmon, cured mackerel"><img src="../img/02.jpg" alt="Seafood moriawase" loading="lazy" decoding="async"><figcaption>Seafood moriawase</figcaption></figure>
+          <figure class="shot" data-cap="Cured mackerel bou-zushi — curing the mackerel, forming the rice, a clean cut, consistent portioning"><img src="../img/08.jpg" alt="Cured mackerel bou-zushi" loading="lazy" decoding="async"><figcaption>Mackerel bou-zushi</figcaption></figure>
+          <figure class="shot" data-cap="Tongyeong oysters, panko-fried, with house dill mayonnaise"><img src="../img/03.jpg" alt="Panko-fried oysters" loading="lazy" decoding="async"><figcaption>Panko-fried oysters</figcaption></figure>
+          <figure class="shot" data-cap="Karaage with a house red-ginger sauce, added for acidity and aroma to cut the richness"><img src="../img/04.jpg" alt="Karaage" loading="lazy" decoding="async"><figcaption>Karaage</figcaption></figure>
+          <figure class="shot" data-cap="Camembert tempura — crisp outside, cheese melted just enough, with blueberry compote for sweetness and acidity"><img src="../img/05.jpg" alt="Camembert tempura" loading="lazy" decoding="async"><figcaption>Camembert tempura</figcaption></figure>
+          <figure class="shot" data-cap="Potato salad with crushed ajitama folded through and lotus root crisps for texture"><img src="../img/06.jpg" alt="Potato salad" loading="lazy" decoding="async"><figcaption>Potato salad</figcaption></figure>
+          <figure class="shot" data-cap="Sweet potato ice cream — roasted sweet potato base, fried sweet potato crisps, steamed sweet potato alongside"><img src="../img/07.jpg" alt="Sweet potato ice cream" loading="lazy" decoding="async"><figcaption>Sweet potato ice cream</figcaption></figure>
+          <figure class="shot" data-cap="Steak — cooking to temperature, the sear, sauce balance, plate composition"><img src="../img/09.jpg" alt="Steak" loading="lazy" decoding="async"><figcaption>Steak</figcaption></figure>
+        </div>
+        <h4 class="gal-h">Classic cocktails</h4>
+        <div class="gal">
+          <figure class="shot" data-cap="Gin sour — citrus balance, dilution control, a properly cold glass, a clean garnish"><img src="../img/10.jpg" alt="Gin sour" loading="lazy" decoding="async"><figcaption>Gin sour</figcaption></figure>
+          <figure class="shot" data-cap="White Lady — shake texture, temperature held, a precise lemon garnish"><img src="../img/11.jpg" alt="White Lady" loading="lazy" decoding="async"><figcaption>White Lady</figcaption></figure>
+          <figure class="shot" data-cap="Daiquiri — rum, citrus balance, dilution control, lime garnish"><img src="../img/12.jpg" alt="Daiquiri" loading="lazy" decoding="async"><figcaption>Daiquiri</figcaption></figure>
+          <figure class="shot" data-cap="Jack Rose — color control, surface texture, garnish balance"><img src="../img/13.jpg" alt="Jack Rose" loading="lazy" decoding="async"><figcaption>Jack Rose</figcaption></figure>
+          <figure class="shot" data-cap="Garibaldi — Campari's bitterness against fresh orange, light texture, carbonation balance"><img src="../img/14.jpg" alt="Garibaldi" loading="lazy" decoding="async"><figcaption>Garibaldi</figcaption></figure>
+        </div>
+        <h4 class="gal-h">Seasonal fruit highballs — signature development</h4>
+        <div class="gal">
+          <figure class="shot" data-cap="Strawberry highball — the flagship of the seasonal fruit highball system"><img src="../img/15.jpg" alt="Strawberry highball" loading="lazy" decoding="async"><figcaption>Strawberry</figcaption></figure>
+          <figure class="shot" data-cap="Grapefruit highball — clean citrus bitterness, bright acidity, high refreshment"><img src="../img/16.jpg" alt="Grapefruit highball" loading="lazy" decoding="async"><figcaption>Grapefruit</figcaption></figure>
+          <figure class="shot" data-cap="Pear highball — Korean pear with a European pear liqueur, layered fruit aroma and a soft sweetness"><img src="../img/17.jpg" alt="Pear highball" loading="lazy" decoding="async"><figcaption>Pear</figcaption></figure>
+          <figure class="shot" data-cap="Quince highball — quince-forward gin with a house quince shrub, distinctly seasonal"><img src="../img/18.jpg" alt="Quince highball" loading="lazy" decoding="async"><figcaption>Quince</figcaption></figure>
+          <figure class="shot" data-cap="Peach highball — a blend of nectarine, white and yellow peach, finished with house peach sorbet"><img src="../img/19.jpg" alt="Peach highball" loading="lazy" decoding="async"><figcaption>Peach</figcaption></figure>
+          <figure class="shot" data-cap="Orange highball — orange flesh and passion fruit pushed for aroma, acidity and juiciness"><img src="../img/20.jpg" alt="Orange highball" loading="lazy" decoding="async"><figcaption>Orange</figcaption></figure>
+        </div>
+        <h4 class="gal-h">Bar workflow</h4>
+        <div class="gal">
+          <figure class="shot" data-cap="Working the station — jigger discipline, glass handling, consistent execution"><img src="../img/21.jpg" alt="Working the bar station" loading="lazy" decoding="async"><figcaption>The station</figcaption></figure>
+          <figure class="shot" data-cap="Pouring a sidecar — shaker control, a steady pour, service rhythm"><img src="../img/22.jpg" alt="Pouring a sidecar" loading="lazy" decoding="async"><figcaption>Sidecar pour</figcaption></figure>
+          <figure class="shot" data-cap="Pouring a gimlet — shaker to chilled glass, clean straining, a tidy finish"><img src="../img/23.jpg" alt="Pouring a gimlet" loading="lazy" decoding="async"><figcaption>Gimlet pour</figcaption></figure>
+          <figure class="shot" data-cap="Building a Garibaldi — bar spoon control, and getting the same result in the middle of service"><img src="../img/24.jpg" alt="Building a Garibaldi" loading="lazy" decoding="async"><figcaption>Garibaldi build</figcaption></figure>
+        </div>
+    </div>
+  </details>
+  <p class="sect-note" style="margin:14px 0 0">
+    Video: <a href="https://youtu.be/94xfIvc3_tI" target="_blank" rel="noopener">making a classic gimlet</a>.
+    Full footage of breaking down a fish and preparing sashimi is filmed and available on request.
+  </p>
+</section>
+
+<!-- ══════════ 05. education ══════════ -->
+<section id="edu">
+  <h2>05 — Education</h2>
+  <p class="sect-lede">Education</p>
+  <ul class="milestones">
+    <li><span class="yr">In progress</span><b>Korea Cyber University</b> — AI &amp; Data Science</li>
+  </ul>
+</section>
+
+<!-- ══════════ 06. awards & media ══════════ -->
+<section id="awards">
+  <h2>06 — Awards &amp; Media</h2>
+  <p class="sect-lede">Awards, training and press</p>
+  <details>
+    <summary>Awards and press</summary>
+    <div class="details-body">
+      <ul class="milestones">
+        <li><span class="yr">2024–25</span>Selected for <b>Korea's Top 100 Highball Bars</b></li>
+        <li><span class="yr">2022</span>Featured in <b>Heypop</b> magazine &middot; <a href="https://heypop.kr/n/42277/" target="_blank" rel="noopener">read the piece</a></li>
+        <li><span class="yr">2018</span>Filmed for <b>cable television</b> at the venue</li>
+        <li><span class="yr">2016</span>Winner, <b>Havana Club Master Class Korea</b></li>
+      </ul>
+      <h4 class="gal-h">Training completed</h4>
+      <ul class="chips">
+        <li>Mixologist Master Course</li>
+        <li>Johnnie Walker spirits course</li>
+        <li>Olmeca tequila distillery, Mexico</li>
+        <li>Havana Club rum distillery, Cuba</li>
+      </ul>
+      <h4 class="gal-h">Korea's Top 100 Highball Bars &middot; 2024</h4>
+      <div class="media-grid">
+        <figure class="shot" data-cap="Certified as one of Korea's Top 100 Highball Bars, 2024 (Beam Suntory)">
+          <img src="../img/32.jpg" alt="Top 100 Highball Bars plaque" loading="lazy" decoding="async">
+        </figure>
+      </div>
+
+      <h4 class="gal-h">Havana Club Master Class Korea &middot; 2016</h4>
+      <div class="media-grid">
+        <figure class="shot" data-cap="Winner, Havana Club Master Class Korea, 2016">
+          <img src="../img/25.jpg" alt="Havana Club Master Class Korea win" loading="lazy" decoding="async">
+        </figure>
+      </div>
+
+      <h4 class="gal-h">Cable television &middot; 2018 — filmed at the venue</h4>
+      <div class="gal wide">
+        <figure class="shot" data-cap="On set — the bar station during filming, 2018"><img src="../img/33.jpg" alt="On set during filming" loading="lazy" decoding="async"><figcaption>On set</figcaption></figure>
+        <figure class="shot" data-cap="On set — in the venue, 2018"><img src="../img/26.jpg" alt="On set in the venue" loading="lazy" decoding="async"><figcaption>On set, 2</figcaption></figure>
+        <figure class="shot" data-cap="Interview segment, 2018"><img src="../img/34.jpg" alt="Interview segment" loading="lazy" decoding="async"><figcaption>Interview</figcaption></figure>
+        <figure class="shot" data-cap="Serving the finished drink, 2018"><img src="../img/27.jpg" alt="Serving the finished drink" loading="lazy" decoding="async"><figcaption>Serving</figcaption></figure>
+        <figure class="shot" data-cap="Shaking on camera, 2018"><img src="../img/28.jpg" alt="Shaking on camera" loading="lazy" decoding="async"><figcaption>Shaking, 1</figcaption></figure>
+        <figure class="shot" data-cap="Shaking on camera, 2018"><img src="../img/29.jpg" alt="Shaking on camera" loading="lazy" decoding="async"><figcaption>Shaking, 2</figcaption></figure>
+        <figure class="shot" data-cap="Shaking on camera, 2018"><img src="../img/30.jpg" alt="Shaking on camera" loading="lazy" decoding="async"><figcaption>Shaking, 3</figcaption></figure>
+        <figure class="shot" data-cap="Bar and tables, 2018"><img src="../img/35.jpg" alt="Bar and tables" loading="lazy" decoding="async"><figcaption>Bar &amp; tables</figcaption></figure>
+        <figure class="shot" data-cap="The bar, 2018"><img src="../img/31.jpg" alt="The bar" loading="lazy" decoding="async"><figcaption>The bar</figcaption></figure>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════ 07. resume ══════════ -->
+<section id="resume">
+  <h2>07 — Resume</h2>
+  <p class="sect-lede">Resume document</p>
+  <p class="sect-note">The same material as a document, if you need it in that form.</p>
+  <div class="actions">
+    <a class="btn primary" href="https://docs.google.com/document/d/1rnF7EzaPepCkKgAlHEQw1HRSBSPRwVhEiTsc24IHTno/edit?usp=drive_link" target="_blank" rel="noopener">English resume &rarr;</a>
+    <a class="btn" href="https://docs.google.com/document/d/1u5maKSXT4M5Jqao8exUd8eJcpblmZeq8mfNbfz5-fzw/edit?usp=drive_link" target="_blank" rel="noopener">Korean resume &rarr;</a>
+  </div>
+</section>
+
+<footer class="wrap">
+  <p>Every app here was built by me, using AI tools, with no formal development training.</p>
+  <p>Single HTML file, browser storage, deployed on GitHub Pages.</p>
+  <p style="margin-top:12px">Yoon-sik Jeong &middot; Seoul &middot; <a href="mailto:ysjeongfnbdata@gmail.com">ysjeongfnbdata@gmail.com</a> &middot; <a href="../">한국어</a></p>
+</footer>
+
+</main>
+
+<div id="lb" role="dialog" aria-modal="true" aria-label="Enlarged photograph">
+  <button class="x" type="button" aria-label="Close">&#10005;</button>
+  <button class="nav prev" type="button" aria-label="Previous photograph">&lsaquo;</button>
+  <button class="nav next" type="button" aria-label="Next photograph">&rsaquo;</button>
+  <img src="" alt="">
+  <p class="cap"></p>
+</div>
+
+<script>
+/* gallery lightbox — enlarge and step through photographs */
+(function(){
+  const shots = [...document.querySelectorAll('.shot')];
+  if(!shots.length) return;
+  const lb = document.getElementById('lb');
+  const img = lb.querySelector('img');
+  const cap = lb.querySelector('.cap');
+  let i = 0;
+  function show(n){
+    i = (n + shots.length) % shots.length;
+    const f = shots[i];
+    img.src = f.querySelector('img').src;
+    img.alt = f.querySelector('img').alt;
+    cap.textContent = f.dataset.cap || '';
+    lb.classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){ lb.classList.remove('on'); document.body.style.overflow = ''; }
+  shots.forEach((f, n) => f.addEventListener('click', () => show(n)));
+  lb.querySelector('.x').addEventListener('click', close);
+  lb.querySelector('.prev').addEventListener('click', e => { e.stopPropagation(); show(i-1); });
+  lb.querySelector('.next').addEventListener('click', e => { e.stopPropagation(); show(i+1); });
+  lb.addEventListener('click', e => { if(e.target === lb || e.target === img) close(); });
+  document.addEventListener('keydown', e => {
+    if(!lb.classList.contains('on')) return;
+    if(e.key === 'Escape') close();
+    if(e.key === 'ArrowLeft') show(i-1);
+    if(e.key === 'ArrowRight') show(i+1);
+  });
+})();
+</script>
+</body>
+</html>
